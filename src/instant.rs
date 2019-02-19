@@ -158,3 +158,10 @@ impl Sub for Instant {
         self.duration_since(other)
     }
 }
+
+impl Sub<time::Instant> for Instant {
+    type Output = Duration;
+    fn sub(self, other: time::Instant) -> Duration {
+        self.duration_since(Instant::from(other))
+    }
+}
