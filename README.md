@@ -35,7 +35,7 @@ The current version of easytime requires Rust 1.34 or later.
 use easytime::{Duration, Instant};
 use std::time::Duration as StdDuration;
 
-fn foo(secs: u64, nanos: u32, instant: Instant) -> StdDuration {
+fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<StdDuration> {
     let now = Instant::now();
 
     let dur = Duration::new(secs, nanos);
