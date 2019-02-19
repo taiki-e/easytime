@@ -9,6 +9,41 @@
 //! [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
 //! [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
 //!
+//! ## Examples
+//!
+//! ```rust
+//! # #[cfg(feature = "std")]
+//! use easytime::{Duration, Instant};
+//! # #[cfg(feature = "std")]
+//! use std::time::Duration as StdDuration;
+//!
+//! # #[cfg(feature = "std")]
+//! fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<StdDuration> {
+//!     let now = Instant::now();
+//!
+//!     let dur = Duration::new(secs, nanos);
+//!     (now - instant - dur).into_inner()
+//! }
+//! ```
+//!
+//! If you use `std::time` directly, you need to write as follows:
+//!
+//! ```rust,ignore
+//! #![feature(checked_duration_since)]
+//!
+//! use std::time::{Duration, Instant};
+//!
+//! fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
+//!     let now = Instant::now();
+//!
+//!     let secs = Duration::from_secs(secs);
+//!     let nanos = Duration::from_nanos(u64::from(nanos));
+//!
+//!     let dur = secs.checked_add(nanos)?;
+//!     now.checked_duration_since(instant)?.checked_sub(dur)
+//! }
+//! ```
+//!
 //! ## Optional features
 //!
 //! * **`std`** *(enabled by default)*

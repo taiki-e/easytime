@@ -15,6 +15,10 @@ matrix:
     # - rust: stable
     # - rust: beta
     - rust: nightly
+      script:
+        - cargo test --no-default-features
+        - cargo test
+        - cargo test -- --ignored
 
     - rust: nightly
       name: cargo clippy
@@ -34,9 +38,9 @@ matrix:
 before_script:
   - set -o errexit
 
-script:
-  - cargo test --no-default-features
-  - cargo test
+# script:
+#   - cargo test --no-default-features
+#   - cargo test
 
 notifications:
   email:

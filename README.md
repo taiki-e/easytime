@@ -16,6 +16,8 @@ This crate provides the following two data structures.
 [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
 [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
 
+[**Documentation**](https://docs.rs/easytime/)
+
 ## Usage
 
 Add this to your `Cargo.toml`:
@@ -27,7 +29,37 @@ easytime = "0.1"
 
 The current version of easytime requires Rust 1.34 or later.
 
-[**Documentation**](https://docs.rs/easytime/)
+## Examples
+
+```rust
+use easytime::{Duration, Instant};
+use std::time::Duration as StdDuration;
+
+fn foo(secs: u64, nanos: u32, instant: Instant) -> StdDuration {
+    let now = Instant::now();
+
+    let dur = Duration::new(secs, nanos);
+    (now - instant - dur).into_inner()
+}
+```
+
+If you use `std::time` directly, you need to write as follows:
+
+```rust
+#![feature(checked_duration_since)]
+
+use std::time::{Duration, Instant};
+
+fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
+    let now = Instant::now();
+
+    let secs = Duration::from_secs(secs);
+    let nanos = Duration::from_nanos(u64::from(nanos));
+
+    let dur = secs.checked_add(nanos)?;
+    now.checked_duration_since(instant)?.checked_sub(dur)
+}
+```
 
 ## Optional features
 
