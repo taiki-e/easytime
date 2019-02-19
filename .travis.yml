@@ -1,0 +1,43 @@
+language: rust
+sudo: false
+cache: cargo
+
+matrix:
+  fast_finish: true
+
+  include:
+    # This is the minimum Rust version supported by easytime.
+    # When updating this, the reminder to update the minimum required version in README.md.
+    - rust: beta # FIXME(taiki-e): When 1.33 stabilizes, change to specify that version directly.
+      script:
+        - cargo test --no-default-features
+
+    # - rust: stable
+    # - rust: beta
+    - rust: nightly
+
+    - rust: nightly
+      name: cargo clippy
+      script:
+        - if rustup component add clippy-preview;
+          then
+            cargo clippy --all-features -- -Dwarnings;
+          else
+            echo 'Skipping clippy';
+          fi
+
+    - rust: nightly
+      name: cargo doc
+      script:
+        - RUSTDOCFLAGS=-Dwarnings cargo doc --no-deps --all-features
+
+before_script:
+  - set -o errexit
+
+script:
+  - cargo test --no-default-features
+  - cargo test
+
+notifications:
+  email:
+    on_success: never
