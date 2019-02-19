@@ -13,9 +13,6 @@ keywords = ["no_std", "time"]
 categories = ["no-std"]
 exclude = ["/.travis.yml"]
 
-[dev-dependencies]
-libc = "0.2.48"
-
 [features]
 default = ["std"]
 std = []
