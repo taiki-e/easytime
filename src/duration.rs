@@ -217,6 +217,12 @@ impl SubAssign for Duration {
     }
 }
 
+impl SubAssign<time::Duration> for Duration {
+    fn sub_assign(&mut self, rhs: time::Duration) {
+        *self = *self - rhs;
+    }
+}
+
 impl Mul<u32> for Duration {
     type Output = Duration;
     fn mul(self, rhs: u32) -> Duration {
