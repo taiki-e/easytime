@@ -34,6 +34,32 @@ impl Instant {
         Instant(Some(time::Instant::now()))
     }
 
+    /// Returns the amount of time elapsed from another instant to this one.
+    pub fn duration_since(&self, earlier: Instant) -> Duration {
+        Duration(pair_and_then(
+            self.0.as_ref(),
+            earlier.0,
+            |this, earlier| {
+                // https://github.com/rust-lang/rust/pull/58395
+                if *this >= earlier {
+                    Some(this.duration_since(earlier))
+                } else {
+                    None
+                }
+            },
+        ))
+    }
+
+    /// Returns the amount of time elapsed since this instant was created.
+    pub fn elapsed(&self) -> Duration {
+        Instant::now() - *self
+    }
+}
+
+// =============================================================================
+// Option based method implementations
+
+impl Instant {
     /// Returns `true` if [`into_inner`] returns `Some`.
     ///
     /// [`into_inner`]: #method.into_inner
@@ -80,28 +106,10 @@ impl Instant {
     {
         self.0.unwrap_or_else(default)
     }
-
-    /// Returns the amount of time elapsed from another instant to this one.
-    pub fn duration_since(&self, earlier: Instant) -> Duration {
-        Duration(pair_and_then(
-            self.0.as_ref(),
-            earlier.0,
-            |this, earlier| {
-                // https://github.com/rust-lang/rust/pull/58395
-                if *this >= earlier {
-                    Some(this.duration_since(earlier))
-                } else {
-                    None
-                }
-            },
-        ))
-    }
-
-    /// Returns the amount of time elapsed since this instant was created.
-    pub fn elapsed(&self) -> Duration {
-        Instant::now() - *self
-    }
 }
+
+// =============================================================================
+// Trait implementations
 
 impl From<time::Instant> for Instant {
     fn from(instant: time::Instant) -> Instant {

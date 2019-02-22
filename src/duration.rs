@@ -35,53 +35,6 @@ impl Duration {
         Duration(secs.checked_add(nanos))
     }
 
-    /// Returns `true` if [`into_inner`] returns `Some`.
-    ///
-    /// [`into_inner`]: #method.into_inner
-    #[inline]
-    pub fn is_some(&self) -> bool {
-        self.0.is_some()
-    }
-
-    /// Returns `true` if [`into_inner`] returns `None`.
-    ///
-    /// [`into_inner`]: #method.into_inner
-    #[inline]
-    pub fn is_none(&self) -> bool {
-        self.0.is_none()
-    }
-
-    /// Returns the contained [`std::time::Duration`] or [`None`].
-    ///
-    /// [`std::time::Duration`]: std::time::Duration
-    #[inline]
-    pub const fn into_inner(self) -> Option<time::Duration> {
-        self.0
-    }
-
-    /// Returns the contained [`std::time::Duration`] or a default.
-    ///
-    /// `dur.unwrap_or(default)` is equivalent to `dur.into_inner().unwrap_or(default)`.
-    ///
-    /// [`std::time::Duration`]: std::time::Duration
-    #[inline]
-    pub fn unwrap_or(self, default: time::Duration) -> time::Duration {
-        self.0.unwrap_or(default)
-    }
-
-    /// Returns the contained [`std::time::Duration`] or computes it from a closure.
-    ///
-    /// `dur.unwrap_or_else(default)` is equivalent to `dur.into_inner().unwrap_or_else(default)`.
-    ///
-    /// [`std::time::Duration`]: std::time::Duration
-    #[inline]
-    pub fn unwrap_or_else<F>(self, default: F) -> time::Duration
-    where
-        F: FnOnce() -> time::Duration,
-    {
-        self.0.unwrap_or_else(default)
-    }
-
     /// Creates a new `Duration` from the specified number of whole seconds.
     #[inline]
     pub const fn from_secs(secs: u64) -> Duration {
@@ -167,6 +120,61 @@ impl Duration {
 
     // TODO: unstable duration_float feature: https://github.com/rust-lang/rust/issues/54361
 }
+
+// =============================================================================
+// Option based method implementations
+
+impl Duration {
+    /// Returns `true` if [`into_inner`] returns `Some`.
+    ///
+    /// [`into_inner`]: #method.into_inner
+    #[inline]
+    pub fn is_some(&self) -> bool {
+        self.0.is_some()
+    }
+
+    /// Returns `true` if [`into_inner`] returns `None`.
+    ///
+    /// [`into_inner`]: #method.into_inner
+    #[inline]
+    pub fn is_none(&self) -> bool {
+        self.0.is_none()
+    }
+
+    /// Returns the contained [`std::time::Duration`] or [`None`].
+    ///
+    /// [`std::time::Duration`]: std::time::Duration
+    #[inline]
+    pub const fn into_inner(self) -> Option<time::Duration> {
+        self.0
+    }
+
+    /// Returns the contained [`std::time::Duration`] or a default.
+    ///
+    /// `dur.unwrap_or(default)` is equivalent to `dur.into_inner().unwrap_or(default)`.
+    ///
+    /// [`std::time::Duration`]: std::time::Duration
+    #[inline]
+    pub fn unwrap_or(self, default: time::Duration) -> time::Duration {
+        self.0.unwrap_or(default)
+    }
+
+    /// Returns the contained [`std::time::Duration`] or computes it from a closure.
+    ///
+    /// `dur.unwrap_or_else(default)` is equivalent to `dur.into_inner().unwrap_or_else(default)`.
+    ///
+    /// [`std::time::Duration`]: std::time::Duration
+    #[inline]
+    pub fn unwrap_or_else<F>(self, default: F) -> time::Duration
+    where
+        F: FnOnce() -> time::Duration,
+    {
+        self.0.unwrap_or_else(default)
+    }
+}
+
+// =============================================================================
+// Trait implementations
 
 impl Default for Duration {
     fn default() -> Duration {
