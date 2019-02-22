@@ -69,6 +69,19 @@ impl Duration {
         self.0.unwrap_or(default)
     }
 
+    /// Returns the contained [`std::time::Duration`] or computes it from a closure.
+    ///
+    /// `dur.unwrap_or_else(default)` is equivalent to `dur.into_inner().unwrap_or_else(default)`.
+    ///
+    /// [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
+    #[inline]
+    pub fn unwrap_or_else<F>(self, default: F) -> time::Duration
+    where
+        F: FnOnce() -> time::Duration,
+    {
+        self.0.unwrap_or_else(default)
+    }
+
     /// Creates a new `Duration` from the specified number of whole seconds.
     #[inline]
     pub const fn from_secs(secs: u64) -> Duration {
