@@ -2,10 +2,12 @@
 //!
 //! This crate provides the following two data structures.
 //!
-//! * `easytime::Instant` -- A wrapper type for [`std::time::Instant`]
+//! * [`easytime::Instant`] -- A wrapper type for [`std::time::Instant`]
 //!
-//! * `easytime::Duration` -- A wrapper type for [`std::time::Duration`]
+//! * [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
 //!
+//! [`easytime::Instant`]: struct.Instant.html
+//! [`easytime::Duration`]: struct.Instant.html
 //! [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
 //! [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
 //!
@@ -47,7 +49,7 @@
 //! ## Optional features
 //!
 //! * **`std`** *(enabled by default)*
-//!   * Enable to use `easytime::Instant`.
+//!   * Enable to use [`easytime::Instant`].
 //!   * This requires Rust 1.34 or later.
 //!   * If disabled this feature, easytime can compile with Rust 1.33.
 //!
