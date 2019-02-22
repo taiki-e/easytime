@@ -68,6 +68,19 @@ impl Instant {
         self.0.unwrap_or(default)
     }
 
+    /// Returns the contained [`std::time::Instant`] or computes it from a closure.
+    ///
+    /// `instant.unwrap_or_else(default)` is equivalent to `instant.into_inner().unwrap_or_else(default)`.
+    ///
+    /// [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
+    #[inline]
+    pub fn unwrap_or_else<F>(self, default: F) -> time::Instant
+    where
+        F: FnOnce() -> time::Instant,
+    {
+        self.0.unwrap_or_else(default)
+    }
+
     /// Returns the amount of time elapsed from another instant to this one.
     pub fn duration_since(&self, earlier: Instant) -> Duration {
         Duration(pair_and_then(
