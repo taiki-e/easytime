@@ -53,7 +53,7 @@ impl Duration {
 
     /// Returns the contained [`std::time::Duration`] or [`None`].
     ///
-    /// [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
+    /// [`std::time::Duration`]: std::time::Duration
     #[inline]
     pub const fn into_inner(self) -> Option<time::Duration> {
         self.0
@@ -61,9 +61,9 @@ impl Duration {
 
     /// Returns the contained [`std::time::Duration`] or a default.
     ///
-    /// `dur.unwrap_or(f)` is equivalent to `dur.into_inner().unwrap_or(default)`.
+    /// `dur.unwrap_or(default)` is equivalent to `dur.into_inner().unwrap_or(default)`.
     ///
-    /// [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
+    /// [`std::time::Duration`]: std::time::Duration
     #[inline]
     pub fn unwrap_or(self, default: time::Duration) -> time::Duration {
         self.0.unwrap_or(default)
@@ -73,7 +73,7 @@ impl Duration {
     ///
     /// `dur.unwrap_or_else(default)` is equivalent to `dur.into_inner().unwrap_or_else(default)`.
     ///
-    /// [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
+    /// [`std::time::Duration`]: std::time::Duration
     #[inline]
     pub fn unwrap_or_else<F>(self, default: F) -> time::Duration
     where

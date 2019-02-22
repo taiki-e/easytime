@@ -52,7 +52,7 @@ impl Instant {
 
     /// Returns the contained [`std::time::Instant`] or `None`.
     ///
-    /// [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
+    /// [`std::time::Instant`]: std::time::Instant
     #[inline]
     pub const fn into_inner(self) -> Option<time::Instant> {
         self.0
@@ -60,9 +60,9 @@ impl Instant {
 
     /// Returns the contained [`std::time::Instant`] or a default.
     ///
-    /// `instant.unwrap_or(f)` is equivalent to `instant.into_inner().unwrap_or(default)`.
+    /// `instant.unwrap_or(default)` is equivalent to `instant.into_inner().unwrap_or(default)`.
     ///
-    /// [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
+    /// [`std::time::Instant`]: std::time::Instant
     #[inline]
     pub fn unwrap_or(self, default: time::Instant) -> time::Instant {
         self.0.unwrap_or(default)
@@ -72,7 +72,7 @@ impl Instant {
     ///
     /// `instant.unwrap_or_else(default)` is equivalent to `instant.into_inner().unwrap_or_else(default)`.
     ///
-    /// [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
+    /// [`std::time::Instant`]: std::time::Instant
     #[inline]
     pub fn unwrap_or_else<F>(self, default: F) -> time::Instant
     where
@@ -104,8 +104,8 @@ impl Instant {
 }
 
 impl From<time::Instant> for Instant {
-    fn from(dur: time::Instant) -> Instant {
-        Instant(Some(dur))
+    fn from(instant: time::Instant) -> Instant {
+        Instant(Some(instant))
     }
 }
 
