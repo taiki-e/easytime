@@ -26,7 +26,7 @@ use super::{pair_and_then, Duration};
 /// The size of an `Instant` struct may vary depending on the target operating
 /// system.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Instant(pub(crate) Option<time::Instant>);
+pub struct Instant(Option<time::Instant>);
 
 impl Instant {
     /// Returns an instant corresponding to "now".
