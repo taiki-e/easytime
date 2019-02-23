@@ -9,10 +9,12 @@ Providing wrapper types for safely performing panic-free checked arithmetic on i
 
 This crate provides the following two data structures.
 
-* `easytime::Instant` -- A wrapper type for [`std::time::Instant`]
+* [`easytime::Instant`] -- A wrapper type for [`std::time::Instant`]
 
-* `easytime::Duration` -- A wrapper type for [`std::time::Duration`]
+* [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
 
+[`easytime::Instant`]: https://docs.rs/easytime/0.1/easytime/struct.Instant.html
+[`easytime::Duration`]: https://docs.rs/easytime/0.1/easytime/struct.Duration.html
 [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
 [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
 
@@ -64,7 +66,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 ## Optional features
 
 * **`std`** *(enabled by default)*
-  * Enable to use `easytime::Instant`.
+  * Enable to use [`easytime::Instant`].
   * This requires Rust 1.34 or later.
   * If disabled this feature, easytime can compile with Rust 1.33.
 
