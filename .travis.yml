@@ -8,12 +8,12 @@ matrix:
   include:
     # This is the minimum Rust version supported by easytime.
     # When updating this, the reminder to update the minimum required version in README.md.
-    - rust: beta # FIXME(taiki-e): When 1.33 stabilizes, change to specify that version directly.
+    - rust: 1.33.0
       script:
         - cargo test --no-default-features
 
     # - rust: stable
-    # - rust: beta
+    - rust: beta
     - rust: nightly
       script:
         - cargo test --no-default-features
@@ -38,9 +38,9 @@ matrix:
 before_script:
   - set -o errexit
 
-# script:
-#   - cargo test --no-default-features
-#   - cargo test
+script:
+  - cargo test --no-default-features
+  - cargo test
 
 notifications:
   email:
