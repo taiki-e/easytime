@@ -118,7 +118,7 @@ impl Duration {
         self.0.map(|d| d.as_nanos())
     }
 
-    // TODO: unstable duration_float feature: https://github.com/rust-lang/rust/issues/54361
+    // TODO: duration_float https://github.com/rust-lang/rust/issues/54361
 }
 
 // =============================================================================
@@ -278,5 +278,6 @@ impl DivAssign<u32> for Duration {
     }
 }
 
-// TODO: impl Sum for Duration
-// TODO: impl<'a> Sum<&'a Duration> for Duration
+// TODO: duration_sum
+// impl Sum for Duration
+// impl<'a> Sum<&'a Duration> for Duration
