@@ -10,7 +10,7 @@ matrix:
     # When updating this, the reminder to update the minimum required version in README.md.
     - rust: 1.33.0
       script:
-        - cargo test --no-default-features
+        - cargo test --tests --no-default-features
 
     # - rust: stable
     - rust: beta
@@ -18,7 +18,6 @@ matrix:
       script:
         - cargo test --no-default-features
         - cargo test
-        - cargo test -- --ignored
 
     - rust: nightly
       name: cargo clippy
@@ -39,8 +38,8 @@ before_script:
   - set -o errexit
 
 script:
-  - cargo test --no-default-features
-  - cargo test
+  - cargo test --tests --no-default-features
+  - cargo test --tests
 
 notifications:
   email:
