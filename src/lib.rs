@@ -30,7 +30,7 @@
 //!
 //! If you use `std::time` directly, you need to write as follows:
 //!
-//! ```rust,ignore
+//! ```rust
 //! #![feature(checked_duration_since)]
 //!
 //! use std::time::{Duration, Instant};
