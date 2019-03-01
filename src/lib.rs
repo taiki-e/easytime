@@ -54,7 +54,7 @@
 //!   * If disabled this feature, easytime can compile with Rust 1.33.
 //!
 
-#![doc(html_root_url = "https://docs.rs/easytime/0.1.1")]
+#![doc(html_root_url = "https://docs.rs/easytime/0.1.2")]
 #![deny(missing_docs, missing_debug_implementations)]
 #![deny(unsafe_code)]
 #![deny(rust_2018_idioms)]

@@ -1,5 +1,7 @@
 # Unreleased
 
+# 0.1.2 - 2019-03-01
+
 * Remove "This example is not tested" warning in documentation example.
 
 # 0.1.1 - 2019-02-23
