@@ -57,8 +57,7 @@
 #![doc(html_root_url = "https://docs.rs/easytime/0.1.2")]
 #![deny(missing_docs, missing_debug_implementations)]
 #![deny(unsafe_code)]
-#![deny(rust_2018_idioms)]
-#![deny(unreachable_pub)]
+#![deny(rust_2018_idioms, unreachable_pub)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
 mod duration;

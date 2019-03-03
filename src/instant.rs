@@ -25,7 +25,7 @@ use super::{pair_and_then, Duration};
 ///
 /// The size of an `Instant` struct may vary depending on the target operating
 /// system.
-#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Instant(Option<time::Instant>);
 
 impl Instant {
@@ -119,6 +119,7 @@ impl From<time::Instant> for Instant {
 
 impl Add<Duration> for Instant {
     type Output = Instant;
+
     fn add(self, other: Duration) -> Instant {
         Instant(pair_and_then(self.0, other.0, |this, other| {
             this.checked_add(other)
@@ -128,6 +129,7 @@ impl Add<Duration> for Instant {
 
 impl Add<time::Duration> for Instant {
     type Output = Instant;
+
     fn add(self, other: time::Duration) -> Instant {
         Instant(self.0.and_then(|this| this.checked_add(other)))
     }
@@ -147,6 +149,7 @@ impl AddAssign<time::Duration> for Instant {
 
 impl Sub<Duration> for Instant {
     type Output = Instant;
+
     fn sub(self, other: Duration) -> Instant {
         Instant(pair_and_then(self.0, other.0, |this, other| {
             this.checked_sub(other)
@@ -156,6 +159,7 @@ impl Sub<Duration> for Instant {
 
 impl Sub<time::Duration> for Instant {
     type Output = Instant;
+
     fn sub(self, other: time::Duration) -> Instant {
         Instant(self.0.and_then(|this| this.checked_sub(other)))
     }
@@ -175,6 +179,7 @@ impl SubAssign<time::Duration> for Instant {
 
 impl Sub for Instant {
     type Output = Duration;
+
     fn sub(self, other: Instant) -> Duration {
         self.duration_since(other)
     }
@@ -182,6 +187,7 @@ impl Sub for Instant {
 
 impl Sub<time::Instant> for Instant {
     type Output = Duration;
+
     fn sub(self, other: time::Instant) -> Duration {
         self.duration_since(Instant::from(other))
     }

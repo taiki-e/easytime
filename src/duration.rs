@@ -190,6 +190,7 @@ impl From<time::Duration> for Duration {
 
 impl Add for Duration {
     type Output = Duration;
+
     fn add(self, rhs: Duration) -> Duration {
         Duration(pair_and_then(self.0, rhs.0, |lhs, rhs| {
             lhs.checked_add(rhs)
@@ -199,6 +200,7 @@ impl Add for Duration {
 
 impl Add<time::Duration> for Duration {
     type Output = Duration;
+
     fn add(self, rhs: time::Duration) -> Duration {
         Duration(self.0.and_then(|lhs| lhs.checked_add(rhs)))
     }
@@ -218,6 +220,7 @@ impl AddAssign<time::Duration> for Duration {
 
 impl Sub for Duration {
     type Output = Duration;
+
     fn sub(self, rhs: Duration) -> Duration {
         Duration(pair_and_then(self.0, rhs.0, |lhs, rhs| {
             lhs.checked_sub(rhs)
@@ -227,6 +230,7 @@ impl Sub for Duration {
 
 impl Sub<time::Duration> for Duration {
     type Output = Duration;
+
     fn sub(self, rhs: time::Duration) -> Duration {
         Duration(self.0.and_then(|lhs| lhs.checked_sub(rhs)))
     }
@@ -246,6 +250,7 @@ impl SubAssign<time::Duration> for Duration {
 
 impl Mul<u32> for Duration {
     type Output = Duration;
+
     fn mul(self, rhs: u32) -> Duration {
         Duration(self.0.and_then(|lhs| lhs.checked_mul(rhs)))
     }
@@ -253,6 +258,7 @@ impl Mul<u32> for Duration {
 
 impl Mul<Duration> for u32 {
     type Output = Duration;
+
     fn mul(self, rhs: Duration) -> Duration {
         rhs * self
     }
