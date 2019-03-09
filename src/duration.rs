@@ -29,34 +29,34 @@ impl Duration {
     /// If the number of nanoseconds is greater than 1 billion (the number of
     /// nanoseconds in a second), then it will carry over into the seconds provided.
     #[inline]
-    pub fn new(secs: u64, nanos: u32) -> Duration {
+    pub fn new(secs: u64, nanos: u32) -> Self {
         let secs = time::Duration::from_secs(secs);
         let nanos = time::Duration::from_nanos(u64::from(nanos));
-        Duration(secs.checked_add(nanos))
+        Self(secs.checked_add(nanos))
     }
 
     /// Creates a new `Duration` from the specified number of whole seconds.
     #[inline]
-    pub const fn from_secs(secs: u64) -> Duration {
-        Duration(Some(time::Duration::from_secs(secs)))
+    pub const fn from_secs(secs: u64) -> Self {
+        Self(Some(time::Duration::from_secs(secs)))
     }
 
     /// Creates a new `Duration` from the specified number of milliseconds.
     #[inline]
-    pub const fn from_millis(millis: u64) -> Duration {
-        Duration(Some(time::Duration::from_millis(millis)))
+    pub const fn from_millis(millis: u64) -> Self {
+        Self(Some(time::Duration::from_millis(millis)))
     }
 
     /// Creates a new `Duration` from the specified number of microseconds.
     #[inline]
-    pub const fn from_micros(micros: u64) -> Duration {
-        Duration(Some(time::Duration::from_micros(micros)))
+    pub const fn from_micros(micros: u64) -> Self {
+        Self(Some(time::Duration::from_micros(micros)))
     }
 
     /// Creates a new `Duration` from the specified number of nanoseconds.
     #[inline]
-    pub const fn from_nanos(nanos: u64) -> Duration {
-        Duration(Some(time::Duration::from_nanos(nanos)))
+    pub const fn from_nanos(nanos: u64) -> Self {
+        Self(Some(time::Duration::from_nanos(nanos)))
     }
 
     /// Returns the number of _whole_ seconds contained by this `Duration`.
@@ -177,37 +177,37 @@ impl Duration {
 // Trait implementations
 
 impl Default for Duration {
-    fn default() -> Duration {
-        Duration(Some(time::Duration::default()))
+    fn default() -> Self {
+        Self(Some(time::Duration::default()))
     }
 }
 
 impl From<time::Duration> for Duration {
-    fn from(dur: time::Duration) -> Duration {
-        Duration(Some(dur))
+    fn from(dur: time::Duration) -> Self {
+        Self(Some(dur))
     }
 }
 
 impl Add for Duration {
-    type Output = Duration;
+    type Output = Self;
 
-    fn add(self, rhs: Duration) -> Duration {
-        Duration(pair_and_then(self.0, rhs.0, |lhs, rhs| {
+    fn add(self, rhs: Self) -> Self {
+        Self(pair_and_then(self.0, rhs.0, |lhs, rhs| {
             lhs.checked_add(rhs)
         }))
     }
 }
 
 impl Add<time::Duration> for Duration {
-    type Output = Duration;
+    type Output = Self;
 
-    fn add(self, rhs: time::Duration) -> Duration {
-        Duration(self.0.and_then(|lhs| lhs.checked_add(rhs)))
+    fn add(self, rhs: time::Duration) -> Self {
+        Self(self.0.and_then(|lhs| lhs.checked_add(rhs)))
     }
 }
 
 impl AddAssign for Duration {
-    fn add_assign(&mut self, rhs: Duration) {
+    fn add_assign(&mut self, rhs: Self) {
         *self = *self + rhs;
     }
 }
@@ -219,25 +219,25 @@ impl AddAssign<time::Duration> for Duration {
 }
 
 impl Sub for Duration {
-    type Output = Duration;
+    type Output = Self;
 
-    fn sub(self, rhs: Duration) -> Duration {
-        Duration(pair_and_then(self.0, rhs.0, |lhs, rhs| {
+    fn sub(self, rhs: Self) -> Self {
+        Self(pair_and_then(self.0, rhs.0, |lhs, rhs| {
             lhs.checked_sub(rhs)
         }))
     }
 }
 
 impl Sub<time::Duration> for Duration {
-    type Output = Duration;
+    type Output = Self;
 
-    fn sub(self, rhs: time::Duration) -> Duration {
-        Duration(self.0.and_then(|lhs| lhs.checked_sub(rhs)))
+    fn sub(self, rhs: time::Duration) -> Self {
+        Self(self.0.and_then(|lhs| lhs.checked_sub(rhs)))
     }
 }
 
 impl SubAssign for Duration {
-    fn sub_assign(&mut self, rhs: Duration) {
+    fn sub_assign(&mut self, rhs: Self) {
         *self = *self - rhs;
     }
 }
@@ -249,10 +249,10 @@ impl SubAssign<time::Duration> for Duration {
 }
 
 impl Mul<u32> for Duration {
-    type Output = Duration;
+    type Output = Self;
 
-    fn mul(self, rhs: u32) -> Duration {
-        Duration(self.0.and_then(|lhs| lhs.checked_mul(rhs)))
+    fn mul(self, rhs: u32) -> Self {
+        Self(self.0.and_then(|lhs| lhs.checked_mul(rhs)))
     }
 }
 
@@ -271,10 +271,10 @@ impl MulAssign<u32> for Duration {
 }
 
 impl Div<u32> for Duration {
-    type Output = Duration;
+    type Output = Self;
 
-    fn div(self, rhs: u32) -> Duration {
-        Duration(self.0.and_then(|lhs| lhs.checked_div(rhs)))
+    fn div(self, rhs: u32) -> Self {
+        Self(self.0.and_then(|lhs| lhs.checked_div(rhs)))
     }
 }
 

@@ -30,12 +30,12 @@ pub struct Instant(Option<time::Instant>);
 
 impl Instant {
     /// Returns an instant corresponding to "now".
-    pub fn now() -> Instant {
-        Instant(Some(time::Instant::now()))
+    pub fn now() -> Self {
+        Self(Some(time::Instant::now()))
     }
 
     /// Returns the amount of time elapsed from another instant to this one.
-    pub fn duration_since(&self, earlier: Instant) -> Duration {
+    pub fn duration_since(&self, earlier: Self) -> Duration {
         Duration(pair_and_then(
             self.0.as_ref(),
             earlier.0,
@@ -52,7 +52,7 @@ impl Instant {
 
     /// Returns the amount of time elapsed since this instant was created.
     pub fn elapsed(&self) -> Duration {
-        Instant::now() - *self
+        Self::now() - *self
     }
 }
 
@@ -112,26 +112,26 @@ impl Instant {
 // Trait implementations
 
 impl From<time::Instant> for Instant {
-    fn from(instant: time::Instant) -> Instant {
-        Instant(Some(instant))
+    fn from(instant: time::Instant) -> Self {
+        Self(Some(instant))
     }
 }
 
 impl Add<Duration> for Instant {
-    type Output = Instant;
+    type Output = Self;
 
-    fn add(self, other: Duration) -> Instant {
-        Instant(pair_and_then(self.0, other.0, |this, other| {
+    fn add(self, other: Duration) -> Self {
+        Self(pair_and_then(self.0, other.0, |this, other| {
             this.checked_add(other)
         }))
     }
 }
 
 impl Add<time::Duration> for Instant {
-    type Output = Instant;
+    type Output = Self;
 
-    fn add(self, other: time::Duration) -> Instant {
-        Instant(self.0.and_then(|this| this.checked_add(other)))
+    fn add(self, other: time::Duration) -> Self {
+        Self(self.0.and_then(|this| this.checked_add(other)))
     }
 }
 
@@ -148,20 +148,20 @@ impl AddAssign<time::Duration> for Instant {
 }
 
 impl Sub<Duration> for Instant {
-    type Output = Instant;
+    type Output = Self;
 
-    fn sub(self, other: Duration) -> Instant {
-        Instant(pair_and_then(self.0, other.0, |this, other| {
+    fn sub(self, other: Duration) -> Self {
+        Self(pair_and_then(self.0, other.0, |this, other| {
             this.checked_sub(other)
         }))
     }
 }
 
 impl Sub<time::Duration> for Instant {
-    type Output = Instant;
+    type Output = Self;
 
-    fn sub(self, other: time::Duration) -> Instant {
-        Instant(self.0.and_then(|this| this.checked_sub(other)))
+    fn sub(self, other: time::Duration) -> Self {
+        Self(self.0.and_then(|this| this.checked_sub(other)))
     }
 }
 
@@ -180,7 +180,7 @@ impl SubAssign<time::Duration> for Instant {
 impl Sub for Instant {
     type Output = Duration;
 
-    fn sub(self, other: Instant) -> Duration {
+    fn sub(self, other: Self) -> Duration {
         self.duration_since(other)
     }
 }
@@ -189,6 +189,6 @@ impl Sub<time::Instant> for Instant {
     type Output = Duration;
 
     fn sub(self, other: time::Instant) -> Duration {
-        self.duration_since(Instant::from(other))
+        self.duration_since(Self::from(other))
     }
 }
