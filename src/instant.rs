@@ -36,18 +36,14 @@ impl Instant {
 
     /// Returns the amount of time elapsed from another instant to this one.
     pub fn duration_since(&self, earlier: Self) -> Duration {
-        Duration(pair_and_then(
-            self.0.as_ref(),
-            earlier.0,
-            |this, earlier| {
-                // https://github.com/rust-lang/rust/pull/58395
-                if *this >= earlier {
-                    Some(this.duration_since(earlier))
-                } else {
-                    None
-                }
-            },
-        ))
+        Duration(pair_and_then(self.0.as_ref(), earlier.0, |this, earlier| {
+            // https://github.com/rust-lang/rust/pull/58395
+            if *this >= earlier {
+                Some(this.duration_since(earlier))
+            } else {
+                None
+            }
+        }))
     }
 
     /// Returns the amount of time elapsed since this instant was created.
@@ -121,9 +117,7 @@ impl Add<Duration> for Instant {
     type Output = Self;
 
     fn add(self, other: Duration) -> Self {
-        Self(pair_and_then(self.0, other.0, |this, other| {
-            this.checked_add(other)
-        }))
+        Self(pair_and_then(self.0, other.0, |this, other| this.checked_add(other)))
     }
 }
 
@@ -151,9 +145,7 @@ impl Sub<Duration> for Instant {
     type Output = Self;
 
     fn sub(self, other: Duration) -> Self {
-        Self(pair_and_then(self.0, other.0, |this, other| {
-            this.checked_sub(other)
-        }))
+        Self(pair_and_then(self.0, other.0, |this, other| this.checked_sub(other)))
     }
 }
 

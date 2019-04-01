@@ -7,10 +7,7 @@ use easytime::Duration;
 #[test]
 fn creation() {
     assert!(Duration::from_secs(1) != Duration::from_secs(0));
-    assert_eq!(
-        Duration::from_secs(1) + Duration::from_secs(2),
-        Duration::from_secs(3)
-    );
+    assert_eq!(Duration::from_secs(1) + Duration::from_secs(2), Duration::from_secs(3));
     assert_eq!(
         Duration::from_millis(10) + Duration::from_secs(4),
         Duration::new(4, 10 * 1_000_000)
@@ -50,22 +47,13 @@ fn millis() {
 fn micros() {
     assert_eq!(Duration::new(0, 0).subsec_micros(), Some(0));
     assert_eq!(Duration::new(0, 500_000_005).subsec_micros(), Some(500_000));
-    assert_eq!(
-        Duration::new(0, 1_050_000_001).subsec_micros(),
-        Some(50_000)
-    );
+    assert_eq!(Duration::new(0, 1_050_000_001).subsec_micros(), Some(50_000));
     assert_eq!(Duration::from_secs(1).subsec_micros(), Some(0));
     assert_eq!(Duration::from_millis(999).subsec_micros(), Some(999_000));
     assert_eq!(Duration::from_millis(1001).subsec_micros(), Some(1_000));
-    assert_eq!(
-        Duration::from_micros(999_999).subsec_micros(),
-        Some(999_999)
-    );
+    assert_eq!(Duration::from_micros(999_999).subsec_micros(), Some(999_999));
     assert_eq!(Duration::from_micros(1_000_001).subsec_micros(), Some(1));
-    assert_eq!(
-        Duration::from_nanos(999_999_999).subsec_micros(),
-        Some(999_999)
-    );
+    assert_eq!(Duration::from_nanos(999_999_999).subsec_micros(), Some(999_999));
     assert_eq!(Duration::from_nanos(1_000_001_000).subsec_micros(), Some(1));
 }
 
@@ -77,28 +65,16 @@ fn nanos() {
     assert_eq!(Duration::from_secs(1).subsec_nanos(), Some(0));
     assert_eq!(Duration::from_millis(999).subsec_nanos(), Some(999_000_000));
     assert_eq!(Duration::from_millis(1001).subsec_nanos(), Some(1_000_000));
-    assert_eq!(
-        Duration::from_micros(999_999).subsec_nanos(),
-        Some(999_999_000)
-    );
+    assert_eq!(Duration::from_micros(999_999).subsec_nanos(), Some(999_999_000));
     assert_eq!(Duration::from_micros(1_000_001).subsec_nanos(), Some(1000));
-    assert_eq!(
-        Duration::from_nanos(999_999_999).subsec_nanos(),
-        Some(999_999_999)
-    );
+    assert_eq!(Duration::from_nanos(999_999_999).subsec_nanos(), Some(999_999_999));
     assert_eq!(Duration::from_nanos(1_000_000_001).subsec_nanos(), Some(1));
 }
 
 #[test]
 fn add() {
-    assert_eq!(
-        Duration::new(0, 0) + Duration::new(0, 1),
-        Duration::new(0, 1)
-    );
-    assert_eq!(
-        Duration::new(0, 500_000_000) + Duration::new(0, 500_000_001),
-        Duration::new(1, 1)
-    );
+    assert_eq!(Duration::new(0, 0) + Duration::new(0, 1), Duration::new(0, 1));
+    assert_eq!(Duration::new(0, 500_000_000) + Duration::new(0, 500_000_001), Duration::new(1, 1));
 }
 
 #[test]
@@ -111,26 +87,14 @@ fn checked_add() {
         (Duration::new(0, 500_000_000) + Duration::new(0, 500_000_001)).into_inner(),
         Some(time::Duration::new(1, 1))
     );
-    assert_eq!(
-        (Duration::new(1, 0) + Duration::new(u64::max_value(), 0)).into_inner(),
-        None
-    );
+    assert_eq!((Duration::new(1, 0) + Duration::new(u64::max_value(), 0)).into_inner(), None);
 }
 
 #[test]
 fn sub() {
-    assert_eq!(
-        Duration::new(0, 1) - Duration::new(0, 0),
-        Duration::new(0, 1)
-    );
-    assert_eq!(
-        Duration::new(0, 500_000_001) - Duration::new(0, 500_000_000),
-        Duration::new(0, 1)
-    );
-    assert_eq!(
-        Duration::new(1, 0) - Duration::new(0, 1),
-        Duration::new(0, 999_999_999)
-    );
+    assert_eq!(Duration::new(0, 1) - Duration::new(0, 0), Duration::new(0, 1));
+    assert_eq!(Duration::new(0, 500_000_001) - Duration::new(0, 500_000_000), Duration::new(0, 1));
+    assert_eq!(Duration::new(1, 0) - Duration::new(0, 1), Duration::new(0, 999_999_999));
 }
 
 #[test]
@@ -138,14 +102,8 @@ fn checked_sub() {
     let zero = Duration::new(0, 0);
     let one_nano = Duration::new(0, 1);
     let one_sec = Duration::new(1, 0);
-    assert_eq!(
-        (one_nano - zero).into_inner(),
-        Some(time::Duration::new(0, 1))
-    );
-    assert_eq!(
-        (one_sec - one_nano).into_inner(),
-        Some(time::Duration::new(0, 999_999_999))
-    );
+    assert_eq!((one_nano - zero).into_inner(), Some(time::Duration::new(0, 1)));
+    assert_eq!((one_sec - one_nano).into_inner(), Some(time::Duration::new(0, 999_999_999)));
     assert_eq!((zero - one_nano).into_inner(), None);
     assert_eq!((zero - one_sec).into_inner(), None);
 }
@@ -155,56 +113,32 @@ fn mul() {
     assert_eq!(Duration::new(0, 1) * 2, Duration::new(0, 2));
     assert_eq!(Duration::new(1, 1) * 3, Duration::new(3, 3));
     assert_eq!(Duration::new(0, 500_000_001) * 4, Duration::new(2, 4));
-    assert_eq!(
-        Duration::new(0, 500_000_001) * 4000,
-        Duration::new(2000, 4000)
-    );
+    assert_eq!(Duration::new(0, 500_000_001) * 4000, Duration::new(2000, 4000));
 }
 
 #[test]
 fn checked_mul() {
-    assert_eq!(
-        (Duration::new(0, 1) * 2).into_inner(),
-        Some(time::Duration::new(0, 2))
-    );
-    assert_eq!(
-        (Duration::new(1, 1) * 3).into_inner(),
-        Some(time::Duration::new(3, 3))
-    );
-    assert_eq!(
-        (Duration::new(0, 500_000_001) * 4).into_inner(),
-        Some(time::Duration::new(2, 4))
-    );
+    assert_eq!((Duration::new(0, 1) * 2).into_inner(), Some(time::Duration::new(0, 2)));
+    assert_eq!((Duration::new(1, 1) * 3).into_inner(), Some(time::Duration::new(3, 3)));
+    assert_eq!((Duration::new(0, 500_000_001) * 4).into_inner(), Some(time::Duration::new(2, 4)));
     assert_eq!(
         (Duration::new(0, 500_000_001) * 4000).into_inner(),
         Some(time::Duration::new(2000, 4000))
     );
-    assert_eq!(
-        (Duration::new(u64::max_value() - 1, 0) * 2).into_inner(),
-        None
-    );
+    assert_eq!((Duration::new(u64::max_value() - 1, 0) * 2).into_inner(), None);
 }
 
 #[test]
 fn div() {
     assert_eq!(Duration::new(0, 1) / 2, Duration::new(0, 0));
     assert_eq!(Duration::new(1, 1) / 3, Duration::new(0, 333_333_333));
-    assert_eq!(
-        Duration::new(99, 999_999_000) / 100,
-        Duration::new(0, 999_999_990)
-    );
+    assert_eq!(Duration::new(99, 999_999_000) / 100, Duration::new(0, 999_999_990));
 }
 
 #[test]
 fn checked_div() {
-    assert_eq!(
-        (Duration::new(2, 0) / 2).into_inner(),
-        Some(time::Duration::new(1, 0))
-    );
-    assert_eq!(
-        (Duration::new(1, 0) / 2).into_inner(),
-        Some(time::Duration::new(0, 500_000_000))
-    );
+    assert_eq!((Duration::new(2, 0) / 2).into_inner(), Some(time::Duration::new(1, 0)));
+    assert_eq!((Duration::new(1, 0) / 2).into_inner(), Some(time::Duration::new(0, 500_000_000)));
     assert_eq!((Duration::new(2, 0) / 0).into_inner(), None);
 }
 

@@ -9,12 +9,7 @@ macro_rules! assert_almost_eq {
         let (a, b) = ($a, $b);
         if a != b {
             let (a, b) = if a > b { (a, b) } else { (b, a) };
-            assert!(
-                a - Duration::new(0, 1000) <= b,
-                "{:?} is not almost equal to {:?}",
-                a,
-                b
-            );
+            assert!(a - Duration::new(0, 1000) <= b, "{:?} is not almost equal to {:?}", a, b);
         }
     }};
 }

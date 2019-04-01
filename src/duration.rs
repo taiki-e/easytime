@@ -192,9 +192,7 @@ impl Add for Duration {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self {
-        Self(pair_and_then(self.0, rhs.0, |lhs, rhs| {
-            lhs.checked_add(rhs)
-        }))
+        Self(pair_and_then(self.0, rhs.0, time::Duration::checked_add))
     }
 }
 
@@ -222,9 +220,7 @@ impl Sub for Duration {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self {
-        Self(pair_and_then(self.0, rhs.0, |lhs, rhs| {
-            lhs.checked_sub(rhs)
-        }))
+        Self(pair_and_then(self.0, rhs.0, time::Duration::checked_sub))
     }
 }
 
