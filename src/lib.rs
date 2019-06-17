@@ -55,11 +55,14 @@
 //!
 
 #![doc(html_root_url = "https://docs.rs/easytime/0.1.2")]
+#![doc(test(attr(deny(warnings), allow(dead_code, unused_assignments, unused_variables))))]
 #![cfg_attr(not(feature = "std"), no_std)]
-#![deny(missing_docs, missing_debug_implementations)]
-#![deny(unsafe_code)]
-#![deny(rust_2018_idioms, unreachable_pub)]
-#![deny(clippy::all, clippy::pedantic)]
+#![warn(missing_docs, missing_debug_implementations)]
+#![warn(unsafe_code)]
+#![warn(single_use_lifetimes)]
+#![warn(rust_2018_idioms, unreachable_pub)]
+#![warn(clippy::all, clippy::pedantic)]
+#![warn(clippy::nursery)]
 
 mod duration;
 pub use duration::Duration;
