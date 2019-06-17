@@ -1,4 +1,5 @@
 use core::{
+    fmt,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
     time,
 };
@@ -19,7 +20,7 @@ use super::pair_and_then;
 /// [`Add`]: std::ops::Add
 /// [`Sub`]: std::ops::Sub
 /// [`ops`]: std::ops
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Duration(pub(crate) Option<time::Duration>);
 
 impl Duration {
@@ -175,6 +176,12 @@ impl Duration {
 
 // =============================================================================
 // Trait implementations
+
+impl fmt::Debug for Duration {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fmt::Debug::fmt(&self.0, f)
+    }
+}
 
 impl Default for Duration {
     fn default() -> Self {
