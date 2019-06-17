@@ -1,5 +1,7 @@
 # Unreleased
 
+* Changed the `Debug` implementation of `easytime::Duration` to display the same as the result of `std::time::Duration::checked_*`.
+
 # 0.1.2 - 2019-03-01
 
 * Remove "This example is not tested" warning in documentation example.
