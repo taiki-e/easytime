@@ -55,6 +55,7 @@
 //!
 
 #![doc(html_root_url = "https://docs.rs/easytime/0.1.2")]
+#![doc(test(attr(deny(warnings), allow(dead_code, unused_assignments, unused_variables))))]
 #![cfg_attr(not(feature = "std"), no_std)]
 #![warn(missing_docs, missing_debug_implementations)]
 #![warn(unsafe_code)]
