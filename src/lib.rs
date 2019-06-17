@@ -56,10 +56,10 @@
 
 #![doc(html_root_url = "https://docs.rs/easytime/0.1.2")]
 #![cfg_attr(not(feature = "std"), no_std)]
-#![deny(missing_docs, missing_debug_implementations)]
-#![deny(unsafe_code)]
-#![deny(rust_2018_idioms, unreachable_pub)]
-#![deny(clippy::all, clippy::pedantic)]
+#![warn(missing_docs, missing_debug_implementations)]
+#![warn(unsafe_code)]
+#![warn(rust_2018_idioms, unreachable_pub)]
+#![warn(clippy::all, clippy::pedantic)]
 
 mod duration;
 pub use duration::Duration;

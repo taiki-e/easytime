@@ -1,3 +1,5 @@
+#![warn(rust_2018_idioms)]
+
 // https://github.com/rust-lang/rust/blob/master/src/libcore/tests/time.rs
 
 use core::time;

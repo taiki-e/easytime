@@ -1,4 +1,5 @@
 #![cfg(feature = "std")]
+#![warn(rust_2018_idioms)]
 
 // https://github.com/rust-lang/rust/blob/master/src/libstd/time.rs
 
@@ -46,7 +47,7 @@ fn instant_math() {
     let max_duration = Duration::from_secs(u64::max_value());
     // in case `Instant` can store `>= now + max_duration`.
     for _ in 0..2 {
-        maybe_t = maybe_t + max_duration;
+        maybe_t += max_duration;
     }
     assert_eq!(maybe_t.into_inner(), None);
 
