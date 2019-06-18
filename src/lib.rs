@@ -50,8 +50,7 @@
 //!
 //! * **`std`** *(enabled by default)*
 //!   * Enable to use [`easytime::Instant`].
-//!   * This requires Rust 1.34 or later.
-//!   * If disabled this feature, easytime can compile with Rust 1.33.
+//!   * If disabled this feature, `easytime` can be used in `no_std` environments.
 //!
 
 #![doc(html_root_url = "https://docs.rs/easytime/0.1.2")]
@@ -71,6 +70,27 @@ pub use duration::Duration;
 mod instant;
 #[cfg(feature = "std")]
 pub use instant::Instant;
+
+use core::fmt;
+
+// =============================================================================
+// TryFromTimeError
+
+/// The error type returned when a conversion from `easytime` types to `std::time` types fails.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct TryFromTimeError(());
+
+impl fmt::Display for TryFromTimeError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "invalid arithmetic attempted on instants or durations")
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for TryFromTimeError {}
+
+// =============================================================================
+// Utilities
 
 fn pair_and_then<A, B, C, F>(x: Option<A>, y: Option<B>, f: F) -> Option<C>
 where

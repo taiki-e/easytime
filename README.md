@@ -29,7 +29,7 @@ Add this to your `Cargo.toml`:
 easytime = "0.1"
 ```
 
-The current version of easytime requires Rust 1.34 or later.
+The current easytime requires Rust 1.34 or later.
 
 ## Examples
 
@@ -67,8 +67,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 
 * **`std`** *(enabled by default)*
   * Enable to use [`easytime::Instant`].
-  * This requires Rust 1.34 or later.
-  * If disabled this feature, easytime can compile with Rust 1.33.
+  * If disabled this feature, `easytime` can be used in `no_std` environments.
 
 ## License
 

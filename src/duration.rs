@@ -1,10 +1,11 @@
 use core::{
+    convert::TryFrom,
     fmt,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
     time,
 };
 
-use super::pair_and_then;
+use super::{pair_and_then, TryFromTimeError};
 
 /// A `Duration` type to represent a span of time, typically used for system
 /// timeouts.
@@ -192,6 +193,14 @@ impl Default for Duration {
 impl From<time::Duration> for Duration {
     fn from(dur: time::Duration) -> Self {
         Self(Some(dur))
+    }
+}
+
+impl TryFrom<Duration> for time::Duration {
+    type Error = TryFromTimeError;
+
+    fn try_from(dur: Duration) -> Result<Self, TryFromTimeError> {
+        dur.into_inner().ok_or_else(|| TryFromTimeError(()))
     }
 }
 

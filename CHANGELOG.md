@@ -1,5 +1,7 @@
 # Unreleased
 
+* Implement `TryFrom` for `easytime::Instant` and `easytime::Duration`. With this change, the minimum required version of `easytime` with `--no-default-features` goes up to Rust 1.34 (the minimum required version of the default feature has not changed).
+
 * Changed the `Debug` implementation of `easytime::Duration` to display the same as the result of `std::time::Duration::checked_*`.
 
 # 0.1.2 - 2019-03-01

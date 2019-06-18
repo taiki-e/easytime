@@ -1,9 +1,10 @@
 use std::{
+    convert::TryFrom,
     ops::{Add, AddAssign, Sub, SubAssign},
     time,
 };
 
-use super::{pair_and_then, Duration};
+use super::{pair_and_then, Duration, TryFromTimeError};
 
 /// A measurement of a monotonically nondecreasing clock.
 /// Opaque and useful only with `Duration`.
@@ -110,6 +111,14 @@ impl Instant {
 impl From<time::Instant> for Instant {
     fn from(instant: time::Instant) -> Self {
         Self(Some(instant))
+    }
+}
+
+impl TryFrom<Instant> for time::Instant {
+    type Error = TryFromTimeError;
+
+    fn try_from(instant: Instant) -> Result<Self, TryFromTimeError> {
+        instant.into_inner().ok_or_else(|| TryFromTimeError(()))
     }
 }
 
