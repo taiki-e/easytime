@@ -8,8 +8,6 @@
 //!
 //! [`easytime::Instant`]: struct.Instant.html
 //! [`easytime::Duration`]: struct.Instant.html
-//! [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
-//! [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
 //!
 //! ## Examples
 //!
@@ -28,7 +26,7 @@
 //! }
 //! ```
 //!
-//! If you use `std::time` directly, you need to write as follows:
+//! If you use [`std::time`] directly, you need to write as follows:
 //!
 //! ```rust
 //! #![feature(checked_duration_since)]

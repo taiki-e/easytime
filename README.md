@@ -15,6 +15,7 @@ This crate provides the following two data structures.
 
 [`easytime::Instant`]: https://docs.rs/easytime/0.1/easytime/struct.Instant.html
 [`easytime::Duration`]: https://docs.rs/easytime/0.1/easytime/struct.Duration.html
+[`std::time`]: https://doc.rust-lang.org/std/time/index.html
 [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
 [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
 
@@ -45,7 +46,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<StdDuration> {
 }
 ```
 
-If you use `std::time` directly, you need to write as follows:
+If you use [`std::time`] directly, you need to write as follows:
 
 ```rust
 #![feature(checked_duration_since)]

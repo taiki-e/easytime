@@ -143,9 +143,7 @@ impl Duration {
         self.0.is_none()
     }
 
-    /// Returns the contained [`std::time::Duration`] or [`None`].
-    ///
-    /// [`std::time::Duration`]: std::time::Duration
+    /// Returns the contained [`std::time::Duration`] or `None`.
     #[inline]
     pub const fn into_inner(self) -> Option<time::Duration> {
         self.0
@@ -154,8 +152,6 @@ impl Duration {
     /// Returns the contained [`std::time::Duration`] or a default.
     ///
     /// `dur.unwrap_or(default)` is equivalent to `dur.into_inner().unwrap_or(default)`.
-    ///
-    /// [`std::time::Duration`]: std::time::Duration
     #[inline]
     pub fn unwrap_or(self, default: time::Duration) -> time::Duration {
         self.0.unwrap_or(default)
@@ -164,8 +160,6 @@ impl Duration {
     /// Returns the contained [`std::time::Duration`] or computes it from a closure.
     ///
     /// `dur.unwrap_or_else(default)` is equivalent to `dur.into_inner().unwrap_or_else(default)`.
-    ///
-    /// [`std::time::Duration`]: std::time::Duration
     #[inline]
     pub fn unwrap_or_else<F>(self, default: F) -> time::Duration
     where
