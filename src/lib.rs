@@ -7,7 +7,7 @@
 //! * [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
 //!
 //! [`easytime::Instant`]: struct.Instant.html
-//! [`easytime::Duration`]: struct.Instant.html
+//! [`easytime::Duration`]: struct.Duration.html
 //!
 //! ## Examples
 //!
