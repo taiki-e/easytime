@@ -14,9 +14,6 @@ matrix:
   include:
     # This is the minimum Rust version supported by easytime.
     # When updating this, the reminder to update the minimum required version in README.md.
-    - rust: 1.33.0
-      script:
-        - cargo test --tests --no-default-features
     - rust: 1.34.0
 
     - rust: stable
