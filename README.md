@@ -4,6 +4,7 @@
 [![version](https://img.shields.io/crates/v/easytime.svg)](https://crates.io/crates/easytime/)
 [![documentation](https://docs.rs/easytime/badge.svg)](https://docs.rs/easytime/)
 [![license](https://img.shields.io/crates/l/easytime.svg)](https://crates.io/crates/easytime/)
+[![Rustc Version](https://img.shields.io/badge/rustc-1.34+-lightgray.svg)](https://blog.rust-lang.org/2019/04/11/Rust-1.34.0.html)
 
 Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
 
