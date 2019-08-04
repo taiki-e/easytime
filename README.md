@@ -1,10 +1,21 @@
 # easytime
 
-[![Build Status](https://travis-ci.com/taiki-e/easytime.svg?branch=master)](https://travis-ci.com/taiki-e/easytime)
-[![version](https://img.shields.io/crates/v/easytime.svg)](https://crates.io/crates/easytime/)
-[![documentation](https://docs.rs/easytime/badge.svg)](https://docs.rs/easytime/)
-[![license](https://img.shields.io/crates/l/easytime.svg)](https://crates.io/crates/easytime/)
-[![Rustc Version](https://img.shields.io/badge/rustc-1.34+-lightgray.svg)](https://blog.rust-lang.org/2019/04/11/Rust-1.34.0.html)
+[![Build Status][azure-badge]][azure-url]
+[![Crates.io][crates-version-badge]][crates-url]
+[![Docs.rs][docs-badge]][docs-url]
+[![License][crates-license-badge]][crates-url]
+[![Minimum supported Rust version][rustc-badge]][rustc-url]
+
+[azure-badge]: https://dev.azure.com/taiki-e/taiki-e/_apis/build/status/taiki-e.easytime?branchName=master
+[azure-url]: https://dev.azure.com/taiki-e/taiki-e/_build/latest?definitionId=12&branchName=master
+[crates-version-badge]: https://img.shields.io/crates/v/easytime.svg
+[crates-license-badge]: https://img.shields.io/crates/l/easytime.svg
+[crates-badge]: https://img.shields.io/crates/v/easytime.svg
+[crates-url]: https://crates.io/crates/easytime/
+[docs-badge]: https://docs.rs/easytime/badge.svg
+[docs-url]: https://docs.rs/easytime/
+[rustc-badge]: https://img.shields.io/badge/rustc-1.34+-lightgray.svg
+[rustc-url]: https://blog.rust-lang.org/2019/04/11/Rust-1.34.0.html
 
 Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
 

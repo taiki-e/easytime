@@ -11,7 +11,6 @@ documentation = "https://docs.rs/easytime/"
 readme = "README.md"
 keywords = ["no_std", "time"]
 categories = ["no-std"]
-exclude = ["/.travis.yml", "/bors.toml"]
 
 [features]
 default = ["std"]
