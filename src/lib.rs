@@ -59,7 +59,6 @@
 #![warn(single_use_lifetimes)]
 #![warn(rust_2018_idioms, unreachable_pub)]
 #![warn(clippy::all, clippy::pedantic)]
-#![warn(clippy::nursery)]
 
 mod duration;
 pub use duration::Duration;
