@@ -56,8 +56,8 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![warn(missing_docs, missing_debug_implementations)]
 #![warn(unsafe_code)]
-#![warn(single_use_lifetimes)]
 #![warn(rust_2018_idioms, unreachable_pub)]
+#![warn(single_use_lifetimes)]
 #![warn(clippy::all, clippy::pedantic)]
 
 mod duration;
