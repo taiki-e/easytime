@@ -39,11 +39,7 @@ impl Instant {
     pub fn duration_since(&self, earlier: Self) -> Duration {
         Duration(pair_and_then(self.0.as_ref(), earlier.0, |this, earlier| {
             // https://github.com/rust-lang/rust/pull/58395
-            if *this >= earlier {
-                Some(this.duration_since(earlier))
-            } else {
-                None
-            }
+            if *this >= earlier { Some(this.duration_since(earlier)) } else { None }
         }))
     }
 
