@@ -29,8 +29,6 @@
 //! If you use [`std::time`] directly, you need to write as follows:
 //!
 //! ```rust
-//! #![feature(checked_duration_since)]
-//!
 //! use std::time::{Duration, Instant};
 //!
 //! fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
