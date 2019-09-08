@@ -49,9 +49,12 @@
 //!   * If disabled this feature, `easytime` can be used in `no_std` environments.
 //!
 
-#![doc(html_root_url = "https://docs.rs/easytime/0.1.2")]
-#![doc(test(attr(deny(warnings), allow(dead_code, unused_assignments, unused_variables))))]
 #![cfg_attr(not(feature = "std"), no_std)]
+#![doc(html_root_url = "https://docs.rs/easytime/0.1.2")]
+#![doc(test(
+    no_crate_inject,
+    attr(deny(warnings, rust_2018_idioms, single_use_lifetimes), allow(dead_code))
+))]
 #![warn(missing_docs, missing_debug_implementations)]
 #![warn(unsafe_code)]
 #![warn(rust_2018_idioms, unreachable_pub)]
@@ -87,6 +90,7 @@ impl std::error::Error for TryFromTimeError {}
 // =============================================================================
 // Utilities
 
+#[inline]
 fn pair_and_then<A, B, C, F>(x: Option<A>, y: Option<B>, f: F) -> Option<C>
 where
     F: FnOnce(A, B) -> Option<C>,
