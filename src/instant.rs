@@ -36,6 +36,13 @@ impl Instant {
     }
 
     /// Returns the amount of time elapsed from another instant to this one.
+    #[cfg(stable_1_39)]
+    pub fn duration_since(&self, earlier: Self) -> Duration {
+        Duration(pair_and_then(self.0.as_ref(), earlier.0, time::Instant::checked_duration_since))
+    }
+
+    /// Returns the amount of time elapsed from another instant to this one.
+    #[cfg(not(stable_1_39))]
     pub fn duration_since(&self, earlier: Self) -> Duration {
         Duration(pair_and_then(self.0.as_ref(), earlier.0, |this, earlier| {
             // https://github.com/rust-lang/rust/pull/58395
@@ -116,7 +123,7 @@ impl Add<Duration> for Instant {
     type Output = Self;
 
     fn add(self, other: Duration) -> Self {
-        Self(pair_and_then(self.0, other.0, |this, other| this.checked_add(other)))
+        Self(pair_and_then(self.0.as_ref(), other.0, time::Instant::checked_add))
     }
 }
 
@@ -144,7 +151,7 @@ impl Sub<Duration> for Instant {
     type Output = Self;
 
     fn sub(self, other: Duration) -> Self {
-        Self(pair_and_then(self.0, other.0, |this, other| this.checked_sub(other)))
+        Self(pair_and_then(self.0.as_ref(), other.0, time::Instant::checked_sub))
     }
 }
 

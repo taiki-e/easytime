@@ -69,7 +69,7 @@ impl Duration {
     /// [`subsec_nanos`]: #method.subsec_nanos
     #[inline]
     pub fn as_secs(&self) -> Option<u64> {
-        self.0.map(|d| d.as_secs())
+        self.0.as_ref().map(time::Duration::as_secs)
     }
 
     /// Returns the fractional part of this `Duration`, in whole milliseconds.
@@ -79,7 +79,7 @@ impl Duration {
     /// fractional portion of a second (i.e., it is less than one thousand).
     #[inline]
     pub fn subsec_millis(&self) -> Option<u32> {
-        self.0.map(|d| d.subsec_millis())
+        self.0.as_ref().map(time::Duration::subsec_millis)
     }
 
     /// Returns the fractional part of this `Duration`, in whole microseconds.
@@ -89,7 +89,7 @@ impl Duration {
     /// fractional portion of a second (i.e., it is less than one million).
     #[inline]
     pub fn subsec_micros(&self) -> Option<u32> {
-        self.0.map(|d| d.subsec_micros())
+        self.0.as_ref().map(time::Duration::subsec_micros)
     }
 
     /// Returns the fractional part of this `Duration`, in nanoseconds.
@@ -99,28 +99,29 @@ impl Duration {
     /// fractional portion of a second (i.e., it is less than one billion).
     #[inline]
     pub fn subsec_nanos(&self) -> Option<u32> {
-        self.0.map(|d| d.subsec_nanos())
+        self.0.as_ref().map(time::Duration::subsec_nanos)
     }
 
     /// Returns the total number of whole milliseconds contained by this `Duration`.
     #[inline]
     pub fn as_millis(&self) -> Option<u128> {
-        self.0.map(|d| d.as_millis())
+        self.0.as_ref().map(time::Duration::as_millis)
     }
 
     /// Returns the total number of whole microseconds contained by this `Duration`.
     #[inline]
     pub fn as_micros(&self) -> Option<u128> {
-        self.0.map(|d| d.as_micros())
+        self.0.as_ref().map(time::Duration::as_micros)
     }
 
     /// Returns the total number of nanoseconds contained by this `Duration`.
     #[inline]
     pub fn as_nanos(&self) -> Option<u128> {
-        self.0.map(|d| d.as_nanos())
+        self.0.as_ref().map(time::Duration::as_nanos)
     }
 
     // TODO: duration_float https://github.com/rust-lang/rust/issues/54361
+    // TODO: div_duration https://github.com/rust-lang/rust/issues/63139
 }
 
 // =============================================================================

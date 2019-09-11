@@ -67,7 +67,10 @@ fn instant_math_is_associative() {
 
 #[test]
 fn instant_duration_untrusted() {
-    let a = Instant::now();
-    let ret = (a - Duration::new(1, 0)).duration_since(a);
-    assert_eq!(ret.into_inner(), None);
+    let now = Instant::now();
+    let earlier = now - Duration::new(1, 0);
+    let later = now + Duration::new(1, 0);
+    assert_eq!(earlier.duration_since(now).into_inner(), None);
+    assert_eq!(later.duration_since(now), Duration::new(1, 0));
+    assert_eq!(now.duration_since(now), Duration::new(0, 0));
 }
