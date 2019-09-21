@@ -1,16 +1,17 @@
 [package]
 name = "easytime"
-# NB: When modifying, also modify html_root_url in lib.rs
 version = "0.1.2"
 authors = ["Taiki Endo <te316e89@gmail.com>"]
 edition = "2018"
 license = "Apache-2.0/MIT"
-description = "Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations."
 repository = "https://github.com/taiki-e/easytime"
 documentation = "https://docs.rs/easytime/"
-readme = "README.md"
 keywords = ["no_std", "time"]
 categories = ["no-std"]
+readme = "README.md"
+description = """
+Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
+"""
 
 [features]
 default = ["std"]
