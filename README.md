@@ -1,13 +1,10 @@
 # easytime
 
-[![Build Status][azure-badge]][azure-url]
 [![Crates.io][crates-version-badge]][crates-url]
 [![Docs.rs][docs-badge]][docs-url]
 [![License][crates-license-badge]][crates-url]
 [![Minimum supported Rust version][rustc-badge]][rustc-url]
 
-[azure-badge]: https://dev.azure.com/taiki-e/taiki-e/_apis/build/status/taiki-e.easytime?branchName=master
-[azure-url]: https://dev.azure.com/taiki-e/taiki-e/_build/latest?definitionId=12&branchName=master
 [crates-version-badge]: https://img.shields.io/crates/v/easytime.svg
 [crates-license-badge]: https://img.shields.io/crates/l/easytime.svg
 [crates-badge]: https://img.shields.io/crates/v/easytime.svg
