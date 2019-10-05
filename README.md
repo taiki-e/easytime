@@ -1,13 +1,10 @@
 # easytime
 
-[![ci-badge]][ci-url]
 [![crates-badge]][crates-url]
 [![docs-badge]][docs-url]
 [![license-badge]][license]
 [![rustc-badge]][rustc-url]
 
-[ci-badge]: https://github.com/taiki-e/easytime/workflows/ci/badge.svg
-[ci-url]: https://github.com/taiki-e/easytime/actions?workflow=ci
 [crates-badge]: https://img.shields.io/crates/v/easytime.svg
 [crates-url]: https://crates.io/crates/easytime/
 [docs-badge]: https://docs.rs/easytime/badge.svg
