@@ -1,16 +1,19 @@
 # easytime
 
-[![Crates.io][crates-version-badge]][crates-url]
-[![Docs.rs][docs-badge]][docs-url]
-[![License][crates-license-badge]][crates-url]
-[![Minimum supported Rust version][rustc-badge]][rustc-url]
+[![ci-badge]][ci-url]
+[![crates-badge]][crates-url]
+[![docs-badge]][docs-url]
+[![license-badge]][license]
+[![rustc-badge]][rustc-url]
 
-[crates-version-badge]: https://img.shields.io/crates/v/easytime.svg
-[crates-license-badge]: https://img.shields.io/crates/l/easytime.svg
+[ci-badge]: https://github.com/taiki-e/easytime/workflows/ci/badge.svg
+[ci-url]: https://github.com/taiki-e/easytime/actions?workflow=ci
 [crates-badge]: https://img.shields.io/crates/v/easytime.svg
 [crates-url]: https://crates.io/crates/easytime/
 [docs-badge]: https://docs.rs/easytime/badge.svg
 [docs-url]: https://docs.rs/easytime/
+[license-badge]: https://img.shields.io/crates/l/easytime.svg
+[license]: #license
 [rustc-badge]: https://img.shields.io/badge/rustc-1.34+-lightgray.svg
 [rustc-url]: https://blog.rust-lang.org/2019/04/11/Rust-1.34.0.html
 
