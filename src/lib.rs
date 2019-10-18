@@ -62,7 +62,7 @@
     single_use_lifetimes,
     unreachable_pub
 )]
-#![warn(clippy::all, clippy::pedantic)]
+#![warn(clippy::all)]
 
 mod duration;
 pub use duration::Duration;
