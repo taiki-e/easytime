@@ -43,12 +43,8 @@ jobs:
         if: matrix.rust == '1.34.0'
         run: |
           cargo check
-      - name: cargo test --tests
-        if: matrix.rust == 'stable'
-        run: |
-          cargo test --tests
       - name: cargo test
-        if: matrix.rust != '1.34.0' && matrix.rust != 'stable'
+        if: matrix.rust != '1.34.0'
         run: |
           cargo test
       - name: cargo hack check --each-feature
