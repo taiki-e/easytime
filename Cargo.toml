@@ -13,6 +13,8 @@ description = """
 Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
 """
 
+[workspace]
+
 [features]
 default = ["std"]
 std = []
