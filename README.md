@@ -6,9 +6,9 @@
 [![rustc-badge]][rustc-url]
 
 [crates-badge]: https://img.shields.io/crates/v/easytime.svg
-[crates-url]: https://crates.io/crates/easytime/
+[crates-url]: https://crates.io/crates/easytime
 [docs-badge]: https://docs.rs/easytime/badge.svg
-[docs-url]: https://docs.rs/easytime/
+[docs-url]: https://docs.rs/easytime
 [license-badge]: https://img.shields.io/crates/l/easytime.svg
 [license]: #license
 [rustc-badge]: https://img.shields.io/badge/rustc-1.34+-lightgray.svg
