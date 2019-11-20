@@ -5,6 +5,7 @@ authors = ["Taiki Endo <te316e89@gmail.com>"]
 edition = "2018"
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/easytime"
+homepage = "https://github.com/taiki-e/easytime"
 documentation = "https://docs.rs/easytime/"
 keywords = ["no_std", "time"]
 categories = ["no-std"]
