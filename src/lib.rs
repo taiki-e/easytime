@@ -63,6 +63,8 @@
     unreachable_pub
 )]
 #![warn(clippy::all)]
+// mem::take requires Rust 1.40
+#![allow(clippy::mem_replace_with_default)]
 
 mod duration;
 pub use duration::Duration;
