@@ -1,5 +1,6 @@
 #![cfg(feature = "std")]
 #![warn(rust_2018_idioms)]
+#![allow(clippy::eq_op)]
 
 // https://github.com/rust-lang/rust/blob/master/src/libstd/time.rs
 
