@@ -1,5 +1,5 @@
 #![cfg(feature = "std")]
-#![warn(rust_2018_idioms)]
+#![warn(rust_2018_idioms, single_use_lifetimes)]
 #![allow(clippy::eq_op)]
 
 // https://github.com/rust-lang/rust/blob/master/src/libstd/time.rs

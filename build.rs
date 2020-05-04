@@ -1,3 +1,6 @@
+#![forbid(unsafe_code)]
+#![warn(rust_2018_idioms, single_use_lifetimes)]
+
 use std::{env, process::Command};
 
 fn main() {

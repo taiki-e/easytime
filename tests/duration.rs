@@ -1,4 +1,4 @@
-#![warn(rust_2018_idioms)]
+#![warn(rust_2018_idioms, single_use_lifetimes)]
 #![allow(clippy::zero_prefixed_literal)]
 
 // https://github.com/rust-lang/rust/blob/master/src/libcore/tests/time.rs
