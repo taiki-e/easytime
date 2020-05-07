@@ -4,7 +4,6 @@
 // https://github.com/rust-lang/rust/blob/master/src/libcore/tests/time.rs
 
 use core::time;
-
 use easytime::Duration;
 
 #[test]

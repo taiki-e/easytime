@@ -67,12 +67,12 @@
 #![allow(clippy::mem_replace_with_default)]
 
 mod duration;
-pub use duration::Duration;
+pub use crate::duration::Duration;
 
 #[cfg(feature = "std")]
 mod instant;
 #[cfg(feature = "std")]
-pub use instant::Instant;
+pub use crate::instant::Instant;
 
 use core::fmt;
 
