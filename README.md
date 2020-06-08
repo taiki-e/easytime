@@ -9,7 +9,7 @@
 [crates-url]: https://crates.io/crates/easytime
 [docs-badge]: https://docs.rs/easytime/badge.svg
 [docs-url]: https://docs.rs/easytime
-[license-badge]: https://img.shields.io/crates/l/easytime.svg
+[license-badge]: https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue.svg
 [license]: #license
 [rustc-badge]: https://img.shields.io/badge/rustc-1.34+-lightgray.svg
 [rustc-url]: https://blog.rust-lang.org/2019/04/11/Rust-1.34.0.html
@@ -27,8 +27,6 @@ This crate provides the following two data structures.
 [`std::time`]: https://doc.rust-lang.org/std/time/index.html
 [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
 [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
-
-[**Documentation**](https://docs.rs/easytime/)
 
 ## Usage
 

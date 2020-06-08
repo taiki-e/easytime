@@ -9,7 +9,7 @@
 //! [`easytime::Instant`]: struct.Instant.html
 //! [`easytime::Duration`]: struct.Duration.html
 //!
-//! ## Examples
+//! # Examples
 //!
 //! ```rust
 //! # #[cfg(feature = "std")]
@@ -42,7 +42,7 @@
 //! }
 //! ```
 //!
-//! ## Optional features
+//! # Optional features
 //!
 //! * **`std`** *(enabled by default)*
 //!   * Enable to use [`easytime::Instant`].
