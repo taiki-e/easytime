@@ -103,6 +103,11 @@ mod instant;
 #[cfg(feature = "std")]
 pub use crate::instant::Instant;
 
+#[cfg(feature = "std")]
+mod system_time;
+#[cfg(feature = "std")]
+pub use crate::system_time::SystemTime;
+
 mod error;
 pub use crate::error::TryFromTimeError;
 

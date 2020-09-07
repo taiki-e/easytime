@@ -7,7 +7,7 @@
 [![build status](https://img.shields.io/github/workflow/status/taiki-e/easytime/CI/main?style=flat-square&logo=github)](https://github.com/taiki-e/easytime/actions)
 
 Providing wrapper types for safely performing panic-free checked arithmetic
-on instants and durations.
+on instants, durations and system times.
 
 This crate provides the following two data structures.
 
@@ -15,11 +15,15 @@ This crate provides the following two data structures.
 
 - [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
 
+- [`easytime::SystemTime`] -- A wrapper type for [`std::time::SystemTime`]
+
 [`easytime::Instant`]: https://docs.rs/easytime/0.2/easytime/struct.Instant.html
 [`easytime::Duration`]: https://docs.rs/easytime/0.2/easytime/struct.Duration.html
+[`easytime::SystemTime`]: https://docs.rs/easytime/0.2/easytime/struct.SystemTime.html
 [`std::time`]: https://doc.rust-lang.org/std/time/index.html
 [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
 [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
+[`std::time::SystemTime`]: https://doc.rust-lang.org/std/time/struct.SystemTime.html
 
 ## Usage
 
@@ -65,7 +69,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 ## Optional features
 
 - **`std`** *(enabled by default)*
-  - Enable to use [`easytime::Instant`].
+  - Enable to use [`easytime::Instant`] and [`easytime::SystemTime`].
   - If disabled this feature, `easytime` can be used in `no_std` environments.
 
 ## License
