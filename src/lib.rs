@@ -63,8 +63,12 @@
     unreachable_pub
 )]
 #![warn(clippy::all, clippy::default_trait_access)]
-// mem::take and #[non_exhaustive] requires Rust 1.40
-#![allow(clippy::mem_replace_with_default, clippy::manual_non_exhaustive)]
+// mem::take and #[non_exhaustive] requires Rust 1.40, matches! requires Rust 1.42
+#![allow(
+    clippy::mem_replace_with_default,
+    clippy::manual_non_exhaustive,
+    clippy::match_like_matches_macro
+)]
 
 mod duration;
 pub use crate::duration::Duration;
