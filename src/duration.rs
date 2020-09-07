@@ -194,7 +194,7 @@ impl From<time::Duration> for Duration {
 impl TryFrom<Duration> for time::Duration {
     type Error = TryFromTimeError;
 
-    fn try_from(dur: Duration) -> Result<Self, TryFromTimeError> {
+    fn try_from(dur: Duration) -> Result<Self, Self::Error> {
         dur.into_inner().ok_or_else(|| TryFromTimeError(()))
     }
 }
@@ -202,7 +202,7 @@ impl TryFrom<Duration> for time::Duration {
 impl Add for Duration {
     type Output = Self;
 
-    fn add(self, rhs: Self) -> Self {
+    fn add(self, rhs: Self) -> Self::Output {
         Self(pair_and_then(self.0, rhs.0, time::Duration::checked_add))
     }
 }
@@ -210,7 +210,7 @@ impl Add for Duration {
 impl Add<time::Duration> for Duration {
     type Output = Self;
 
-    fn add(self, rhs: time::Duration) -> Self {
+    fn add(self, rhs: time::Duration) -> Self::Output {
         Self(self.0.and_then(|lhs| lhs.checked_add(rhs)))
     }
 }
@@ -230,7 +230,7 @@ impl AddAssign<time::Duration> for Duration {
 impl Sub for Duration {
     type Output = Self;
 
-    fn sub(self, rhs: Self) -> Self {
+    fn sub(self, rhs: Self) -> Self::Output {
         Self(pair_and_then(self.0, rhs.0, time::Duration::checked_sub))
     }
 }
@@ -238,7 +238,7 @@ impl Sub for Duration {
 impl Sub<time::Duration> for Duration {
     type Output = Self;
 
-    fn sub(self, rhs: time::Duration) -> Self {
+    fn sub(self, rhs: time::Duration) -> Self::Output {
         Self(self.0.and_then(|lhs| lhs.checked_sub(rhs)))
     }
 }
@@ -258,7 +258,7 @@ impl SubAssign<time::Duration> for Duration {
 impl Mul<u32> for Duration {
     type Output = Self;
 
-    fn mul(self, rhs: u32) -> Self {
+    fn mul(self, rhs: u32) -> Self::Output {
         Self(self.0.and_then(|lhs| lhs.checked_mul(rhs)))
     }
 }
@@ -266,7 +266,7 @@ impl Mul<u32> for Duration {
 impl Mul<Duration> for u32 {
     type Output = Duration;
 
-    fn mul(self, rhs: Duration) -> Duration {
+    fn mul(self, rhs: Duration) -> Self::Output {
         rhs * self
     }
 }
@@ -280,7 +280,7 @@ impl MulAssign<u32> for Duration {
 impl Div<u32> for Duration {
     type Output = Self;
 
-    fn div(self, rhs: u32) -> Self {
+    fn div(self, rhs: u32) -> Self::Output {
         Self(self.0.and_then(|lhs| lhs.checked_div(rhs)))
     }
 }

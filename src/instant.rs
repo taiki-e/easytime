@@ -114,7 +114,7 @@ impl From<time::Instant> for Instant {
 impl TryFrom<Instant> for time::Instant {
     type Error = TryFromTimeError;
 
-    fn try_from(instant: Instant) -> Result<Self, TryFromTimeError> {
+    fn try_from(instant: Instant) -> Result<Self, Self::Error> {
         instant.into_inner().ok_or_else(|| TryFromTimeError(()))
     }
 }
@@ -122,7 +122,7 @@ impl TryFrom<Instant> for time::Instant {
 impl Add<Duration> for Instant {
     type Output = Self;
 
-    fn add(self, other: Duration) -> Self {
+    fn add(self, other: Duration) -> Self::Output {
         Self(pair_and_then(self.0.as_ref(), other.0, time::Instant::checked_add))
     }
 }
@@ -130,7 +130,7 @@ impl Add<Duration> for Instant {
 impl Add<time::Duration> for Instant {
     type Output = Self;
 
-    fn add(self, other: time::Duration) -> Self {
+    fn add(self, other: time::Duration) -> Self::Output {
         Self(self.0.and_then(|this| this.checked_add(other)))
     }
 }
@@ -150,7 +150,7 @@ impl AddAssign<time::Duration> for Instant {
 impl Sub<Duration> for Instant {
     type Output = Self;
 
-    fn sub(self, other: Duration) -> Self {
+    fn sub(self, other: Duration) -> Self::Output {
         Self(pair_and_then(self.0.as_ref(), other.0, time::Instant::checked_sub))
     }
 }
@@ -158,7 +158,7 @@ impl Sub<Duration> for Instant {
 impl Sub<time::Duration> for Instant {
     type Output = Self;
 
-    fn sub(self, other: time::Duration) -> Self {
+    fn sub(self, other: time::Duration) -> Self::Output {
         Self(self.0.and_then(|this| this.checked_sub(other)))
     }
 }
@@ -178,7 +178,7 @@ impl SubAssign<time::Duration> for Instant {
 impl Sub for Instant {
     type Output = Duration;
 
-    fn sub(self, other: Self) -> Duration {
+    fn sub(self, other: Self) -> Self::Output {
         self.duration_since(other)
     }
 }
@@ -186,7 +186,7 @@ impl Sub for Instant {
 impl Sub<time::Instant> for Instant {
     type Output = Duration;
 
-    fn sub(self, other: time::Instant) -> Duration {
+    fn sub(self, other: time::Instant) -> Self::Output {
         self.duration_since(Self::from(other))
     }
 }
