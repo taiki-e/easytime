@@ -1,3 +1,4 @@
+use const_fn::const_fn;
 use std::{
     convert::TryFrom,
     ops::{Add, AddAssign, Sub, SubAssign},
@@ -54,26 +55,29 @@ impl Instant {
     pub fn elapsed(&self) -> Duration {
         Self::now() - *self
     }
-}
 
-// =============================================================================
-// Option based method implementations
+    // =============================================================================
+    // Option based method implementations
 
-impl Instant {
     /// Returns `true` if [`into_inner`] returns `Some`.
     ///
-    /// [`into_inner`]: #method.into_inner
+    /// [`into_inner`]: Self::into_inner
     #[inline]
-    pub fn is_some(&self) -> bool {
-        self.0.is_some()
+    #[const_fn("1.46")]
+    pub const fn is_some(&self) -> bool {
+        match &self.0 {
+            Some(_) => true,
+            None => false,
+        }
     }
 
     /// Returns `true` if [`into_inner`] returns `None`.
     ///
-    /// [`into_inner`]: #method.into_inner
+    /// [`into_inner`]: Self::into_inner
     #[inline]
-    pub fn is_none(&self) -> bool {
-        self.0.is_none()
+    #[const_fn("1.46")]
+    pub const fn is_none(&self) -> bool {
+        !self.is_some()
     }
 
     /// Returns the contained [`std::time::Instant`] or `None`.
@@ -86,8 +90,12 @@ impl Instant {
     ///
     /// `instant.unwrap_or(default)` is equivalent to `instant.into_inner().unwrap_or(default)`.
     #[inline]
-    pub fn unwrap_or(self, default: time::Instant) -> time::Instant {
-        self.0.unwrap_or(default)
+    #[const_fn("1.46")]
+    pub const fn unwrap_or(self, default: time::Instant) -> time::Instant {
+        match self.0 {
+            Some(d) => d,
+            None => default,
+        }
     }
 
     /// Returns the contained [`std::time::Instant`] or computes it from a closure.
