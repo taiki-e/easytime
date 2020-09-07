@@ -1,3 +1,4 @@
+use const_fn::const_fn;
 use core::{
     convert::TryFrom,
     fmt,
@@ -66,10 +67,14 @@ impl Duration {
     /// The returned value does not include the fractional (nanosecond) part of the
     /// duration, which can be obtained using [`subsec_nanos`].
     ///
-    /// [`subsec_nanos`]: #method.subsec_nanos
+    /// [`subsec_nanos`]: Self::subsec_nanos
     #[inline]
-    pub fn as_secs(&self) -> Option<u64> {
-        self.0.as_ref().map(time::Duration::as_secs)
+    #[const_fn("1.46")]
+    pub const fn as_secs(&self) -> Option<u64> {
+        match &self.0 {
+            Some(d) => Some(d.as_secs()),
+            None => None,
+        }
     }
 
     /// Returns the fractional part of this `Duration`, in whole milliseconds.
@@ -78,8 +83,12 @@ impl Duration {
     /// represented by milliseconds. The returned number always represents a
     /// fractional portion of a second (i.e., it is less than one thousand).
     #[inline]
-    pub fn subsec_millis(&self) -> Option<u32> {
-        self.0.as_ref().map(time::Duration::subsec_millis)
+    #[const_fn("1.46")]
+    pub const fn subsec_millis(&self) -> Option<u32> {
+        match &self.0 {
+            Some(d) => Some(d.subsec_millis()),
+            None => None,
+        }
     }
 
     /// Returns the fractional part of this `Duration`, in whole microseconds.
@@ -88,8 +97,12 @@ impl Duration {
     /// represented by microseconds. The returned number always represents a
     /// fractional portion of a second (i.e., it is less than one million).
     #[inline]
-    pub fn subsec_micros(&self) -> Option<u32> {
-        self.0.as_ref().map(time::Duration::subsec_micros)
+    #[const_fn("1.46")]
+    pub const fn subsec_micros(&self) -> Option<u32> {
+        match &self.0 {
+            Some(d) => Some(d.subsec_micros()),
+            None => None,
+        }
     }
 
     /// Returns the fractional part of this `Duration`, in nanoseconds.
@@ -98,50 +111,69 @@ impl Duration {
     /// represented by nanoseconds. The returned number always represents a
     /// fractional portion of a second (i.e., it is less than one billion).
     #[inline]
-    pub fn subsec_nanos(&self) -> Option<u32> {
-        self.0.as_ref().map(time::Duration::subsec_nanos)
+    #[const_fn("1.46")]
+    pub const fn subsec_nanos(&self) -> Option<u32> {
+        match &self.0 {
+            Some(d) => Some(d.subsec_nanos()),
+            None => None,
+        }
     }
 
     /// Returns the total number of whole milliseconds contained by this `Duration`.
     #[inline]
-    pub fn as_millis(&self) -> Option<u128> {
-        self.0.as_ref().map(time::Duration::as_millis)
+    #[const_fn("1.46")]
+    pub const fn as_millis(&self) -> Option<u128> {
+        match &self.0 {
+            Some(d) => Some(d.as_millis()),
+            None => None,
+        }
     }
 
     /// Returns the total number of whole microseconds contained by this `Duration`.
     #[inline]
-    pub fn as_micros(&self) -> Option<u128> {
-        self.0.as_ref().map(time::Duration::as_micros)
+    #[const_fn("1.46")]
+    pub const fn as_micros(&self) -> Option<u128> {
+        match &self.0 {
+            Some(d) => Some(d.as_micros()),
+            None => None,
+        }
     }
 
     /// Returns the total number of nanoseconds contained by this `Duration`.
     #[inline]
-    pub fn as_nanos(&self) -> Option<u128> {
-        self.0.as_ref().map(time::Duration::as_nanos)
+    #[const_fn("1.46")]
+    pub const fn as_nanos(&self) -> Option<u128> {
+        match &self.0 {
+            Some(d) => Some(d.as_nanos()),
+            None => None,
+        }
     }
 
     // TODO: duration_float https://github.com/rust-lang/rust/issues/54361
     // TODO: div_duration https://github.com/rust-lang/rust/issues/63139
-}
 
-// =============================================================================
-// Option based method implementations
+    // =============================================================================
+    // Option based method implementations
 
-impl Duration {
     /// Returns `true` if [`into_inner`] returns `Some`.
     ///
-    /// [`into_inner`]: #method.into_inner
+    /// [`into_inner`]: Self::into_inner
     #[inline]
-    pub fn is_some(&self) -> bool {
-        self.0.is_some()
+    #[const_fn("1.46")]
+    pub const fn is_some(&self) -> bool {
+        match &self.0 {
+            Some(_) => true,
+            None => false,
+        }
     }
 
     /// Returns `true` if [`into_inner`] returns `None`.
     ///
-    /// [`into_inner`]: #method.into_inner
+    /// [`into_inner`]: Self::into_inner
     #[inline]
-    pub fn is_none(&self) -> bool {
-        self.0.is_none()
+    #[const_fn("1.46")]
+    pub const fn is_none(&self) -> bool {
+        !self.is_some()
     }
 
     /// Returns the contained [`std::time::Duration`] or `None`.
@@ -154,8 +186,12 @@ impl Duration {
     ///
     /// `dur.unwrap_or(default)` is equivalent to `dur.into_inner().unwrap_or(default)`.
     #[inline]
-    pub fn unwrap_or(self, default: time::Duration) -> time::Duration {
-        self.0.unwrap_or(default)
+    #[const_fn("1.46")]
+    pub const fn unwrap_or(self, default: time::Duration) -> time::Duration {
+        match self.0 {
+            Some(d) => d,
+            None => default,
+        }
     }
 
     /// Returns the contained [`std::time::Duration`] or computes it from a closure.

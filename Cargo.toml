@@ -24,3 +24,6 @@ default = ["std"]
 std = []
 # TODO
 # system_time = ["std"]
+
+[dependencies]
+const_fn = "0.4"
