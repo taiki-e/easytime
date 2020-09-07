@@ -2,11 +2,14 @@ use const_fn::const_fn;
 use core::{
     convert::TryFrom,
     fmt,
+    iter::Sum,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
     time,
 };
 
 use super::{pair_and_then, TryFromTimeError};
+
+const NANOS_PER_SEC: u32 = 1_000_000_000;
 
 /// A `Duration` type to represent a span of time, typically used for system
 /// timeouts.
@@ -330,3 +333,104 @@ impl DivAssign<u32> for Duration {
 // TODO: duration_sum
 // impl Sum for Duration
 // impl<'a> Sum<&'a Duration> for Duration
+/*
+macro_rules! sum_durations {
+    ($iter:expr) => {{
+        let mut total_secs: u64 = 0;
+        let mut total_nanos: u64 = 0;
+
+        for entry in $iter {
+            total_secs = total_secs
+                .checked_add(entry.secs)
+                .expect("overflow in iter::sum over durations");
+            total_nanos = match total_nanos.checked_add(entry.nanos as u64) {
+                Some(n) => n,
+                None => {
+                    total_secs = total_secs
+                        .checked_add(total_nanos / NANOS_PER_SEC as u64)
+                        .expect("overflow in iter::sum over durations");
+                    (total_nanos % NANOS_PER_SEC as u64) + entry.nanos as u64
+                }
+            };
+        }
+        total_secs = total_secs
+            .checked_add(total_nanos / NANOS_PER_SEC as u64)
+            .expect("overflow in iter::sum over durations");
+        total_nanos = total_nanos % NANOS_PER_SEC as u64;
+        Duration {
+            secs: total_secs,
+            nanos: total_nanos as u32,
+        }
+    }};
+}
+*/
+impl Sum for Duration {
+    fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
+        macro_rules! try_opt {
+            ($expr:expr) => {
+                match $expr {
+                    Some(e) => e,
+                    None => return Self(None),
+                }
+            };
+        }
+
+        // pub const fn as_secs(&self) -> u64 { self.secs }
+        // pub const fn subsec_nanos(&self) -> u32 { self.nanos }
+
+        // sum_durations!(iter)
+        let mut total_secs: u64 = 0;
+        let mut total_nanos: u64 = 0;
+
+        for entry in iter {
+            total_secs = try_opt!(total_secs.checked_add(try_opt!(entry.as_secs())));
+            total_nanos = match total_nanos.checked_add(try_opt!(entry.subsec_nanos()) as u64) {
+                Some(n) => n,
+                None => {
+                    total_secs =
+                        try_opt!(total_secs.checked_add(total_nanos / NANOS_PER_SEC as u64));
+                    (total_nanos % NANOS_PER_SEC as u64) + try_opt!(entry.subsec_nanos()) as u64
+                }
+            };
+        }
+        total_secs = try_opt!(total_secs.checked_add(total_nanos / NANOS_PER_SEC as u64));
+        total_nanos %= NANOS_PER_SEC as u64;
+        Self::new(total_secs, total_nanos as _)
+    }
+}
+
+impl<'a> Sum<&'a Duration> for Duration {
+    fn sum<I: Iterator<Item = &'a Duration>>(iter: I) -> Self {
+        // sum_durations!(iter)
+        macro_rules! try_opt {
+            ($expr:expr) => {
+                match $expr {
+                    Some(e) => e,
+                    None => return Self(None),
+                }
+            };
+        }
+
+        // pub const fn as_secs(&self) -> u64 { self.secs }
+        // pub const fn subsec_nanos(&self) -> u32 { self.nanos }
+
+        // sum_durations!(iter)
+        let mut total_secs: u64 = 0;
+        let mut total_nanos: u64 = 0;
+
+        for entry in iter {
+            total_secs = try_opt!(total_secs.checked_add(try_opt!(entry.as_secs())));
+            total_nanos = match total_nanos.checked_add(try_opt!(entry.subsec_nanos()) as u64) {
+                Some(n) => n,
+                None => {
+                    total_secs =
+                        try_opt!(total_secs.checked_add(total_nanos / NANOS_PER_SEC as u64));
+                    (total_nanos % NANOS_PER_SEC as u64) + try_opt!(entry.subsec_nanos()) as u64
+                }
+            };
+        }
+        total_secs = try_opt!(total_secs.checked_add(total_nanos / NANOS_PER_SEC as u64));
+        total_nanos %= NANOS_PER_SEC as u64;
+        Self::new(total_secs, total_nanos as _)
+    }
+}

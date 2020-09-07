@@ -144,7 +144,6 @@ fn checked_div() {
     assert_eq!((Duration::new(2, 0) / 0).into_inner(), None);
 }
 
-/* TODO duration_sum
 #[test]
 fn correct_sum() {
     let durations = [
@@ -158,7 +157,6 @@ fn correct_sum() {
     let sum = durations.iter().sum::<Duration>();
     assert_eq!(sum, Duration::new(1 + 2 + 5 + 4, 1_000_000_000 - 5));
 }
-*/
 
 // duration_debug_impl https://github.com/rust-lang/rust/pull/50364
 
