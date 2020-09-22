@@ -158,6 +158,7 @@ impl Duration {
     /// Returns `true` if [`into_inner`] returns `Some`.
     ///
     /// [`into_inner`]: Self::into_inner
+    #[allow(clippy::redundant_pattern_matching)] // const Option::is_some requires Rust 1.48
     #[inline]
     #[const_fn("1.46")]
     pub const fn is_some(&self) -> bool {
