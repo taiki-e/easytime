@@ -124,7 +124,7 @@ impl TryFrom<Instant> for time::Instant {
     type Error = TryFromTimeError;
 
     fn try_from(instant: Instant) -> Result<Self, Self::Error> {
-        instant.into_inner().ok_or_else(|| TryFromTimeError(()))
+        instant.into_inner().ok_or(TryFromTimeError(()))
     }
 }
 

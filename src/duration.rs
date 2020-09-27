@@ -232,7 +232,7 @@ impl TryFrom<Duration> for time::Duration {
     type Error = TryFromTimeError;
 
     fn try_from(dur: Duration) -> Result<Self, Self::Error> {
-        dur.into_inner().ok_or_else(|| TryFromTimeError(()))
+        dur.into_inner().ok_or(TryFromTimeError(()))
     }
 }
 
