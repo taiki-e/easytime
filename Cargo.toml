@@ -19,12 +19,11 @@ all-features = true
 targets = ["x86_64-unknown-linux-gnu"]
 
 [workspace]
+members = ["tests/doc"]
 
 [features]
 default = ["std"]
 std = []
-# TODO
-# system_time = ["std"]
 
 [build-dependencies]
 autocfg = "1"
