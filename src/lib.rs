@@ -49,7 +49,6 @@
 //!   * If disabled this feature, `easytime` can be used in `no_std` environments.
 
 #![cfg_attr(not(feature = "std"), no_std)]
-#![doc(html_root_url = "https://docs.rs/easytime/0.1.2")]
 #![doc(test(
     no_crate_inject,
     attr(deny(warnings, rust_2018_idioms, single_use_lifetimes), allow(dead_code))
