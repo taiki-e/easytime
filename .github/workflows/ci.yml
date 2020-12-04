@@ -25,9 +25,9 @@ jobs:
         rust:
           # This is the minimum supported Rust version of this crate.
           # When updating this, the reminder to update the minimum supported Rust version in README.md.
-          - 1.34.0
-          - 1.39.0
-          - 1.46.0
+          - 1.34
+          - 1.39
+          - 1.46
           - stable
           - beta
           - nightly
@@ -37,13 +37,13 @@ jobs:
       - uses: taiki-e/github-actions/install-rust@main
         with:
           toolchain: ${{ matrix.rust }}
-      - if: matrix.rust != '1.34.0'
+      - if: matrix.rust != '1.34'
         run: cargo install cargo-hack
-      - if: matrix.rust == '1.34.0'
+      - if: matrix.rust == '1.34'
         run: cargo build
-      - if: matrix.rust != '1.34.0'
+      - if: matrix.rust != '1.34'
         run: cargo test --all
-      - if: matrix.rust != '1.34.0'
+      - if: matrix.rust != '1.34'
         run: cargo hack check --all --feature-powerset --no-dev-deps
       - if: startsWith(matrix.rust, 'nightly')
         run: bash scripts/check-minimal-versions.sh
