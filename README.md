@@ -6,7 +6,8 @@
 [![rustc](https://img.shields.io/badge/rustc-1.34+-blue.svg?style=flat-square)](https://www.rust-lang.org)
 [![build status](https://img.shields.io/github/workflow/status/taiki-e/easytime/CI/master?style=flat-square)](https://github.com/taiki-e/easytime/actions?query=workflow%3ACI+branch%3Amaster)
 
-Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
+Providing wrapper types for safely performing panic-free checked arithmetic
+on instants and durations.
 
 This crate provides the following two data structures.
 
@@ -69,6 +70,9 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 
 ## License
 
-Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or [MIT license](LICENSE-MIT) at your option.
+Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or
+[MIT license](LICENSE-MIT) at your option.
 
-Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall
+be dual licensed as above, without any additional terms or conditions.

@@ -1,4 +1,5 @@
-//! Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
+//! Providing wrapper types for safely performing panic-free checked arithmetic
+//! on instants and durations.
 //!
 //! This crate provides the following two data structures.
 //!
