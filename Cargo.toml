@@ -9,6 +9,7 @@ documentation = "https://docs.rs/easytime"
 keywords = ["no_std", "time"]
 categories = ["no-std"]
 readme = "README.md"
+exclude = ["/.github", "/scripts"]
 description = """
 Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
 """
