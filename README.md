@@ -11,9 +11,9 @@ on instants and durations.
 
 This crate provides the following two data structures.
 
-* [`easytime::Instant`] -- A wrapper type for [`std::time::Instant`]
+- [`easytime::Instant`] -- A wrapper type for [`std::time::Instant`]
 
-* [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
+- [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
 
 [`easytime::Instant`]: https://docs.rs/easytime/0.1/easytime/struct.Instant.html
 [`easytime::Duration`]: https://docs.rs/easytime/0.1/easytime/struct.Duration.html
@@ -64,9 +64,9 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 
 ## Optional features
 
-* **`std`** *(enabled by default)*
-  * Enable to use [`easytime::Instant`].
-  * If disabled this feature, `easytime` can be used in `no_std` environments.
+- **`std`** *(enabled by default)*
+  - Enable to use [`easytime::Instant`].
+  - If disabled this feature, `easytime` can be used in `no_std` environments.
 
 ## License
 
