@@ -1,7 +1,8 @@
 #![warn(rust_2018_idioms, single_use_lifetimes)]
 #![allow(clippy::zero_prefixed_literal)]
+#![allow(clippy::non_ascii_literal)]
 
-// https://github.com/rust-lang/rust/blob/master/src/libcore/tests/time.rs
+// https://github.com/rust-lang/rust/blob/1.49.0/library/core/tests/time.rs
 
 use core::time;
 use easytime::Duration;
@@ -293,4 +294,96 @@ fn debug_formatting_precision_high() {
 #[test]
 fn debug_formatting_none() {
     assert_eq!(format!("{:?}", Duration::new(0, 0) - Duration::new(0, 1)), "None");
+}
+
+const fn duration_second() -> Duration {
+    Duration::from_secs(1)
+}
+
+#[rustversion::since(1.46)]
+#[test]
+fn duration_const() {
+    // test that the methods of `Duration` are usable in a const context
+
+    const DURATION: Duration = Duration::from_nanos(123_456_789);
+
+    const SUB_SEC_MILLIS: Option<u32> = DURATION.subsec_millis();
+    assert_eq!(SUB_SEC_MILLIS, Some(123));
+
+    const SUB_SEC_MICROS: Option<u32> = DURATION.subsec_micros();
+    assert_eq!(SUB_SEC_MICROS, Some(123_456));
+
+    const SUB_SEC_NANOS: Option<u32> = DURATION.subsec_nanos();
+    assert_eq!(SUB_SEC_NANOS, Some(123_456_789));
+
+    // const IS_ZERO: bool = Duration::ZERO.is_zero();
+    // assert!(IS_ZERO);
+
+    const SECONDS: Option<u64> = duration_second().as_secs();
+    assert_eq!(SECONDS, Some(1));
+
+    const FROM_SECONDS: Duration = Duration::from_secs(1);
+    assert_eq!(FROM_SECONDS, duration_second());
+
+    // const SECONDS_F32: Option<f32> = duration_second().as_secs_f32();
+    // assert_eq!(SECONDS_F32, Some(1.0));
+
+    // const FROM_SECONDS_F32: Duration = Duration::from_secs_f32(1.0);
+    // assert_eq!(FROM_SECONDS_F32, duration_second);
+
+    // const SECONDS_F64: f64 = duration_second().as_secs_f64();
+    // assert_eq!(SECONDS_F64, 1.0);
+
+    // const FROM_SECONDS_F64: Duration = Duration::from_secs_f64(1.0);
+    // assert_eq!(FROM_SECONDS_F64, duration_second());
+
+    const MILLIS: Option<u128> = duration_second().as_millis();
+    assert_eq!(MILLIS, Some(1_000));
+
+    const FROM_MILLIS: Duration = Duration::from_millis(1_000);
+    assert_eq!(FROM_MILLIS, duration_second());
+
+    const MICROS: Option<u128> = duration_second().as_micros();
+    assert_eq!(MICROS, Some(1_000_000));
+
+    const FROM_MICROS: Duration = Duration::from_micros(1_000_000);
+    assert_eq!(FROM_MICROS, duration_second());
+
+    const NANOS: Option<u128> = duration_second().as_nanos();
+    assert_eq!(NANOS, Some(1_000_000_000));
+
+    const FROM_NANOS: Duration = Duration::from_nanos(1_000_000_000);
+    assert_eq!(FROM_NANOS, duration_second());
+
+    // const MAX: Duration = Duration::new(u64::MAX, 999_999_999);
+
+    // const ADD: Duration = MAX + duration_second();
+    // assert_eq!(ADD.into_inner(), None);
+
+    // const SUB: Duration = Duration::ZERO - duration_second();
+    // assert_eq!(SUB.into_inner(), None);
+
+    // const MUL: Duration = duration_second() * 1;
+    // assert_eq!(MUL, duration_second());
+
+    // const MUL_F32: Duration = duration_second().mul_f32(1.0);
+    // assert_eq!(MUL_F32, duration_second());
+
+    // const MUL_F64: Duration = duration_second().mul_f64(1.0);
+    // assert_eq!(MUL_F64, duration_second());
+
+    // const DIV: Duration = duration_second() / 1;
+    // assert_eq!(DIV, duration_second());
+
+    // const DIV_F32: Duration = duration_second().div_f32(1.0);
+    // assert_eq!(DIV_F32, duration_second());
+
+    // const DIV_F64: Duration = duration_second().div_f64(1.0);
+    // assert_eq!(DIV_F64, duration_second());
+
+    // const DIV_DURATION_F32: f32 = duration_second().div_duration_f32(duration_second());
+    // assert_eq!(DIV_DURATION_F32, 1.0);
+
+    // const DIV_DURATION_F64: f64 = duration_second().div_duration_f64(duration_second());
+    // assert_eq!(DIV_DURATION_F64, 1.0);
 }

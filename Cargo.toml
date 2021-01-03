@@ -30,3 +30,6 @@ autocfg = "1"
 
 [dependencies]
 const_fn = "0.4"
+
+[dev-dependencies]
+rustversion = "1"

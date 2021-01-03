@@ -26,6 +26,11 @@ use super::{pair_and_then, TryFromTimeError};
 pub struct Duration(pub(crate) Option<time::Duration>);
 
 impl Duration {
+    // TODO: duration_constants https://github.com/rust-lang/rust/issues/57391
+    // TODO: duration_zero https://github.com/rust-lang/rust/issues/73544
+    // TODO: duration_float https://github.com/rust-lang/rust/issues/54361
+    // TODO: div_duration https://github.com/rust-lang/rust/issues/63139
+
     /// Creates a new `Duration` from the specified number of whole seconds and
     /// additional nanoseconds.
     ///
@@ -148,9 +153,6 @@ impl Duration {
             None => None,
         }
     }
-
-    // TODO: duration_float https://github.com/rust-lang/rust/issues/54361
-    // TODO: div_duration https://github.com/rust-lang/rust/issues/63139
 
     // =============================================================================
     // Option based method implementations

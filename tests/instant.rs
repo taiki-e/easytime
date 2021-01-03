@@ -2,7 +2,7 @@
 #![warn(rust_2018_idioms, single_use_lifetimes)]
 #![allow(clippy::eq_op)]
 
-// https://github.com/rust-lang/rust/blob/master/src/libstd/time.rs
+// https://github.com/rust-lang/rust/blob/1.49.0/library/std/src/time/tests.rs
 
 use easytime::{Duration, Instant};
 
@@ -11,7 +11,7 @@ macro_rules! assert_almost_eq {
         let (a, b) = ($a, $b);
         if a != b {
             let (a, b) = if a > b { (a, b) } else { (b, a) };
-            assert!(a - Duration::new(0, 1000) <= b, "{:?} is not almost equal to {:?}", a, b);
+            assert!(a - Duration::from_micros(1) <= b, "{:?} is not almost equal to {:?}", a, b);
         }
     }};
 }

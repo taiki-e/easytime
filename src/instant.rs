@@ -27,6 +27,33 @@ use super::{pair_and_then, Duration, TryFromTimeError};
 ///
 /// The size of an `Instant` struct may vary depending on the target operating
 /// system.
+///
+/// # OS-specific behaviors
+///
+/// An `Instant` is a wrapper around system-specific types and it may behave
+/// differently depending on the underlying operating system. For example,
+/// the following snippet is fine on Linux but fails and returns `None` on macOS.
+/// ():
+///
+/// ```
+/// use easytime::{Duration, Instant};
+///
+/// let now = Instant::now();
+/// let max_nanoseconds = u64::MAX / 1_000_000_000;
+/// let duration = Duration::new(max_nanoseconds, 0);
+/// // Unlike `std::time::Instant`, it won't panic!
+/// let result = now + duration;
+///
+/// #[cfg(target_os = "linux")]
+/// assert!(result.is_some());
+/// #[cfg(target_os = "macos")]
+/// assert!(result.is_none());
+/// ```
+///
+/// # Underlying System calls
+///
+/// See the [standard library documentation](std::time::Instant#underlying-system-calls)
+/// for the system calls used to get the current time using `now()`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Instant(Option<time::Instant>);
 
