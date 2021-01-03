@@ -6,9 +6,19 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
-- Implement `TryFrom` for `easytime::Instant` and `easytime::Duration`. With this change, the minimum required version of `easytime` with `--no-default-features` goes up to Rust 1.34 (the minimum required version of the default feature has not changed).
+- Make `Duration::{as_secs, subsec_millis, subsec_micros, subsec_nanos,
+  as_millis, as_micros, as_nanos, is_some, is_none, unwrap_or}` const function
+  on rustc 1.46+.
 
-- Changed the `Debug` implementation of `easytime::Duration` to display the same as the result of `std::time::Duration::checked_*`.
+- Make `Instant::{is_some, is_none, unwrap_or}` const function on rustc 1.46+.
+
+- Implement `TryFrom` for `easytime::Instant` and `easytime::Duration`. With
+  this change, the minimum required version of `easytime` with `--no-default-features` goes up to Rust 1.34 (the minimum required version of the default feature has not changed).
+
+- Changed the `Debug` implementation of `easytime::Duration` to display the
+  same as the result of `std::time::Duration::checked_*`.
+
+- Documentation improvements.
 
 ## [0.1.2] - 2019-03-01
 
@@ -16,7 +26,8 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [0.1.1] - 2019-02-23
 
-- Add the `unwrap_or_else` method to `easytime::Instant` and `easytime::Duration`.
+- Add the `unwrap_or_else` method to `easytime::Instant` and
+  `easytime::Duration`.
 
 ## [0.1.0] - 2019-02-19
 
