@@ -49,7 +49,7 @@
 //!   * Enable to use [`easytime::Instant`].
 //!   * If disabled this feature, `easytime` can be used in `no_std` environments.
 
-#![cfg_attr(not(feature = "std"), no_std)]
+#![no_std]
 #![doc(test(
     no_crate_inject,
     attr(
@@ -61,6 +61,9 @@
 #![warn(future_incompatible, rust_2018_idioms, single_use_lifetimes, unreachable_pub)]
 #![warn(missing_debug_implementations, missing_docs)]
 #![warn(clippy::all, clippy::default_trait_access)]
+
+#[cfg(feature = "std")]
+extern crate std;
 
 mod duration;
 pub use crate::duration::Duration;
