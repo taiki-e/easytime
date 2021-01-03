@@ -15,8 +15,8 @@ This crate provides the following two data structures.
 
 - [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
 
-[`easytime::Instant`]: https://docs.rs/easytime/0.1/easytime/struct.Instant.html
-[`easytime::Duration`]: https://docs.rs/easytime/0.1/easytime/struct.Duration.html
+[`easytime::Instant`]: https://docs.rs/easytime/0.2/easytime/struct.Instant.html
+[`easytime::Duration`]: https://docs.rs/easytime/0.2/easytime/struct.Duration.html
 [`std::time`]: https://doc.rust-lang.org/std/time/index.html
 [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
 [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
@@ -27,7 +27,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-easytime = "0.1"
+easytime = "0.2"
 ```
 
 *Compiler support: requires rustc 1.34+*
