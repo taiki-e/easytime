@@ -70,23 +70,8 @@ mod instant;
 #[cfg(feature = "std")]
 pub use crate::instant::Instant;
 
-use core::fmt;
-
-// =============================================================================
-// TryFromTimeError
-
-/// The error type returned when a conversion from `easytime` types to `std::time` types fails.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct TryFromTimeError(());
-
-impl fmt::Display for TryFromTimeError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "invalid arithmetic attempted on instants or durations")
-    }
-}
-
-#[cfg(feature = "std")]
-impl std::error::Error for TryFromTimeError {}
+mod error;
+pub use crate::error::TryFromTimeError;
 
 // =============================================================================
 // Utilities
