@@ -1,5 +1,6 @@
 use const_fn::const_fn;
 use std::{
+    cmp::Ordering,
     convert::TryFrom,
     ops::{Add, AddAssign, Sub, SubAssign},
     time,
@@ -32,8 +33,7 @@ use super::{pair_and_then, Duration, TryFromTimeError};
 ///
 /// An `Instant` is a wrapper around system-specific types and it may behave
 /// differently depending on the underlying operating system. For example,
-/// the following snippet is fine on Linux but fails and returns `None` on macOS.
-/// ():
+/// the following snippet is fine on Linux but fails and returns `None` on macOS:
 ///
 /// ```
 /// use easytime::{Duration, Instant};
@@ -59,17 +59,50 @@ pub struct Instant(Option<time::Instant>);
 
 impl Instant {
     /// Returns an instant corresponding to "now".
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Instant;
+    ///
+    /// let now = Instant::now();
+    /// ```
     pub fn now() -> Self {
         Self(Some(time::Instant::now()))
     }
 
     /// Returns the amount of time elapsed from another instant to this one.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use easytime::Instant;
+    /// use std::{thread::sleep, time};
+    ///
+    /// let now = Instant::now();
+    /// sleep(time::Duration::new(1, 0));
+    /// let new_now = Instant::now();
+    /// println!("{:?}", new_now.duration_since(now));
+    /// ```
     #[cfg(stable_1_39)]
     pub fn duration_since(&self, earlier: Self) -> Duration {
         Duration(pair_and_then(self.0.as_ref(), earlier.0, time::Instant::checked_duration_since))
     }
 
     /// Returns the amount of time elapsed from another instant to this one.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use easytime::Instant;
+    /// use std::{thread::sleep, time};
+    ///
+    /// let now = Instant::now();
+    /// sleep(time::Duration::new(1, 0));
+    /// let new_now = Instant::now();
+    /// println!("{:?}", new_now.duration_since(now));
+    /// println!("{:?}", now.duration_since(new_now)); // None
+    /// ```
     #[cfg(not(stable_1_39))]
     pub fn duration_since(&self, earlier: Self) -> Duration {
         Duration(pair_and_then(self.0.as_ref(), earlier.0, |this, earlier| {
@@ -79,6 +112,18 @@ impl Instant {
     }
 
     /// Returns the amount of time elapsed since this instant was created.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use easytime::Instant;
+    /// use std::{thread::sleep, time};
+    ///
+    /// let instant = Instant::now();
+    /// let three_secs = time::Duration::from_secs(3);
+    /// sleep(three_secs);
+    /// assert!(instant.elapsed() >= three_secs);
+    /// ```
     pub fn elapsed(&self) -> Duration {
         Self::now() - *self
     }
@@ -141,9 +186,39 @@ impl Instant {
 // =============================================================================
 // Trait implementations
 
+impl PartialEq<time::Instant> for Instant {
+    fn eq(&self, other: &time::Instant) -> bool {
+        self.0.map_or(false, |this| this == *other)
+    }
+}
+
+impl PartialEq<Instant> for time::Instant {
+    fn eq(&self, other: &Instant) -> bool {
+        other.eq(self)
+    }
+}
+
+impl PartialOrd<time::Instant> for Instant {
+    fn partial_cmp(&self, other: &time::Instant) -> Option<Ordering> {
+        self.0.as_ref().and_then(|this| this.partial_cmp(other))
+    }
+}
+
+impl PartialOrd<Instant> for time::Instant {
+    fn partial_cmp(&self, other: &Instant) -> Option<Ordering> {
+        other.0.as_ref().and_then(|other| self.partial_cmp(other))
+    }
+}
+
 impl From<time::Instant> for Instant {
     fn from(instant: time::Instant) -> Self {
         Self(Some(instant))
+    }
+}
+
+impl From<Option<time::Instant>> for Instant {
+    fn from(dur: Option<time::Instant>) -> Self {
+        Self(dur)
     }
 }
 

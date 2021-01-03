@@ -2,6 +2,37 @@
 #![allow(clippy::zero_prefixed_literal)]
 #![allow(clippy::non_ascii_literal)]
 
+use core::time;
+use easytime::Duration;
+
+#[test]
+fn cmp() {
+    assert!(Duration::from_secs(1) == Duration::from_secs(1));
+    assert!(Duration::from_secs(1) != Duration::from_secs(0));
+    assert!(Duration::from_secs(1) == time::Duration::from_secs(1));
+    assert!(Duration::from_secs(1) != time::Duration::from_secs(0));
+    assert!(time::Duration::from_secs(1) == Duration::from_secs(1));
+    assert!(time::Duration::from_secs(1) != Duration::from_secs(0));
+    assert!(Duration::from(None) != Duration::from_secs(1));
+    assert!(Duration::from_secs(1) != Duration::from(None));
+    assert!(Duration::from(None) != time::Duration::from_secs(1));
+    assert!(time::Duration::from_secs(1) != Duration::from(None));
+    assert!(Duration::from(None) == Duration::from(None)); // TODO: Is this not good?
+
+    assert!(Duration::from_secs(1) > Duration::from_secs(0));
+    assert!(Duration::from_secs(0) < Duration::from_secs(1));
+    assert!(Duration::from_secs(1) >= Duration::from_secs(0));
+    assert!(Duration::from_secs(0) <= Duration::from_secs(1));
+    assert!(Duration::from_secs(1) > time::Duration::from_secs(0));
+    assert!(Duration::from_secs(0) < time::Duration::from_secs(1));
+    assert!(Duration::from_secs(1) >= time::Duration::from_secs(0));
+    assert!(Duration::from_secs(0) <= time::Duration::from_secs(1));
+    assert!(time::Duration::from_secs(1) > Duration::from_secs(0));
+    assert!(time::Duration::from_secs(0) < Duration::from_secs(1));
+    assert!(time::Duration::from_secs(1) >= Duration::from_secs(0));
+    assert!(time::Duration::from_secs(0) <= Duration::from_secs(1));
+}
+
 // https://github.com/rust-lang/rust/blob/1.49.0/library/core/tests/time.rs
 pub mod core_tests {
     use core::time;
