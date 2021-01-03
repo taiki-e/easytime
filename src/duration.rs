@@ -21,8 +21,20 @@ const NANOS_PER_SEC: u32 = 1_000_000_000;
 /// `Duration`s implement many common traits, including [`Add`], [`Sub`], and other
 /// [`ops`] traits.
 ///
-/// [`Add`]: std::ops::Add
-/// [`Sub`]: std::ops::Sub
+/// # Examples
+///
+/// ```
+/// use easytime::Duration;
+///
+/// let five_seconds = Duration::new(5, 0);
+/// let five_seconds_and_five_nanos = five_seconds + Duration::new(0, 5);
+///
+/// assert_eq!(five_seconds_and_five_nanos.as_secs(), Some(5));
+/// assert_eq!(five_seconds_and_five_nanos.subsec_nanos(), Some(5));
+///
+/// let ten_millis = Duration::from_millis(10);
+/// ```
+///
 /// [`ops`]: std::ops
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Duration(pub(crate) Option<time::Duration>);
@@ -37,6 +49,14 @@ impl Duration {
     ///
     /// If the number of nanoseconds is greater than 1 billion (the number of
     /// nanoseconds in a second), then it will carry over into the seconds provided.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let five_seconds = Duration::new(5, 0);
+    /// ```
     #[inline]
     pub fn new(secs: u64, nanos: u32) -> Self {
         let secs = time::Duration::from_secs(secs);
@@ -45,24 +65,68 @@ impl Duration {
     }
 
     /// Creates a new `Duration` from the specified number of whole seconds.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_secs(5);
+    ///
+    /// assert_eq!(Some(5), duration.as_secs());
+    /// assert_eq!(Some(0), duration.subsec_nanos());
+    /// ```
     #[inline]
     pub const fn from_secs(secs: u64) -> Self {
         Self(Some(time::Duration::from_secs(secs)))
     }
 
     /// Creates a new `Duration` from the specified number of milliseconds.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_millis(2_569);
+    ///
+    /// assert_eq!(Some(2), duration.as_secs());
+    /// assert_eq!(Some(569_000_000), duration.subsec_nanos());
+    /// ```
     #[inline]
     pub const fn from_millis(millis: u64) -> Self {
         Self(Some(time::Duration::from_millis(millis)))
     }
 
     /// Creates a new `Duration` from the specified number of microseconds.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_micros(1_000_002);
+    ///
+    /// assert_eq!(Some(1), duration.as_secs());
+    /// assert_eq!(Some(2000), duration.subsec_nanos());
+    /// ```
     #[inline]
     pub const fn from_micros(micros: u64) -> Self {
         Self(Some(time::Duration::from_micros(micros)))
     }
 
     /// Creates a new `Duration` from the specified number of nanoseconds.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_nanos(1_000_000_123);
+    ///
+    /// assert_eq!(Some(1), duration.as_secs());
+    /// assert_eq!(Some(123), duration.subsec_nanos());
+    /// ```
     #[inline]
     pub const fn from_nanos(nanos: u64) -> Self {
         Self(Some(time::Duration::from_nanos(nanos)))
@@ -72,6 +136,16 @@ impl Duration {
     ///
     /// The returned value does not include the fractional (nanosecond) part of the
     /// duration, which can be obtained using [`subsec_nanos`].
+    ///
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::new(5, 730_023_852);
+    /// assert_eq!(duration.as_secs(), Some(5));
+    /// ```
     ///
     /// [`subsec_nanos`]: Self::subsec_nanos
     #[inline]
@@ -88,6 +162,16 @@ impl Duration {
     /// This method does **not** return the length of the duration when
     /// represented by milliseconds. The returned number always represents a
     /// fractional portion of a second (i.e., it is less than one thousand).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_millis(5_432);
+    /// assert_eq!(duration.as_secs(), Some(5));
+    /// assert_eq!(duration.subsec_millis(), Some(432));
+    /// ```
     #[inline]
     #[const_fn("1.46")]
     pub const fn subsec_millis(&self) -> Option<u32> {
@@ -102,6 +186,16 @@ impl Duration {
     /// This method does **not** return the length of the duration when
     /// represented by microseconds. The returned number always represents a
     /// fractional portion of a second (i.e., it is less than one million).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_micros(1_234_567);
+    /// assert_eq!(duration.as_secs(), Some(1));
+    /// assert_eq!(duration.subsec_micros(), Some(234_567));
+    /// ```
     #[inline]
     #[const_fn("1.46")]
     pub const fn subsec_micros(&self) -> Option<u32> {
@@ -116,6 +210,16 @@ impl Duration {
     /// This method does **not** return the length of the duration when
     /// represented by nanoseconds. The returned number always represents a
     /// fractional portion of a second (i.e., it is less than one billion).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_millis(5_010);
+    /// assert_eq!(duration.as_secs(), Some(5));
+    /// assert_eq!(duration.subsec_nanos(), Some(10_000_000));
+    /// ```
     #[inline]
     #[const_fn("1.46")]
     pub const fn subsec_nanos(&self) -> Option<u32> {
@@ -126,6 +230,15 @@ impl Duration {
     }
 
     /// Returns the total number of whole milliseconds contained by this `Duration`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::new(5, 730_023_852);
+    /// assert_eq!(duration.as_millis(), Some(5_730));
+    /// ```
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_millis(&self) -> Option<u128> {
@@ -136,6 +249,15 @@ impl Duration {
     }
 
     /// Returns the total number of whole microseconds contained by this `Duration`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::new(5, 730_023_852);
+    /// assert_eq!(duration.as_micros(), Some(5_730_023));
+    /// ```
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_micros(&self) -> Option<u128> {
@@ -146,6 +268,15 @@ impl Duration {
     }
 
     /// Returns the total number of nanoseconds contained by this `Duration`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::new(5, 730_023_852);
+    /// assert_eq!(duration.as_nanos(), Some(5_730_023_852));
+    /// ```
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_nanos(&self) -> Option<u128> {
@@ -328,6 +459,17 @@ impl Duration {
 
     /// Returns `true` if [`into_inner`] returns `Some`.
     ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let zero = Duration::new(0, 0);
+    /// let one_sec = Duration::new(1, 0);
+    /// assert!((one_sec - zero).is_some());
+    /// assert!(!(zero - one_sec).is_some());
+    /// ```
+    ///
     /// [`into_inner`]: Self::into_inner
     #[allow(clippy::redundant_pattern_matching)] // const Option::is_some requires Rust 1.48
     #[inline]
@@ -341,6 +483,17 @@ impl Duration {
 
     /// Returns `true` if [`into_inner`] returns `None`.
     ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let zero = Duration::new(0, 0);
+    /// let one_sec = Duration::new(1, 0);
+    /// assert!(!(one_sec - zero).is_none());
+    /// assert!((zero - one_sec).is_none());
+    /// ```
+    ///
     /// [`into_inner`]: Self::into_inner
     #[inline]
     #[const_fn("1.46")]
@@ -349,6 +502,17 @@ impl Duration {
     }
 
     /// Returns the contained [`std::time::Duration`] or `None`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let zero = Duration::new(0, 0);
+    /// let one_sec = Duration::new(1, 0);
+    /// assert_eq!((one_sec - zero).into_inner(), Some(std::time::Duration::from_secs(1)));
+    /// assert_eq!((zero - one_sec).into_inner(), None);
+    /// ```
     #[inline]
     pub const fn into_inner(self) -> Option<time::Duration> {
         self.0
@@ -357,6 +521,23 @@ impl Duration {
     /// Returns the contained [`std::time::Duration`] or a default.
     ///
     /// `dur.unwrap_or(default)` is equivalent to `dur.into_inner().unwrap_or(default)`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let zero = Duration::new(0, 0);
+    /// let one_sec = Duration::new(1, 0);
+    /// assert_eq!(
+    ///     (one_sec - zero).unwrap_or(std::time::Duration::from_secs(2)),
+    ///     std::time::Duration::from_secs(1)
+    /// );
+    /// assert_eq!(
+    ///     (zero - one_sec).unwrap_or(std::time::Duration::from_secs(2)),
+    ///     std::time::Duration::from_secs(2)
+    /// );
+    /// ```
     #[inline]
     #[const_fn("1.46")]
     pub const fn unwrap_or(self, default: time::Duration) -> time::Duration {
@@ -369,6 +550,23 @@ impl Duration {
     /// Returns the contained [`std::time::Duration`] or computes it from a closure.
     ///
     /// `dur.unwrap_or_else(default)` is equivalent to `dur.into_inner().unwrap_or_else(default)`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let zero = Duration::new(0, 0);
+    /// let one_sec = Duration::new(1, 0);
+    /// assert_eq!(
+    ///     (one_sec - zero).unwrap_or_else(|| std::time::Duration::from_secs(2)),
+    ///     std::time::Duration::from_secs(1)
+    /// );
+    /// assert_eq!(
+    ///     (zero - one_sec).unwrap_or_else(|| std::time::Duration::from_secs(2)),
+    ///     std::time::Duration::from_secs(2)
+    /// );
+    /// ```
     #[inline]
     pub fn unwrap_or_else<F>(self, default: F) -> time::Duration
     where
