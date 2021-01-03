@@ -1,5 +1,6 @@
 use const_fn::const_fn;
 use std::{
+    cmp::Ordering,
     convert::TryFrom,
     ops::{Add, AddAssign, Sub, SubAssign},
     time,
@@ -185,9 +186,39 @@ impl Instant {
 // =============================================================================
 // Trait implementations
 
+impl PartialEq<time::Instant> for Instant {
+    fn eq(&self, other: &time::Instant) -> bool {
+        self.0.map_or(false, |this| this == *other)
+    }
+}
+
+impl PartialEq<Instant> for time::Instant {
+    fn eq(&self, other: &Instant) -> bool {
+        other.eq(self)
+    }
+}
+
+impl PartialOrd<time::Instant> for Instant {
+    fn partial_cmp(&self, other: &time::Instant) -> Option<Ordering> {
+        self.0.as_ref().and_then(|this| this.partial_cmp(other))
+    }
+}
+
+impl PartialOrd<Instant> for time::Instant {
+    fn partial_cmp(&self, other: &Instant) -> Option<Ordering> {
+        other.0.as_ref().and_then(|other| self.partial_cmp(other))
+    }
+}
+
 impl From<time::Instant> for Instant {
     fn from(instant: time::Instant) -> Self {
         Self(Some(instant))
+    }
+}
+
+impl From<Option<time::Instant>> for Instant {
+    fn from(dur: Option<time::Instant>) -> Self {
+        Self(dur)
     }
 }
 

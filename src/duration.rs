@@ -1,5 +1,6 @@
 use const_fn::const_fn;
 use core::{
+    cmp::Ordering,
     convert::TryFrom,
     fmt,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
@@ -579,6 +580,30 @@ impl Duration {
 // =============================================================================
 // Trait implementations
 
+impl PartialEq<time::Duration> for Duration {
+    fn eq(&self, other: &time::Duration) -> bool {
+        self.0.map_or(false, |this| this == *other)
+    }
+}
+
+impl PartialEq<Duration> for time::Duration {
+    fn eq(&self, other: &Duration) -> bool {
+        other.eq(self)
+    }
+}
+
+impl PartialOrd<time::Duration> for Duration {
+    fn partial_cmp(&self, other: &time::Duration) -> Option<Ordering> {
+        self.0.as_ref().and_then(|this| this.partial_cmp(other))
+    }
+}
+
+impl PartialOrd<Duration> for time::Duration {
+    fn partial_cmp(&self, other: &Duration) -> Option<Ordering> {
+        other.0.as_ref().and_then(|other| self.partial_cmp(other))
+    }
+}
+
 impl fmt::Debug for Duration {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::Debug::fmt(&self.0, f)
@@ -594,6 +619,12 @@ impl Default for Duration {
 impl From<time::Duration> for Duration {
     fn from(dur: time::Duration) -> Self {
         Self(Some(dur))
+    }
+}
+
+impl From<Option<time::Duration>> for Duration {
+    fn from(dur: Option<time::Duration>) -> Self {
+        Self(dur)
     }
 }
 

@@ -17,10 +17,22 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 - Make `Instant::{is_some, is_none, unwrap_or}` const function on Rust 1.46+.
 
-- Implement `TryFrom` for `easytime::Instant` and `easytime::Duration`. With
-  this change, the minimum required version of `easytime` with `--no-default-features` goes up to Rust 1.34 (the minimum required version of the default feature has not changed).
+- Implement `TryFrom` for `Instant` and `Duration`. With this change, the
+  minimum required version of `easytime` with `--no-default-features` goes up
+  to Rust 1.34. (The minimum required version of the default feature has not
+  changed.)
 
-- Changed the `Debug` implementation of `easytime::Duration` to display the
+- Implement `PartialEq<std::time::Duration>` and `PartialOrd<std::time::Duration>`
+  for `Duration`.
+
+- Implement `PartialEq<std::time::Instant>` and `PartialOrd<std::time::Instant>`
+  for `Instant`.
+
+- Implement `From<Option<std::time::Duration>>` for `Duration`.
+
+- Implement `From<Option<std::time::Instant>>` for `Instant`.
+
+- Changed the `Debug` implementation of `Duration` to display the
   same as the result of `std::time::Duration::checked_*`.
 
 - Documentation improvements.
@@ -31,8 +43,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [0.1.1] - 2019-02-23
 
-- Add the `unwrap_or_else` method to `easytime::Instant` and
-  `easytime::Duration`.
+- Add the `unwrap_or_else` method to `Instant` and `Duration`.
 
 ## [0.1.0] - 2019-02-19
 
