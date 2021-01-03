@@ -36,7 +36,7 @@
 //!     let now = Instant::now();
 //!
 //!     let secs = Duration::from_secs(secs);
-//!     let nanos = Duration::from_nanos(u64::from(nanos));
+//!     let nanos = Duration::from_nanos(nanos as u64);
 //!
 //!     let dur = secs.checked_add(nanos)?;
 //!     now.checked_duration_since(instant)?.checked_sub(dur)

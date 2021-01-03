@@ -8,6 +8,8 @@ use core::{
 
 use super::{pair_and_then, TryFromTimeError};
 
+const NANOS_PER_SEC: u32 = 1_000_000_000;
+
 /// A `Duration` type to represent a span of time, typically used for system
 /// timeouts.
 ///
@@ -28,7 +30,6 @@ pub struct Duration(pub(crate) Option<time::Duration>);
 impl Duration {
     // TODO: duration_constants https://github.com/rust-lang/rust/issues/57391
     // TODO: duration_zero https://github.com/rust-lang/rust/issues/73544
-    // TODO: duration_float https://github.com/rust-lang/rust/issues/54361
     // TODO: div_duration https://github.com/rust-lang/rust/issues/63139
 
     /// Creates a new `Duration` from the specified number of whole seconds and
@@ -39,7 +40,7 @@ impl Duration {
     #[inline]
     pub fn new(secs: u64, nanos: u32) -> Self {
         let secs = time::Duration::from_secs(secs);
-        let nanos = time::Duration::from_nanos(u64::from(nanos));
+        let nanos = time::Duration::from_nanos(nanos as u64);
         Self(secs.checked_add(nanos))
     }
 
@@ -152,6 +153,174 @@ impl Duration {
             Some(d) => Some(d.as_nanos()),
             None => None,
         }
+    }
+
+    /// Returns the number of seconds contained by this `Duration` as `f64`.
+    ///
+    /// The returned value does include the fractional (nanosecond) part of the duration.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let dur = Duration::new(2, 700_000_000);
+    /// assert_eq!(dur.as_secs_f64(), Some(2.7));
+    /// ```
+    #[inline]
+    pub fn as_secs_f64(&self) -> Option<f64> {
+        // TODO: replace with `self.0.as_ref().map(time::Duration::as_secs_f64)` on Rust 1.38+.
+        self.0.map(|this| {
+            (this.as_secs() as f64) + (this.subsec_nanos() as f64) / (NANOS_PER_SEC as f64)
+        })
+    }
+
+    /// Returns the number of seconds contained by this `Duration` as `f32`.
+    ///
+    /// The returned value does include the fractional (nanosecond) part of the duration.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let dur = Duration::new(2, 700_000_000);
+    /// assert_eq!(dur.as_secs_f32(), Some(2.7));
+    /// ```
+    #[inline]
+    pub fn as_secs_f32(&self) -> Option<f32> {
+        // TODO: replace with `self.0.as_ref().map(time::Duration::as_secs_f32)` on Rust 1.38+.
+        self.0.map(|this| {
+            (this.as_secs() as f32) + (this.subsec_nanos() as f32) / (NANOS_PER_SEC as f32)
+        })
+    }
+
+    /// Creates a new `Duration` from the specified number of seconds represented
+    /// as `f64`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let dur = Duration::from_secs_f64(2.7);
+    /// assert_eq!(dur, Duration::new(2, 700_000_000));
+    /// ```
+    #[inline]
+    pub fn from_secs_f64(secs: f64) -> Self {
+        const MAX_NANOS_F64: f64 =
+            ((u64::max_value() as u128 + 1) * (NANOS_PER_SEC as u128)) as f64;
+        let nanos = secs * (NANOS_PER_SEC as f64);
+        if !nanos.is_finite() || nanos >= MAX_NANOS_F64 || nanos < 0.0 {
+            return Self(None);
+        }
+        let nanos = nanos as u128;
+        Self::new(
+            (nanos / (NANOS_PER_SEC as u128)) as u64,
+            (nanos % (NANOS_PER_SEC as u128)) as u32,
+        )
+    }
+
+    /// Creates a new `Duration` from the specified number of seconds represented
+    /// as `f32`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let dur = Duration::from_secs_f32(2.7);
+    /// assert_eq!(dur, Duration::new(2, 700_000_000));
+    /// ```
+    #[inline]
+    pub fn from_secs_f32(secs: f32) -> Duration {
+        const MAX_NANOS_F32: f32 =
+            ((u64::max_value() as u128 + 1) * (NANOS_PER_SEC as u128)) as f32;
+        let nanos = secs * (NANOS_PER_SEC as f32);
+        if !nanos.is_finite() || nanos >= MAX_NANOS_F32 || nanos < 0.0 {
+            return Self(None);
+        }
+        let nanos = nanos as u128;
+        Self::new(
+            (nanos / (NANOS_PER_SEC as u128)) as u64,
+            (nanos % (NANOS_PER_SEC as u128)) as u32,
+        )
+    }
+
+    /// Multiplies `Duration` by `f64`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let dur = Duration::new(2, 700_000_000);
+    /// assert_eq!(dur.mul_f64(3.14), Duration::new(8, 478_000_000));
+    /// assert_eq!(dur.mul_f64(3.14e5), Duration::new(847_800, 0));
+    /// ```
+    #[inline]
+    pub fn mul_f64(self, rhs: f64) -> Duration {
+        self.as_secs_f64()
+            .map(|secs| Duration::from_secs_f64(rhs * secs))
+            .unwrap_or_else(|| Self(None))
+    }
+
+    /// Multiplies `Duration` by `f32`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let dur = Duration::new(2, 700_000_000);
+    /// // note that due to rounding errors result is slightly different
+    /// // from 8.478 and 847800.0
+    /// assert_eq!(dur.mul_f32(3.14), Duration::new(8, 478_000_640));
+    /// assert_eq!(dur.mul_f32(3.14e5), Duration::new(847799, 969_120_256));
+    /// ```
+    #[inline]
+    pub fn mul_f32(self, rhs: f32) -> Duration {
+        self.as_secs_f32()
+            .map(|secs| Duration::from_secs_f32(rhs * secs))
+            .unwrap_or_else(|| Self(None))
+    }
+
+    /// Divide `Duration` by `f64`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let dur = Duration::new(2, 700_000_000);
+    /// assert_eq!(dur.div_f64(3.14), Duration::new(0, 859_872_611));
+    /// // note that truncation is used, not rounding
+    /// assert_eq!(dur.div_f64(3.14e5), Duration::new(0, 8_598));
+    /// ```
+    #[inline]
+    pub fn div_f64(self, rhs: f64) -> Duration {
+        self.as_secs_f64()
+            .map(|secs| Duration::from_secs_f64(secs / rhs))
+            .unwrap_or_else(|| Self(None))
+    }
+
+    /// Divide `Duration` by `f32`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let dur = Duration::new(2, 700_000_000);
+    /// assert_eq!(dur.div_f64(3.14), Duration::new(0, 859_872_611));
+    /// // note that truncation is used, not rounding
+    /// assert_eq!(dur.div_f64(3.14e5), Duration::new(0, 8_598));
+    /// ```
+    #[inline]
+    pub fn div_f32(self, rhs: f32) -> Duration {
+        self.as_secs_f32()
+            .map(|secs| Duration::from_secs_f32(secs / rhs))
+            .unwrap_or_else(|| Self(None))
     }
 
     // =============================================================================
