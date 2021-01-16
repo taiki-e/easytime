@@ -8,7 +8,7 @@ repository = "https://github.com/taiki-e/easytime"
 documentation = "https://docs.rs/easytime"
 keywords = ["no_std", "time"]
 categories = ["no-std"]
-exclude = ["/.github", "/scripts"]
+exclude = ["/.*", "/scripts"]
 description = """
 Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
 """
