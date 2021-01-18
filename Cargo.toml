@@ -6,8 +6,8 @@ edition = "2018"
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/easytime"
 documentation = "https://docs.rs/easytime"
-keywords = ["no_std", "time"]
-categories = ["no-std"]
+keywords = ["date", "time", "duration", "instant"]
+categories = ["date-and-time", "no-std"]
 exclude = ["/.*", "/scripts"]
 description = """
 Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
