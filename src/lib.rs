@@ -14,9 +14,10 @@
 //!
 //! ```rust
 //! # #[cfg(feature = "std")]
-//! use easytime::{Duration, Instant};
-//! # #[cfg(feature = "std")]
 //! use std::time::Duration as StdDuration;
+//!
+//! # #[cfg(feature = "std")]
+//! use easytime::{Duration, Instant};
 //!
 //! # #[cfg(feature = "std")]
 //! fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<StdDuration> {
@@ -92,8 +93,9 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::*;
     use static_assertions::assert_impl_all as assert_impl;
+
+    use crate::*;
 
     assert_impl!(Duration: Send);
     assert_impl!(Duration: Sync);

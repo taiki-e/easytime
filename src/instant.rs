@@ -1,10 +1,11 @@
-use const_fn::const_fn;
 use std::{
     cmp::Ordering,
     convert::TryFrom,
     ops::{Add, AddAssign, Sub, SubAssign},
     time,
 };
+
+use const_fn::const_fn;
 
 use super::{pair_and_then, Duration, TryFromTimeError};
 
@@ -76,8 +77,9 @@ impl Instant {
     /// # Examples
     ///
     /// ```no_run
-    /// use easytime::Instant;
     /// use std::{thread::sleep, time};
+    ///
+    /// use easytime::Instant;
     ///
     /// let now = Instant::now();
     /// sleep(time::Duration::new(1, 0));
@@ -94,8 +96,9 @@ impl Instant {
     /// # Examples
     ///
     /// ```no_run
-    /// use easytime::Instant;
     /// use std::{thread::sleep, time};
+    ///
+    /// use easytime::Instant;
     ///
     /// let now = Instant::now();
     /// sleep(time::Duration::new(1, 0));
@@ -116,8 +119,9 @@ impl Instant {
     /// # Examples
     ///
     /// ```no_run
-    /// use easytime::Instant;
     /// use std::{thread::sleep, time};
+    ///
+    /// use easytime::Instant;
     ///
     /// let instant = Instant::now();
     /// let three_secs = time::Duration::from_secs(3);

@@ -1,4 +1,3 @@
-use const_fn::const_fn;
 use core::{
     cmp::Ordering,
     convert::TryFrom,
@@ -6,6 +5,8 @@ use core::{
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
     time,
 };
+
+use const_fn::const_fn;
 
 use super::{pair_and_then, TryFromTimeError};
 

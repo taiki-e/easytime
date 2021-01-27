@@ -3,6 +3,7 @@
 #![allow(clippy::non_ascii_literal)]
 
 use core::time;
+
 use easytime::Duration;
 
 #[test]
@@ -36,6 +37,7 @@ fn cmp() {
 // https://github.com/rust-lang/rust/blob/1.49.0/library/core/tests/time.rs
 pub mod core_tests {
     use core::time;
+
     use easytime::Duration;
 
     #[test]
