@@ -1,10 +1,10 @@
 # easytime
 
-[![crates.io](https://img.shields.io/crates/v/easytime.svg?style=flat-square&logo=rust)](https://crates.io/crates/easytime)
+[![crates.io](https://img.shields.io/crates/v/easytime?style=flat-square&logo=rust)](https://crates.io/crates/easytime)
 [![docs.rs](https://img.shields.io/badge/docs.rs-easytime-blue?style=flat-square)](https://docs.rs/easytime)
-[![license](https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue.svg?style=flat-square)](#license)
-[![rustc](https://img.shields.io/badge/rustc-1.34+-blue.svg?style=flat-square)](https://www.rust-lang.org)
-[![build status](https://img.shields.io/github/workflow/status/taiki-e/easytime/CI/master?style=flat-square)](https://github.com/taiki-e/easytime/actions?query=workflow%3ACI+branch%3Amaster)
+[![license](https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue?style=flat-square)](#license)
+[![rustc](https://img.shields.io/badge/rustc-1.34+-blue?style=flat-square&logo=rust)](https://www.rust-lang.org)
+[![build status](https://img.shields.io/github/workflow/status/taiki-e/easytime/CI/master?style=flat-square&logo=github)](https://github.com/taiki-e/easytime/actions)
 
 Providing wrapper types for safely performing panic-free checked arithmetic
 on instants and durations.
