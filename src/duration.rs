@@ -150,6 +150,7 @@ impl Duration {
     /// ```
     ///
     /// [`subsec_nanos`]: Self::subsec_nanos
+    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_secs(&self) -> Option<u64> {
@@ -174,6 +175,7 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(5));
     /// assert_eq!(duration.subsec_millis(), Some(432));
     /// ```
+    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn subsec_millis(&self) -> Option<u32> {
@@ -198,6 +200,7 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(1));
     /// assert_eq!(duration.subsec_micros(), Some(234_567));
     /// ```
+    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn subsec_micros(&self) -> Option<u32> {
@@ -222,6 +225,7 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(5));
     /// assert_eq!(duration.subsec_nanos(), Some(10_000_000));
     /// ```
+    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn subsec_nanos(&self) -> Option<u32> {
@@ -241,6 +245,7 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_millis(), Some(5_730));
     /// ```
+    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_millis(&self) -> Option<u128> {
@@ -260,6 +265,7 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_micros(), Some(5_730_023));
     /// ```
+    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_micros(&self) -> Option<u128> {
@@ -279,6 +285,7 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_nanos(), Some(5_730_023_852));
     /// ```
+    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_nanos(&self) -> Option<u128> {
