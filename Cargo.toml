@@ -31,5 +31,4 @@ autocfg = "1"
 const_fn = "0.4"
 
 [dev-dependencies]
-rustversion = "1"
 static_assertions = "1"

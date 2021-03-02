@@ -348,7 +348,6 @@ pub mod core_tests {
         Duration::from_secs(1)
     }
 
-    #[rustversion::since(1.46)]
     #[test]
     fn duration_const() {
         // test that the methods of `Duration` are usable in a const context
