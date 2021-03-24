@@ -40,7 +40,7 @@ jobs:
       - run: cargo install cargo-hack
       - run: cargo test --all
       - run: cargo hack check --all --ignore-private --feature-powerset --no-dev-deps
-      - run: scripts/check-minimal-versions.sh
+      - run: tools/check-minimal-versions.sh
         if: startsWith(matrix.rust, 'nightly')
 
   build:
