@@ -10,6 +10,10 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+## [0.2.1] - 2021-04-06
+
+- [Apply `doc(cfg(...))` on feature gated APIs.](https://github.com/taiki-e/easytime/pull/23)
+
 ## [0.2.0] - 2021-01-03
 
 - [Add `Duration::{as_secs_f64, as_secs_f32, from_secs_f64, from_secs_f32, mul_f64, mul_f32, div_f64, div_f32}` methods.](https://github.com/taiki-e/easytime/pull/21)
@@ -47,7 +51,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 Initial release
 
-[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/taiki-e/easytime/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/taiki-e/easytime/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/taiki-e/easytime/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/taiki-e/easytime/compare/v0.1.0...v0.1.1
