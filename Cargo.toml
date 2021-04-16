@@ -19,7 +19,7 @@ rustdoc-args = ["--cfg", "docsrs"]
 targets = ["x86_64-unknown-linux-gnu"]
 
 [workspace]
-members = ["tests/doc"]
+members = ["tests/doc", "tools/codegen"]
 
 [features]
 default = ["std"]
@@ -30,6 +30,3 @@ autocfg = "1"
 
 [dependencies]
 const_fn = "0.4"
-
-[dev-dependencies]
-static_assertions = "1"

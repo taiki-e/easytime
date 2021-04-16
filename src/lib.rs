@@ -73,6 +73,11 @@
 #[cfg(feature = "std")]
 extern crate std;
 
+#[cfg(feature = "std")]
+#[cfg(test)]
+#[path = "gen/assert_impl.rs"]
+mod assert_impl;
+
 mod duration;
 pub use crate::duration::Duration;
 
@@ -96,26 +101,4 @@ where
         (Some(x), Some(y)) => f(x, y),
         _ => None,
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use static_assertions::assert_impl_all as assert_impl;
-
-    use crate::*;
-
-    assert_impl!(Duration: Send);
-    assert_impl!(Duration: Sync);
-    assert_impl!(Duration: Unpin);
-
-    #[cfg(feature = "std")]
-    assert_impl!(Instant: Send);
-    #[cfg(feature = "std")]
-    assert_impl!(Instant: Sync);
-    #[cfg(feature = "std")]
-    assert_impl!(Instant: Unpin);
-
-    assert_impl!(TryFromTimeError: Send);
-    assert_impl!(TryFromTimeError: Sync);
-    assert_impl!(TryFromTimeError: Unpin);
 }
