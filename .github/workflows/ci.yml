@@ -117,8 +117,8 @@ jobs:
       - build
       - codegen
       - clippy
-      - rustfmt
-      - rustdoc
+      - fmt
+      - docs
       - shellcheck
     runs-on: ubuntu-latest
     steps:
