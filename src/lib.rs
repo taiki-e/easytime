@@ -67,7 +67,7 @@
     single_use_lifetimes,
     unreachable_pub
 )]
-#![warn(clippy::default_trait_access)]
+#![warn(clippy::default_trait_access, clippy::wildcard_imports)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(feature = "std")]
