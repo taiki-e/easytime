@@ -126,7 +126,7 @@ pub mod core_tests {
             (Duration::new(0, 500_000_000) + Duration::new(0, 500_000_001)).into_inner(),
             Some(time::Duration::new(1, 1))
         );
-        assert_eq!((Duration::new(1, 0) + Duration::new(u64::max_value(), 0)).into_inner(), None);
+        assert_eq!((Duration::new(1, 0) + Duration::new(u64::MAX, 0)).into_inner(), None);
     }
 
     #[test]
@@ -170,7 +170,7 @@ pub mod core_tests {
             (Duration::new(0, 500_000_001) * 4000).into_inner(),
             Some(time::Duration::new(2000, 4000))
         );
-        assert_eq!((Duration::new(u64::max_value() - 1, 0) * 2).into_inner(), None);
+        assert_eq!((Duration::new(u64::MAX - 1, 0) * 2).into_inner(), None);
     }
 
     #[test]

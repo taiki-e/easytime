@@ -50,7 +50,7 @@ pub mod std_tests {
 
         // checked_add_duration will not panic on overflow
         let mut maybe_t = Instant::now();
-        let max_duration = Duration::from_secs(u64::max_value());
+        let max_duration = Duration::from_secs(u64::MAX);
         // in case `Instant` can store `>= now + max_duration`.
         for _ in 0..2 {
             maybe_t += max_duration;

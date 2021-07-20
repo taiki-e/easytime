@@ -1,9 +1,11 @@
+#![allow(deprecated_in_future)]
+
 use core::{
     cmp::Ordering,
     convert::TryFrom,
     fmt,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
-    time,
+    time, u64,
 };
 
 use const_fn::const_fn;
@@ -348,8 +350,7 @@ impl Duration {
     /// ```
     #[inline]
     pub fn from_secs_f64(secs: f64) -> Self {
-        const MAX_NANOS_F64: f64 =
-            ((u64::max_value() as u128 + 1) * (NANOS_PER_SEC as u128)) as f64;
+        const MAX_NANOS_F64: f64 = ((u64::MAX as u128 + 1) * (NANOS_PER_SEC as u128)) as f64;
         let nanos = secs * (NANOS_PER_SEC as f64);
         if !nanos.is_finite() || nanos >= MAX_NANOS_F64 || nanos < 0.0 {
             return Self(None);
@@ -374,8 +375,7 @@ impl Duration {
     /// ```
     #[inline]
     pub fn from_secs_f32(secs: f32) -> Duration {
-        const MAX_NANOS_F32: f32 =
-            ((u64::max_value() as u128 + 1) * (NANOS_PER_SEC as u128)) as f32;
+        const MAX_NANOS_F32: f32 = ((u64::MAX as u128 + 1) * (NANOS_PER_SEC as u128)) as f32;
         let nanos = secs * (NANOS_PER_SEC as f32);
         if !nanos.is_finite() || nanos >= MAX_NANOS_F32 || nanos < 0.0 {
             return Self(None);
