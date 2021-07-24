@@ -10,6 +10,9 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+- Add `Duration::{ZERO, MAX, is_zero}` methods.
+  They are based on the same methods in the standard library that stabilized on Rust 1.53.
+
 ## [0.2.1] - 2021-04-06
 
 - [Apply `doc(cfg(...))` on feature gated APIs.](https://github.com/taiki-e/easytime/pull/23)
