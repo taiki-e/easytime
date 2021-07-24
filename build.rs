@@ -21,4 +21,7 @@ fn main() {
     if cfg.probe_rustc_version(1, 39) {
         println!("cargo:rustc-cfg=stable_1_39");
     }
+    if cfg.probe_rustc_version(1, 53) {
+        println!("cargo:rustc-cfg=stable_1_53");
+    }
 }

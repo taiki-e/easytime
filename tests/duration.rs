@@ -1,6 +1,5 @@
 #![warn(rust_2018_idioms, single_use_lifetimes)]
-#![allow(clippy::zero_prefixed_literal)]
-#![allow(clippy::non_ascii_literal)]
+#![allow(clippy::zero_prefixed_literal, clippy::non_ascii_literal, clippy::assertions_on_constants)]
 
 use core::time;
 
@@ -363,8 +362,8 @@ pub mod core_tests {
         const SUB_SEC_NANOS: Option<u32> = DURATION.subsec_nanos();
         assert_eq!(SUB_SEC_NANOS, Some(123_456_789));
 
-        // const IS_ZERO: bool = Duration::ZERO.is_zero();
-        // assert!(IS_ZERO);
+        const IS_ZERO: bool = Duration::ZERO.is_zero();
+        assert!(IS_ZERO);
 
         const SECONDS: Option<u64> = duration_second().as_secs();
         assert_eq!(SECONDS, Some(1));

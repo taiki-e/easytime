@@ -45,8 +45,39 @@ pub struct Duration(pub(crate) Option<time::Duration>);
 
 impl Duration {
     // TODO: duration_constants https://github.com/rust-lang/rust/issues/57391
-    // TODO: duration_zero https://github.com/rust-lang/rust/issues/73544
     // TODO: div_duration https://github.com/rust-lang/rust/issues/63139
+
+    /// A duration of zero time.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::ZERO;
+    /// assert!(duration.is_zero());
+    /// assert_eq!(duration.as_nanos(), Some(0));
+    /// ```
+    pub const ZERO: Self = Self::from_nanos(0);
+
+    /// The maximum duration.
+    ///
+    /// This constant is only available on Rust 1.53 and later.
+    ///
+    /// May vary by platform as necessary. Must be able to contain the difference between
+    /// two instances of `Instant` or two instances of `SystemTime`.
+    /// This constraint gives it a value of about 584,942,417,355 years in practice,
+    /// which is currently used on all platforms.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// assert_eq!(Duration::MAX, Duration::new(u64::MAX, 1_000_000_000 - 1));
+    /// ```
+    #[cfg(stable_1_53)]
+    pub const MAX: Self = Self(Some(time::Duration::MAX));
 
     /// Creates a new `Duration` from the specified number of whole seconds and
     /// additional nanoseconds.
@@ -134,6 +165,53 @@ impl Duration {
     #[inline]
     pub const fn from_nanos(nanos: u64) -> Self {
         Self(Some(time::Duration::from_nanos(nanos)))
+    }
+
+    /// Returns true if this `Duration` spans no time.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// assert!(Duration::ZERO.is_zero());
+    /// assert!(Duration::new(0, 0).is_zero());
+    /// assert!(Duration::from_nanos(0).is_zero());
+    /// assert!(Duration::from_secs(0).is_zero());
+    ///
+    /// assert!(!Duration::new(1, 1).is_zero());
+    /// assert!(!Duration::from_nanos(1).is_zero());
+    /// assert!(!Duration::from_secs(1).is_zero());
+    /// ```
+    #[inline]
+    #[cfg(stable_1_53)]
+    pub const fn is_zero(&self) -> bool {
+        match &self.0 {
+            Some(d) => d.is_zero(),
+            None => false,
+        }
+    }
+
+    /// Returns true if this `Duration` spans no time.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// assert!(Duration::ZERO.is_zero());
+    /// assert!(Duration::new(0, 0).is_zero());
+    /// assert!(Duration::from_nanos(0).is_zero());
+    /// assert!(Duration::from_secs(0).is_zero());
+    ///
+    /// assert!(!Duration::new(1, 1).is_zero());
+    /// assert!(!Duration::from_nanos(1).is_zero());
+    /// assert!(!Duration::from_secs(1).is_zero());
+    /// ```
+    #[inline]
+    #[cfg(not(stable_1_53))]
+    pub fn is_zero(&self) -> bool {
+        self.as_secs() == Some(0) && self.subsec_nanos() == Some(0)
     }
 
     /// Returns the number of _whole_ seconds contained by this `Duration`.
