@@ -12,7 +12,7 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [0.2.2] - 2021-07-24
 
-- Add `Duration::{ZERO, MAX, is_zero}` methods.
+- [Add `Duration::{ZERO, MAX, is_zero}` methods.](https://github.com/taiki-e/easytime/pull/25)
   They are based on the same methods in the standard library that stabilized on Rust 1.53.
 
 ## [0.2.1] - 2021-04-06
