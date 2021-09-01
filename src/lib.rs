@@ -3,9 +3,9 @@
 //!
 //! This crate provides the following two data structures.
 //!
-//! * [`easytime::Instant`] -- A wrapper type for [`std::time::Instant`]
+//! - [`easytime::Instant`] -- A wrapper type for [`std::time::Instant`]
 //!
-//! * [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
+//! - [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
 //!
 //! [`easytime::Instant`]: Instant
 //! [`easytime::Duration`]: Duration
@@ -46,9 +46,9 @@
 //!
 //! # Optional features
 //!
-//! * **`std`** *(enabled by default)*
-//!   * Enable to use [`easytime::Instant`].
-//!   * If disabled this feature, `easytime` can be used in `no_std` environments.
+//! - **`std`** *(enabled by default)*
+//!   - Enable to use [`easytime::Instant`].
+//!   - If disabled this feature, `easytime` can be used in `no_std` environments.
 
 #![no_std]
 #![doc(test(
