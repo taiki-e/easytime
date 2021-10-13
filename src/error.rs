@@ -11,5 +11,4 @@ impl fmt::Display for TryFromTimeError {
 }
 
 #[cfg(feature = "std")]
-#[cfg_attr(docsrs, doc(cfg(feature = "std")))]
 impl std::error::Error for TryFromTimeError {}
