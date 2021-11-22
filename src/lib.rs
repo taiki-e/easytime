@@ -67,8 +67,7 @@
     unreachable_pub
 )]
 #![warn(clippy::default_trait_access, clippy::wildcard_imports)]
-#![cfg_attr(docsrs, feature(doc_cfg, doc_cfg_hide))]
-#![cfg_attr(docsrs, doc(cfg_hide(stable_1_39, stable_1_53)))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(feature = "std")]
 extern crate std;
