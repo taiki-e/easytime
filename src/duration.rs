@@ -476,6 +476,7 @@ impl Duration {
     /// assert_eq!(dur.mul_f64(3.14), Duration::new(8, 478_000_000));
     /// assert_eq!(dur.mul_f64(3.14e5), Duration::new(847_800, 0));
     /// ```
+    #[must_use]
     #[inline]
     pub fn mul_f64(self, rhs: f64) -> Duration {
         self.as_secs_f64()
@@ -496,6 +497,7 @@ impl Duration {
     /// assert_eq!(dur.mul_f32(3.14), Duration::new(8, 478_000_640));
     /// assert_eq!(dur.mul_f32(3.14e5), Duration::new(847799, 969_120_256));
     /// ```
+    #[must_use]
     #[inline]
     pub fn mul_f32(self, rhs: f32) -> Duration {
         self.as_secs_f32()
@@ -515,6 +517,7 @@ impl Duration {
     /// // note that truncation is used, not rounding
     /// assert_eq!(dur.div_f64(3.14e5), Duration::new(0, 8_598));
     /// ```
+    #[must_use]
     #[inline]
     pub fn div_f64(self, rhs: f64) -> Duration {
         self.as_secs_f64()
@@ -534,6 +537,7 @@ impl Duration {
     /// // note that truncation is used, not rounding
     /// assert_eq!(dur.div_f64(3.14e5), Duration::new(0, 8_598));
     /// ```
+    #[must_use]
     #[inline]
     pub fn div_f32(self, rhs: f32) -> Duration {
         self.as_secs_f32()
