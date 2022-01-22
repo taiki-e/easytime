@@ -24,8 +24,5 @@ members = ["tests/doc", "tools/codegen"]
 default = ["std"]
 std = []
 
-[build-dependencies]
-autocfg = "1"
-
 [dependencies]
 const_fn = "0.4"

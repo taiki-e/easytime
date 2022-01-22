@@ -87,7 +87,7 @@ impl Instant {
     /// let new_now = Instant::now();
     /// println!("{:?}", new_now.duration_since(now));
     /// ```
-    #[cfg(stable_1_39)]
+    #[cfg(not(stable_lt_1_39))]
     pub fn duration_since(&self, earlier: Self) -> Duration {
         Duration(pair_and_then(self.0.as_ref(), earlier.0, time::Instant::checked_duration_since))
     }
@@ -107,7 +107,7 @@ impl Instant {
     /// println!("{:?}", new_now.duration_since(now));
     /// println!("{:?}", now.duration_since(new_now)); // None
     /// ```
-    #[cfg(not(stable_1_39))]
+    #[cfg(stable_lt_1_39)]
     pub fn duration_since(&self, earlier: Self) -> Duration {
         Duration(pair_and_then(self.0.as_ref(), earlier.0, |this, earlier| {
             // https://github.com/rust-lang/rust/pull/58395

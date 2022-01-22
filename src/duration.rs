@@ -76,7 +76,7 @@ impl Duration {
     ///
     /// assert_eq!(Duration::MAX, Duration::new(u64::MAX, 1_000_000_000 - 1));
     /// ```
-    #[cfg(stable_1_53)]
+    #[cfg(not(stable_lt_1_53))]
     pub const MAX: Self = Self(Some(time::Duration::MAX));
 
     /// Creates a new `Duration` from the specified number of whole seconds and
@@ -184,7 +184,7 @@ impl Duration {
     /// assert!(!Duration::from_secs(1).is_zero());
     /// ```
     #[inline]
-    #[cfg(stable_1_53)]
+    #[cfg(not(stable_lt_1_53))]
     pub const fn is_zero(&self) -> bool {
         match &self.0 {
             Some(d) => d.is_zero(),
@@ -209,7 +209,7 @@ impl Duration {
     /// assert!(!Duration::from_secs(1).is_zero());
     /// ```
     #[inline]
-    #[cfg(not(stable_1_53))]
+    #[cfg(stable_lt_1_53)]
     pub fn is_zero(&self) -> bool {
         self.as_secs() == Some(0) && self.subsec_nanos() == Some(0)
     }
