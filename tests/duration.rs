@@ -6,6 +6,11 @@ use core::time;
 use easytime::Duration;
 
 #[test]
+fn none() {
+    assert!(Duration::none().is_none());
+}
+
+#[test]
 fn cmp() {
     assert!(Duration::from_secs(1) == Duration::from_secs(1));
     assert!(Duration::from_secs(1) != Duration::from_secs(0));

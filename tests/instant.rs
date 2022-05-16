@@ -22,6 +22,11 @@ pub mod std_tests {
     }
 
     #[test]
+    fn none() {
+        assert!(Instant::none().is_none());
+    }
+
+    #[test]
     fn instant_monotonic() {
         let a = Instant::now();
         let b = Instant::now();
