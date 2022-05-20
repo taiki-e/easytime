@@ -23,7 +23,7 @@ pub mod std_tests {
 
     #[test]
     fn none() {
-        assert!(Instant::none().is_none());
+        assert!(Instant::NONE.is_none());
     }
 
     #[test]

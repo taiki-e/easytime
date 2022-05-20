@@ -61,9 +61,7 @@ pub struct Instant(Option<time::Instant>);
 
 impl Instant {
     /// Returns a "none" value
-    pub const fn none() -> Self {
-        Self(None)
-    }
+    pub const NONE: Self = Self(None);
 
     /// Returns an instant corresponding to "now".
     ///

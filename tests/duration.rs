@@ -7,7 +7,7 @@ use easytime::Duration;
 
 #[test]
 fn none() {
-    assert!(Duration::none().is_none());
+    assert!(Duration::NONE.is_none());
 }
 
 #[test]
