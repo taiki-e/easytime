@@ -10,6 +10,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+## [0.2.3] - 2022-06-30
+
 - Add `{Duration, Instant}::NONE` constants. ([#27](https://github.com/taiki-e/easytime/pull/27), thanks @dhardy)
 
 ## [0.2.2] - 2021-07-24
@@ -58,7 +60,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 Initial release
 
-[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/taiki-e/easytime/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/taiki-e/easytime/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/taiki-e/easytime/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/taiki-e/easytime/compare/v0.1.2...v0.2.0
