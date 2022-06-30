@@ -60,6 +60,9 @@ use super::{pair_and_then, Duration, TryFromTimeError};
 pub struct Instant(Option<time::Instant>);
 
 impl Instant {
+    /// Returns a "none" value
+    pub const NONE: Self = Self(None);
+
     /// Returns an instant corresponding to "now".
     ///
     /// # Examples

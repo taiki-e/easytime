@@ -47,6 +47,9 @@ impl Duration {
     // TODO: duration_constants https://github.com/rust-lang/rust/issues/57391
     // TODO: div_duration https://github.com/rust-lang/rust/issues/63139
 
+    /// Returns a "none" value
+    pub const NONE: Self = Self(None);
+
     /// A duration of zero time.
     ///
     /// # Examples
