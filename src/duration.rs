@@ -482,9 +482,7 @@ impl Duration {
     #[must_use]
     #[inline]
     pub fn mul_f64(self, rhs: f64) -> Duration {
-        self.as_secs_f64()
-            .map(|secs| Duration::from_secs_f64(rhs * secs))
-            .unwrap_or_else(|| Self(None))
+        self.as_secs_f64().map_or(Self::NONE, |secs| Duration::from_secs_f64(rhs * secs))
     }
 
     /// Multiplies `Duration` by `f32`.
@@ -503,9 +501,7 @@ impl Duration {
     #[must_use]
     #[inline]
     pub fn mul_f32(self, rhs: f32) -> Duration {
-        self.as_secs_f32()
-            .map(|secs| Duration::from_secs_f32(rhs * secs))
-            .unwrap_or_else(|| Self(None))
+        self.as_secs_f32().map_or(Self::NONE, |secs| Duration::from_secs_f32(rhs * secs))
     }
 
     /// Divide `Duration` by `f64`.
@@ -523,9 +519,7 @@ impl Duration {
     #[must_use]
     #[inline]
     pub fn div_f64(self, rhs: f64) -> Duration {
-        self.as_secs_f64()
-            .map(|secs| Duration::from_secs_f64(secs / rhs))
-            .unwrap_or_else(|| Self(None))
+        self.as_secs_f64().map_or(Self::NONE, |secs| Duration::from_secs_f64(secs / rhs))
     }
 
     /// Divide `Duration` by `f32`.
@@ -543,9 +537,7 @@ impl Duration {
     #[must_use]
     #[inline]
     pub fn div_f32(self, rhs: f32) -> Duration {
-        self.as_secs_f32()
-            .map(|secs| Duration::from_secs_f32(secs / rhs))
-            .unwrap_or_else(|| Self(None))
+        self.as_secs_f32().map_or(Self::NONE, |secs| Duration::from_secs_f32(secs / rhs))
     }
 
     // =============================================================================
