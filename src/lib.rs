@@ -66,7 +66,7 @@
     single_use_lifetimes,
     unreachable_pub
 )]
-#![warn(clippy::pedantic)]
+#![warn(clippy::exhaustive_enums, clippy::exhaustive_structs, clippy::pedantic)]
 #![allow(
     clippy::cast_lossless,
     clippy::cast_possible_truncation,
