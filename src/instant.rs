@@ -1,9 +1,9 @@
-use std::{
+use core::{
     cmp::Ordering,
     convert::TryFrom,
     ops::{Add, AddAssign, Sub, SubAssign},
-    time,
 };
+use std::time;
 
 use const_fn::const_fn;
 
