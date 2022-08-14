@@ -90,7 +90,6 @@ extern crate std;
 
 #[cfg(feature = "std")]
 #[cfg(test)]
-#[rustfmt::skip]
 #[path = "gen/assert_impl.rs"]
 mod assert_impl;
 
