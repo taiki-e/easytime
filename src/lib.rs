@@ -80,8 +80,10 @@
     clippy::cast_possible_truncation,
     clippy::cast_precision_loss,
     clippy::cast_sign_loss,
+    clippy::manual_map, // Option::map is not const
     clippy::module_name_repetitions,
-    clippy::must_use_candidate
+    clippy::must_use_candidate,
+    clippy::redundant_pattern_matching, // const Option::is_some requires Rust 1.48
 )]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 

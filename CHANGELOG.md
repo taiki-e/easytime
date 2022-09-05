@@ -10,6 +10,12 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+- Make `Duration::new` const function on Rust 1.58+.
+
+- Make `Duration::is_zero` const function on Rust 1.46+. Previously, this was const function on Rust 1.53+.
+
+- Documentation improvements.
+
 ## [0.2.3] - 2022-06-30
 
 - Add `{Duration, Instant}::NONE` constants. ([#27](https://github.com/taiki-e/easytime/pull/27), thanks @dhardy)

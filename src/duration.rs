@@ -65,7 +65,7 @@ impl Duration {
 
     /// The maximum duration.
     ///
-    /// This constant is only available on Rust 1.53 and later.
+    /// **Note:** This constant is currently only available on Rust 1.53+.
     ///
     /// May vary by platform as necessary. Must be able to contain the difference between
     /// two instances of `Instant` or two instances of `SystemTime`.
@@ -88,6 +88,8 @@ impl Duration {
     /// If the number of nanoseconds is greater than 1 billion (the number of
     /// nanoseconds in a second), then it will carry over into the seconds provided.
     ///
+    /// This is `const fn` on Rust 1.58+.
+    ///
     /// # Examples
     ///
     /// ```
@@ -96,7 +98,8 @@ impl Duration {
     /// let five_seconds = Duration::new(5, 0);
     /// ```
     #[inline]
-    pub fn new(secs: u64, nanos: u32) -> Self {
+    #[const_fn("1.58")]
+    pub const fn new(secs: u64, nanos: u32) -> Self {
         let secs = time::Duration::from_secs(secs);
         let nanos = time::Duration::from_nanos(nanos as u64);
         Self(secs.checked_add(nanos))
@@ -172,6 +175,8 @@ impl Duration {
 
     /// Returns true if this `Duration` spans no time.
     ///
+    /// This is `const fn` on Rust 1.46+.
+    ///
     /// # Examples
     ///
     /// ```
@@ -187,34 +192,12 @@ impl Duration {
     /// assert!(!Duration::from_secs(1).is_zero());
     /// ```
     #[inline]
-    #[cfg(not(stable_lt_1_53))]
+    #[const_fn("1.46")]
     pub const fn is_zero(&self) -> bool {
-        match &self.0 {
-            Some(d) => d.is_zero(),
-            None => false,
+        match (self.as_secs(), self.subsec_nanos()) {
+            (Some(0), Some(0)) => true,
+            _ => false,
         }
-    }
-
-    /// Returns true if this `Duration` spans no time.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use easytime::Duration;
-    ///
-    /// assert!(Duration::ZERO.is_zero());
-    /// assert!(Duration::new(0, 0).is_zero());
-    /// assert!(Duration::from_nanos(0).is_zero());
-    /// assert!(Duration::from_secs(0).is_zero());
-    ///
-    /// assert!(!Duration::new(1, 1).is_zero());
-    /// assert!(!Duration::from_nanos(1).is_zero());
-    /// assert!(!Duration::from_secs(1).is_zero());
-    /// ```
-    #[inline]
-    #[cfg(stable_lt_1_53)]
-    pub fn is_zero(&self) -> bool {
-        self.as_secs() == Some(0) && self.subsec_nanos() == Some(0)
     }
 
     /// Returns the number of _whole_ seconds contained by this `Duration`.
@@ -222,6 +205,7 @@ impl Duration {
     /// The returned value does not include the fractional (nanosecond) part of the
     /// duration, which can be obtained using [`subsec_nanos`].
     ///
+    /// This is `const fn` on Rust 1.46+.
     ///
     /// # Examples
     ///
@@ -233,7 +217,6 @@ impl Duration {
     /// ```
     ///
     /// [`subsec_nanos`]: Self::subsec_nanos
-    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_secs(&self) -> Option<u64> {
@@ -249,6 +232,8 @@ impl Duration {
     /// represented by milliseconds. The returned number always represents a
     /// fractional portion of a second (i.e., it is less than one thousand).
     ///
+    /// This is `const fn` on Rust 1.46+.
+    ///
     /// # Examples
     ///
     /// ```
@@ -258,7 +243,6 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(5));
     /// assert_eq!(duration.subsec_millis(), Some(432));
     /// ```
-    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn subsec_millis(&self) -> Option<u32> {
@@ -274,6 +258,8 @@ impl Duration {
     /// represented by microseconds. The returned number always represents a
     /// fractional portion of a second (i.e., it is less than one million).
     ///
+    /// This is `const fn` on Rust 1.46+.
+    ///
     /// # Examples
     ///
     /// ```
@@ -283,7 +269,6 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(1));
     /// assert_eq!(duration.subsec_micros(), Some(234_567));
     /// ```
-    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn subsec_micros(&self) -> Option<u32> {
@@ -299,6 +284,8 @@ impl Duration {
     /// represented by nanoseconds. The returned number always represents a
     /// fractional portion of a second (i.e., it is less than one billion).
     ///
+    /// This is `const fn` on Rust 1.46+.
+    ///
     /// # Examples
     ///
     /// ```
@@ -308,7 +295,6 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(5));
     /// assert_eq!(duration.subsec_nanos(), Some(10_000_000));
     /// ```
-    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn subsec_nanos(&self) -> Option<u32> {
@@ -320,6 +306,8 @@ impl Duration {
 
     /// Returns the total number of whole milliseconds contained by this `Duration`.
     ///
+    /// This is `const fn` on Rust 1.46+.
+    ///
     /// # Examples
     ///
     /// ```
@@ -328,7 +316,6 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_millis(), Some(5_730));
     /// ```
-    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_millis(&self) -> Option<u128> {
@@ -340,6 +327,8 @@ impl Duration {
 
     /// Returns the total number of whole microseconds contained by this `Duration`.
     ///
+    /// This is `const fn` on Rust 1.46+.
+    ///
     /// # Examples
     ///
     /// ```
@@ -348,7 +337,6 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_micros(), Some(5_730_023));
     /// ```
-    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_micros(&self) -> Option<u128> {
@@ -360,6 +348,8 @@ impl Duration {
 
     /// Returns the total number of nanoseconds contained by this `Duration`.
     ///
+    /// This is `const fn` on Rust 1.46+.
+    ///
     /// # Examples
     ///
     /// ```
@@ -368,7 +358,6 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_nanos(), Some(5_730_023_852));
     /// ```
-    #[allow(clippy::manual_map)] // Option::map is not const
     #[inline]
     #[const_fn("1.46")]
     pub const fn as_nanos(&self) -> Option<u128> {
@@ -545,6 +534,8 @@ impl Duration {
 
     /// Returns `true` if [`into_inner`] returns `Some`.
     ///
+    /// This is `const fn` on Rust 1.46+.
+    ///
     /// # Examples
     ///
     /// ```
@@ -557,7 +548,6 @@ impl Duration {
     /// ```
     ///
     /// [`into_inner`]: Self::into_inner
-    #[allow(clippy::redundant_pattern_matching)] // const Option::is_some requires Rust 1.48
     #[inline]
     #[const_fn("1.46")]
     pub const fn is_some(&self) -> bool {
@@ -568,6 +558,8 @@ impl Duration {
     }
 
     /// Returns `true` if [`into_inner`] returns `None`.
+    ///
+    /// This is `const fn` on Rust 1.46+.
     ///
     /// # Examples
     ///
@@ -607,6 +599,8 @@ impl Duration {
     /// Returns the contained [`std::time::Duration`] or a default.
     ///
     /// `dur.unwrap_or(default)` is equivalent to `dur.into_inner().unwrap_or(default)`.
+    ///
+    /// This is `const fn` on Rust 1.46+.
     ///
     /// # Examples
     ///

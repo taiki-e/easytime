@@ -143,10 +143,9 @@ impl Instant {
     // =============================================================================
     // Option based method implementations
 
-    /// Returns `true` if [`into_inner`] returns `Some`.
+    /// Returns `true` if [`into_inner`](Self::into_inner) returns `Some`.
     ///
-    /// [`into_inner`]: Self::into_inner
-    #[allow(clippy::redundant_pattern_matching)] // const Option::is_some requires Rust 1.48
+    /// This is `const fn` on Rust 1.46+.
     #[inline]
     #[const_fn("1.46")]
     pub const fn is_some(&self) -> bool {
@@ -156,9 +155,9 @@ impl Instant {
         }
     }
 
-    /// Returns `true` if [`into_inner`] returns `None`.
+    /// Returns `true` if [`into_inner`](Self::into_inner) returns `None`.
     ///
-    /// [`into_inner`]: Self::into_inner
+    /// This is `const fn` on Rust 1.46+.
     #[inline]
     #[const_fn("1.46")]
     pub const fn is_none(&self) -> bool {
@@ -174,6 +173,8 @@ impl Instant {
     /// Returns the contained [`std::time::Instant`] or a default.
     ///
     /// `instant.unwrap_or(default)` is equivalent to `instant.into_inner().unwrap_or(default)`.
+    ///
+    /// This is `const fn` on Rust 1.46+.
     #[inline]
     #[const_fn("1.46")]
     pub const fn unwrap_or(self, default: time::Instant) -> time::Instant {
