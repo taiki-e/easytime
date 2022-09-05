@@ -15,12 +15,6 @@ This crate provides the following two data structures.
 
 - [`easytime::Duration`] -- A wrapper type for [`std::time::Duration`]
 
-[`easytime::Instant`]: https://docs.rs/easytime/0.2/easytime/struct.Instant.html
-[`easytime::Duration`]: https://docs.rs/easytime/0.2/easytime/struct.Duration.html
-[`std::time`]: https://doc.rust-lang.org/std/time/index.html
-[`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
-[`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
-
 ## Usage
 
 Add this to your `Cargo.toml`:
@@ -67,6 +61,12 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 - **`std`** *(enabled by default)*
   - Enable to use [`easytime::Instant`].
   - If disabled this feature, `easytime` can be used in `no_std` environments.
+
+[`easytime::Instant`]: https://docs.rs/easytime/0.2/easytime/struct.Instant.html
+[`easytime::Duration`]: https://docs.rs/easytime/0.2/easytime/struct.Duration.html
+[`std::time`]: https://doc.rust-lang.org/std/time/index.html
+[`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
+[`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
 
 ## License
 
