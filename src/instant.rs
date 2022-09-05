@@ -90,36 +90,26 @@ impl Instant {
     /// let new_now = Instant::now();
     /// println!("{:?}", new_now.duration_since(now));
     /// ```
-    #[cfg(not(stable_lt_1_39))]
     pub fn duration_since(&self, earlier: Self) -> Duration {
-        Duration(pair_and_then(self.0.as_ref(), earlier.0, time::Instant::checked_duration_since))
-    }
-
-    /// Returns the amount of time elapsed from another instant to this one.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// use std::{thread::sleep, time};
-    ///
-    /// use easytime::Instant;
-    ///
-    /// let now = Instant::now();
-    /// sleep(time::Duration::new(1, 0));
-    /// let new_now = Instant::now();
-    /// println!("{:?}", new_now.duration_since(now));
-    /// println!("{:?}", now.duration_since(new_now)); // None
-    /// ```
-    #[cfg(stable_lt_1_39)]
-    pub fn duration_since(&self, earlier: Self) -> Duration {
-        Duration(pair_and_then(self.0.as_ref(), earlier.0, |this, earlier| {
-            // https://github.com/rust-lang/rust/pull/58395
-            if *this >= earlier {
-                Some(this.duration_since(earlier))
-            } else {
-                None
-            }
-        }))
+        #[cfg(not(easytime_no_checked_duration_since))]
+        {
+            Duration(pair_and_then(
+                self.0.as_ref(),
+                earlier.0,
+                time::Instant::checked_duration_since,
+            ))
+        }
+        #[cfg(easytime_no_checked_duration_since)]
+        {
+            Duration(pair_and_then(self.0.as_ref(), earlier.0, |this, earlier| {
+                // https://github.com/rust-lang/rust/pull/58395
+                if *this >= earlier {
+                    Some(this.duration_since(earlier))
+                } else {
+                    None
+                }
+            }))
+        }
     }
 
     /// Returns the amount of time elapsed since this instant was created.

@@ -79,7 +79,7 @@ impl Duration {
     ///
     /// assert_eq!(Duration::MAX, Duration::new(u64::MAX, 1_000_000_000 - 1));
     /// ```
-    #[cfg(not(stable_lt_1_53))]
+    #[cfg(not(easytime_no_duration_max))]
     pub const MAX: Self = Self(Some(time::Duration::MAX));
 
     /// Creates a new `Duration` from the specified number of whole seconds and

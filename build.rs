@@ -15,15 +15,14 @@ fn main() {
         }
     };
 
-    // Note that this is `<` (less than), not `>=` (greater than or equal).
-    // This allows treating as the latest stable rustc is used when the build
-    // script doesn't run. This is useful for non-cargo build systems that don't
-    // run the build script.
+    // Note that this is `no_`*, not `has_*`. This allows treating as the latest
+    // stable rustc is used when the build script doesn't run. This is useful
+    // for non-cargo build systems that don't run the build script.
     if minor < 39 {
-        println!("cargo:rustc-cfg=stable_lt_1_39");
+        println!("cargo:rustc-cfg=easytime_no_checked_duration_since");
     }
     if minor < 53 {
-        println!("cargo:rustc-cfg=stable_lt_1_53");
+        println!("cargo:rustc-cfg=easytime_no_duration_max");
     }
 }
 
