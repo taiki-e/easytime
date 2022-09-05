@@ -38,7 +38,7 @@ fn cmp() {
     assert!(time::Duration::from_secs(0) <= Duration::from_secs(1));
 }
 
-// https://github.com/rust-lang/rust/blob/1.49.0/library/core/tests/time.rs
+// https://github.com/rust-lang/rust/blob/1.63.0/library/core/tests/time.rs
 pub mod core_tests {
     use core::time;
 
@@ -332,6 +332,34 @@ pub mod core_tests {
     }
 
     #[test]
+    fn debug_formatting_padding() {
+        assert_eq!("Some(0ns      )", format!("{:<9?}", Duration::new(0, 0)));
+        assert_eq!("Some(      0ns)", format!("{:>9?}", Duration::new(0, 0)));
+        assert_eq!("Some(   0ns   )", format!("{:^9?}", Duration::new(0, 0)));
+        assert_eq!("Some(123ns    )", format!("{:<9.0?}", Duration::new(0, 123)));
+        assert_eq!("Some(    123ns)", format!("{:>9.0?}", Duration::new(0, 123)));
+        assert_eq!("Some(  123ns  )", format!("{:^9.0?}", Duration::new(0, 123)));
+        assert_eq!("Some(123.0ns  )", format!("{:<9.1?}", Duration::new(0, 123)));
+        assert_eq!("Some(  123.0ns)", format!("{:>9.1?}", Duration::new(0, 123)));
+        assert_eq!("Some( 123.0ns )", format!("{:^9.1?}", Duration::new(0, 123)));
+        assert_eq!("Some(7.1µs    )", format!("{:<9?}", Duration::new(0, 7_100)));
+        assert_eq!("Some(    7.1µs)", format!("{:>9?}", Duration::new(0, 7_100)));
+        assert_eq!("Some(  7.1µs  )", format!("{:^9?}", Duration::new(0, 7_100)));
+        assert_eq!("Some(999.123456ms)", format!("{:<9?}", Duration::new(0, 999_123_456)));
+        assert_eq!("Some(999.123456ms)", format!("{:>9?}", Duration::new(0, 999_123_456)));
+        assert_eq!("Some(999.123456ms)", format!("{:^9?}", Duration::new(0, 999_123_456)));
+        assert_eq!("Some(5s       )", format!("{:<9?}", Duration::new(5, 0)));
+        assert_eq!("Some(       5s)", format!("{:>9?}", Duration::new(5, 0)));
+        assert_eq!("Some(   5s    )", format!("{:^9?}", Duration::new(5, 0)));
+        assert_eq!("Some(5.000000000000s)", format!("{:<9.12?}", Duration::new(5, 0)));
+        assert_eq!("Some(5.000000000000s)", format!("{:>9.12?}", Duration::new(5, 0)));
+        assert_eq!("Some(5.000000000000s)", format!("{:^9.12?}", Duration::new(5, 0)));
+
+        // default alignment is left:
+        assert_eq!("Some(5s       )", format!("{:9?}", Duration::new(5, 0)));
+    }
+
+    #[test]
     fn debug_formatting_precision_high() {
         assert_eq!(format!("{:.5?}", Duration::new(0, 23_678)), "Some(23.67800µs)");
 
@@ -406,7 +434,8 @@ pub mod core_tests {
         const FROM_NANOS: Duration = Duration::from_nanos(1_000_000_000);
         assert_eq!(FROM_NANOS, duration_second());
 
-        // const MAX: Duration = Duration::new(u64::MAX, 999_999_999);
+        #[allow(dead_code)]
+        const MAX: Duration = Duration::new(u64::MAX, 999_999_999);
 
         // const ADD: Duration = MAX + duration_second();
         // assert_eq!(ADD.into_inner(), None);

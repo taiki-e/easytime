@@ -2,7 +2,7 @@
 #![warn(rust_2018_idioms, single_use_lifetimes)]
 #![allow(clippy::eq_op)]
 
-// https://github.com/rust-lang/rust/blob/1.49.0/library/std/src/time/tests.rs
+// https://github.com/rust-lang/rust/blob/1.63.0/library/std/src/time/tests.rs
 pub mod std_tests {
     use easytime::{Duration, Instant};
 
@@ -29,8 +29,33 @@ pub mod std_tests {
     #[test]
     fn instant_monotonic() {
         let a = Instant::now();
-        let b = Instant::now();
-        assert!(b >= a);
+        loop {
+            let b = Instant::now();
+            assert!(b >= a);
+            if b > a {
+                break;
+            }
+        }
+    }
+
+    #[test]
+    fn instant_monotonic_concurrent() -> std::thread::Result<()> {
+        let threads: Vec<_> = (0..8)
+            .map(|_| {
+                std::thread::spawn(|| {
+                    let mut old = Instant::now();
+                    for _ in 0..5_000_000 {
+                        let new = Instant::now();
+                        assert!(new >= old);
+                        old = new;
+                    }
+                })
+            })
+            .collect();
+        for t in threads {
+            t.join()?;
+        }
+        Ok(())
     }
 
     #[test]
@@ -43,10 +68,10 @@ pub mod std_tests {
     fn instant_math() {
         let a = Instant::now();
         let b = Instant::now();
-        println!("a: {:?}", a);
-        println!("b: {:?}", b);
+        println!("a: {a:?}");
+        println!("b: {b:?}");
         let dur = b.duration_since(a);
-        println!("dur: {:?}", dur);
+        println!("dur: {dur:?}");
         assert_almost_eq!(b - dur, a);
         assert_almost_eq!(a + dur, b);
 
