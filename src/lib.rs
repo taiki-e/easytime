@@ -104,6 +104,7 @@ extern crate std;
 mod assert_impl;
 
 mod duration;
+#[allow(unreachable_pub)] // false positive
 pub use crate::duration::Duration;
 
 #[cfg(feature = "std")]
@@ -112,6 +113,7 @@ mod instant;
 pub use crate::instant::Instant;
 
 mod error;
+#[allow(unreachable_pub)] // false positive
 pub use crate::error::TryFromTimeError;
 
 // =============================================================================
