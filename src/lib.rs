@@ -104,7 +104,7 @@ extern crate std;
 mod assert_impl;
 
 mod duration;
-#[allow(unreachable_pub)] // false positive
+#[allow(unreachable_pub)] // false positive: https://github.com/rust-lang/rust/issues/102352
 pub use crate::duration::Duration;
 
 #[cfg(feature = "std")]
@@ -113,7 +113,7 @@ mod instant;
 pub use crate::instant::Instant;
 
 mod error;
-#[allow(unreachable_pub)] // false positive
+#[allow(unreachable_pub)] // false positive: https://github.com/rust-lang/rust/issues/102352
 pub use crate::error::TryFromTimeError;
 
 // =============================================================================
