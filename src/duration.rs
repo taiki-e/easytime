@@ -46,6 +46,7 @@ pub struct Duration(pub(crate) Option<time::Duration>);
 impl Duration {
     // TODO: duration_constants https://github.com/rust-lang/rust/issues/57391
     // TODO: div_duration https://github.com/rust-lang/rust/issues/63139
+    // TODO: duration_checked_float https://github.com/rust-lang/rust/pull/102271
 
     /// Returns a "none" value
     pub const NONE: Self = Self(None);
