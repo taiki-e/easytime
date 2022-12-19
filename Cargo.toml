@@ -20,6 +20,9 @@ targets = ["x86_64-unknown-linux-gnu"]
 [workspace]
 members = ["tests/doc", "tools/codegen"]
 
+[lib]
+doc-scrape-examples = false
+
 [features]
 default = ["std"]
 std = []
