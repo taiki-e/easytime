@@ -4,9 +4,45 @@
 
 #![cfg_attr(rustfmt, rustfmt::skip)]
 
+#![allow(clippy::std_instead_of_alloc, clippy::std_instead_of_core)]
+#[allow(unused_imports)]
+use core::marker::PhantomPinned;
+/// `Send` & `!Sync`
+#[allow(dead_code)]
+struct NotSync(core::cell::Cell<()>);
+/// `!Send` & `!Sync`
+#[allow(dead_code)]
+struct NotSendSync(std::rc::Rc<()>);
+/// `!UnwindSafe`
+#[allow(dead_code)]
+struct NotUnwindSafe(&'static mut ());
+/// `!RefUnwindSafe`
+#[allow(dead_code)]
+struct NotRefUnwindSafe(core::cell::UnsafeCell<()>);
+#[allow(dead_code)]
+fn assert_send<T: ?Sized + Send>() {}
+#[allow(dead_code)]
+fn assert_sync<T: ?Sized + Sync>() {}
+#[allow(dead_code)]
+fn assert_unpin<T: ?Sized + Unpin>() {}
+#[allow(dead_code)]
+fn assert_unwind_safe<T: ?Sized + std::panic::UnwindSafe>() {}
+#[allow(dead_code)]
+fn assert_ref_unwind_safe<T: ?Sized + std::panic::RefUnwindSafe>() {}
 const _: fn() = || {
-    fn assert_auto_traits<T: ?Sized + Send + Sync + Unpin>() {}
-    assert_auto_traits::<crate::duration::Duration>();
-    assert_auto_traits::<crate::error::TryFromTimeError>();
-    assert_auto_traits::<crate::instant::Instant>();
+    assert_send::<crate::duration::Duration>();
+    assert_sync::<crate::duration::Duration>();
+    assert_unpin::<crate::duration::Duration>();
+    assert_unwind_safe::<crate::duration::Duration>();
+    assert_ref_unwind_safe::<crate::duration::Duration>();
+    assert_send::<crate::error::TryFromTimeError>();
+    assert_sync::<crate::error::TryFromTimeError>();
+    assert_unpin::<crate::error::TryFromTimeError>();
+    assert_unwind_safe::<crate::error::TryFromTimeError>();
+    assert_ref_unwind_safe::<crate::error::TryFromTimeError>();
+    assert_send::<crate::instant::Instant>();
+    assert_sync::<crate::instant::Instant>();
+    assert_unpin::<crate::instant::Instant>();
+    assert_unwind_safe::<crate::instant::Instant>();
+    assert_ref_unwind_safe::<crate::instant::Instant>();
 };
