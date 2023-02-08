@@ -2,4 +2,5 @@
 // It is not intended for manual editing.
 
 easytime
+globset
 prettyplease
