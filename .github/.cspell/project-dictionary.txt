@@ -1,4 +1,3 @@
-millis
 nanos
 nondecreasing
 subsec
