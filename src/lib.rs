@@ -1,4 +1,5 @@
 /*!
+<!-- tidy:crate-doc:start -->
 Providing wrapper types for safely performing panic-free checked arithmetic
 on instants and durations.
 
@@ -54,6 +55,8 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 - **`std`** *(enabled by default)*
   - Enable to use [`easytime::Instant`].
   - If disabled this feature, `easytime` can be used in `no_std` environments.
+
+<!-- tidy:crate-doc:end -->
 */
 
 #![no_std]

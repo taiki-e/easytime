@@ -6,6 +6,7 @@
 [![rustc](https://img.shields.io/badge/rustc-1.34+-blue?style=flat-square&logo=rust)](https://www.rust-lang.org)
 [![build status](https://img.shields.io/github/actions/workflow/status/taiki-e/easytime/ci.yml?branch=main&style=flat-square&logo=github)](https://github.com/taiki-e/easytime/actions)
 
+<!-- tidy:crate-doc:start -->
 Providing wrapper types for safely performing panic-free checked arithmetic
 on instants and durations.
 
@@ -61,6 +62,8 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 - **`std`** *(enabled by default)*
   - Enable to use [`easytime::Instant`].
   - If disabled this feature, `easytime` can be used in `no_std` environments.
+
+<!-- tidy:crate-doc:end -->
 
 [`easytime::Instant`]: https://docs.rs/easytime/0.2/easytime/struct.Instant.html
 [`easytime::Duration`]: https://docs.rs/easytime/0.2/easytime/struct.Duration.html
