@@ -44,7 +44,8 @@ pub mod std_tests {
             .map(|_| {
                 std::thread::spawn(|| {
                     let mut old = Instant::now();
-                    for _ in 0..5_000_000 {
+                    let count = if cfg!(miri) { 1_000 } else { 5_000_000 };
+                    for _ in 0..count {
                         let new = Instant::now();
                         assert!(new >= old);
                         old = new;
