@@ -6,7 +6,7 @@ rust-version = "1.34"
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/easytime"
 keywords = ["date", "time", "duration", "instant"]
-categories = ["date-and-time", "no-std"]
+categories = ["date-and-time", "no-std", "no-std::no-alloc"]
 exclude = ["/.*", "/tools"]
 description = """
 Providing wrapper types for safely performing panic-free checked arithmetic on instants and durations.
