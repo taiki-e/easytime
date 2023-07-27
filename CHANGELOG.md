@@ -12,7 +12,7 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [0.2.5] - 2023-07-27
 
-- Remove dependency on `const_fn`.
+- Remove dependency on `const_fn` crate.
 
 ## [0.2.4] - 2022-09-05
 
