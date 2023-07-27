@@ -10,6 +10,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+## [0.2.5] - 2023-07-27
+
 - Remove dependency on `const_fn`.
 
 ## [0.2.4] - 2022-09-05
@@ -70,7 +72,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 Initial release
 
-[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.4...HEAD
+[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.5...HEAD
+[0.2.5]: https://github.com/taiki-e/easytime/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/taiki-e/easytime/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/taiki-e/easytime/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/taiki-e/easytime/compare/v0.2.1...v0.2.2
