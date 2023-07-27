@@ -21,8 +21,14 @@ fn main() {
     if minor < 39 {
         println!("cargo:rustc-cfg=easytime_no_checked_duration_since");
     }
+    if minor < 46 {
+        println!("cargo:rustc-cfg=easytime_no_const_if_match");
+    }
     if minor < 53 {
         println!("cargo:rustc-cfg=easytime_no_duration_max");
+    }
+    if minor < 58 {
+        println!("cargo:rustc-cfg=easytime_no_duration_consts_2");
     }
 }
 

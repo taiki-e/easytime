@@ -106,6 +106,9 @@ extern crate std;
 #[path = "gen/assert_impl.rs"]
 mod assert_impl;
 
+#[macro_use]
+mod utils;
+
 mod duration;
 #[allow(unreachable_pub)] // false positive: https://github.com/rust-lang/rust/issues/102352
 pub use crate::duration::Duration;
@@ -118,17 +121,3 @@ pub use crate::instant::Instant;
 mod error;
 #[allow(unreachable_pub)] // false positive: https://github.com/rust-lang/rust/issues/102352
 pub use crate::error::TryFromTimeError;
-
-// =============================================================================
-// Utilities
-
-#[inline]
-fn pair_and_then<A, B, C, F>(x: Option<A>, y: Option<B>, f: F) -> Option<C>
-where
-    F: FnOnce(A, B) -> Option<C>,
-{
-    match (x, y) {
-        (Some(x), Some(y)) => f(x, y),
-        _ => None,
-    }
-}

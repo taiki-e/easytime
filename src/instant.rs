@@ -5,9 +5,7 @@ use core::{
 };
 use std::time;
 
-use const_fn::const_fn;
-
-use super::{pair_and_then, Duration, TryFromTimeError};
+use crate::{utils::pair_and_then, Duration, TryFromTimeError};
 
 /// A measurement of a monotonically nondecreasing clock.
 /// Opaque and useful only with `Duration`.
@@ -44,11 +42,11 @@ use super::{pair_and_then, Duration, TryFromTimeError};
 /// let duration = Duration::new(max_nanoseconds, 0);
 /// // Unlike `std::time::Instant`, it won't panic!
 /// let result = now + duration;
-///
-/// #[cfg(target_os = "linux")]
-/// assert!(result.is_some());
-/// #[cfg(target_os = "macos")]
-/// assert!(result.is_none());
+/// println!("{result:?}");
+/// # #[cfg(any(target_os = "linux", all(target_arch = "aarch64", target_os = "macos")))]
+/// # assert!(result.is_some());
+/// # #[cfg(all(target_arch = "x86_64", target_os = "macos"))]
+/// # assert!(result.is_none());
 /// ```
 ///
 /// # Underlying System calls
@@ -133,25 +131,29 @@ impl Instant {
     // =============================================================================
     // Option based method implementations
 
-    /// Returns `true` if [`into_inner`](Self::into_inner) returns `Some`.
-    ///
-    /// This is `const fn` on Rust 1.46+.
-    #[inline]
-    #[const_fn("1.46")]
-    pub const fn is_some(&self) -> bool {
-        match &self.0 {
-            Some(_) => true,
-            None => false,
+    const_fn! {
+        const_if: #[cfg(not(easytime_no_const_if_match))];
+        /// Returns `true` if [`into_inner`](Self::into_inner) returns `Some`.
+        ///
+        /// This is `const fn` on Rust 1.46+.
+        #[inline]
+        pub const fn is_some(&self) -> bool {
+            match &self.0 {
+                Some(_) => true,
+                None => false,
+            }
         }
     }
 
-    /// Returns `true` if [`into_inner`](Self::into_inner) returns `None`.
-    ///
-    /// This is `const fn` on Rust 1.46+.
-    #[inline]
-    #[const_fn("1.46")]
-    pub const fn is_none(&self) -> bool {
-        !self.is_some()
+    const_fn! {
+        const_if: #[cfg(not(easytime_no_const_if_match))];
+        /// Returns `true` if [`into_inner`](Self::into_inner) returns `None`.
+        ///
+        /// This is `const fn` on Rust 1.46+.
+        #[inline]
+        pub const fn is_none(&self) -> bool {
+            !self.is_some()
+        }
     }
 
     /// Returns the contained [`std::time::Instant`] or `None`.
@@ -160,17 +162,19 @@ impl Instant {
         self.0
     }
 
-    /// Returns the contained [`std::time::Instant`] or a default.
-    ///
-    /// `instant.unwrap_or(default)` is equivalent to `instant.into_inner().unwrap_or(default)`.
-    ///
-    /// This is `const fn` on Rust 1.46+.
-    #[inline]
-    #[const_fn("1.46")]
-    pub const fn unwrap_or(self, default: time::Instant) -> time::Instant {
-        match self.0 {
-            Some(d) => d,
-            None => default,
+    const_fn! {
+        const_if: #[cfg(not(easytime_no_const_if_match))];
+        /// Returns the contained [`std::time::Instant`] or a default.
+        ///
+        /// `instant.unwrap_or(default)` is equivalent to `instant.into_inner().unwrap_or(default)`.
+        ///
+        /// This is `const fn` on Rust 1.46+.
+        #[inline]
+        pub const fn unwrap_or(self, default: time::Instant) -> time::Instant {
+            match self.0 {
+                Some(d) => d,
+                None => default,
+            }
         }
     }
 

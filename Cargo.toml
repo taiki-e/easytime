@@ -26,6 +26,3 @@ doc-scrape-examples = false
 [features]
 default = ["std"]
 std = []
-
-[dependencies]
-const_fn = "0.4"

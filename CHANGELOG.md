@@ -10,6 +10,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+- Remove dependency on `const_fn`.
+
 ## [0.2.4] - 2022-09-05
 
 - Make `Duration::new` const function on Rust 1.58+.
