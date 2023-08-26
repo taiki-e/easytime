@@ -18,7 +18,7 @@ Add this to your `Cargo.toml`:
 easytime = "0.2"
 ```
 
-*Compiler support: requires rustc 1.34+*
+*Compiler support: requires rustc 1.58+*
 
 ## Examples
 
@@ -90,9 +90,9 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
     clippy::cast_precision_loss,
     clippy::cast_sign_loss,
     clippy::manual_map, // Option::map is not const
+    clippy::manual_range_contains,
     clippy::module_name_repetitions,
     clippy::must_use_candidate,
-    clippy::redundant_pattern_matching, // const Option::is_some requires Rust 1.48
 )]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 

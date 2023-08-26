@@ -3,7 +3,7 @@
 [![crates.io](https://img.shields.io/crates/v/easytime?style=flat-square&logo=rust)](https://crates.io/crates/easytime)
 [![docs.rs](https://img.shields.io/badge/docs.rs-easytime-blue?style=flat-square&logo=docs.rs)](https://docs.rs/easytime)
 [![license](https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue?style=flat-square)](#license)
-[![rustc](https://img.shields.io/badge/rustc-1.34+-blue?style=flat-square&logo=rust)](https://www.rust-lang.org)
+[![rustc](https://img.shields.io/badge/rustc-1.58+-blue?style=flat-square&logo=rust)](https://www.rust-lang.org)
 [![build status](https://img.shields.io/github/actions/workflow/status/taiki-e/easytime/ci.yml?branch=main&style=flat-square&logo=github)](https://github.com/taiki-e/easytime/actions)
 
 <!-- tidy:crate-doc:start -->
@@ -25,7 +25,7 @@ Add this to your `Cargo.toml`:
 easytime = "0.2"
 ```
 
-*Compiler support: requires rustc 1.34+*
+*Compiler support: requires rustc 1.58+*
 
 ## Examples
 

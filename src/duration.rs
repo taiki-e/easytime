@@ -64,8 +64,6 @@ impl Duration {
 
     /// The maximum duration.
     ///
-    /// **Note:** This constant is currently only available on Rust 1.53+.
-    ///
     /// May vary by platform as necessary. Must be able to contain the difference between
     /// two instances of `Instant` or two instances of `SystemTime`.
     /// This constraint gives it a value of about 584,942,417,355 years in practice,
@@ -78,32 +76,26 @@ impl Duration {
     ///
     /// assert_eq!(Duration::MAX, Duration::new(u64::MAX, 1_000_000_000 - 1));
     /// ```
-    #[cfg(not(easytime_no_duration_max))]
     pub const MAX: Self = Self(Some(time::Duration::MAX));
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_duration_consts_2))];
-        /// Creates a new `Duration` from the specified number of whole seconds and
-        /// additional nanoseconds.
-        ///
-        /// If the number of nanoseconds is greater than 1 billion (the number of
-        /// nanoseconds in a second), then it will carry over into the seconds provided.
-        ///
-        /// This is `const fn` on Rust 1.58+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let five_seconds = Duration::new(5, 0);
-        /// ```
-        #[inline]
-        pub const fn new(secs: u64, nanos: u32) -> Self {
-            let secs = time::Duration::from_secs(secs);
-            let nanos = time::Duration::from_nanos(nanos as u64);
-            Self(secs.checked_add(nanos))
-        }
+    /// Creates a new `Duration` from the specified number of whole seconds and
+    /// additional nanoseconds.
+    ///
+    /// If the number of nanoseconds is greater than 1 billion (the number of
+    /// nanoseconds in a second), then it will carry over into the seconds provided.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let five_seconds = Duration::new(5, 0);
+    /// ```
+    #[inline]
+    pub const fn new(secs: u64, nanos: u32) -> Self {
+        let secs = time::Duration::from_secs(secs);
+        let nanos = time::Duration::from_nanos(nanos as u64);
+        Self(secs.checked_add(nanos))
     }
 
     /// Creates a new `Duration` from the specified number of whole seconds.
@@ -174,213 +166,170 @@ impl Duration {
         Self(Some(time::Duration::from_nanos(nanos)))
     }
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns true if this `Duration` spans no time.
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// assert!(Duration::ZERO.is_zero());
-        /// assert!(Duration::new(0, 0).is_zero());
-        /// assert!(Duration::from_nanos(0).is_zero());
-        /// assert!(Duration::from_secs(0).is_zero());
-        ///
-        /// assert!(!Duration::new(1, 1).is_zero());
-        /// assert!(!Duration::from_nanos(1).is_zero());
-        /// assert!(!Duration::from_secs(1).is_zero());
-        /// ```
-        #[inline]
-        pub const fn is_zero(&self) -> bool {
-            match (self.as_secs(), self.subsec_nanos()) {
-                (Some(0), Some(0)) => true,
-                _ => false,
-            }
+    /// Returns true if this `Duration` spans no time.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// assert!(Duration::ZERO.is_zero());
+    /// assert!(Duration::new(0, 0).is_zero());
+    /// assert!(Duration::from_nanos(0).is_zero());
+    /// assert!(Duration::from_secs(0).is_zero());
+    ///
+    /// assert!(!Duration::new(1, 1).is_zero());
+    /// assert!(!Duration::from_nanos(1).is_zero());
+    /// assert!(!Duration::from_secs(1).is_zero());
+    /// ```
+    #[inline]
+    pub const fn is_zero(&self) -> bool {
+        matches!((self.as_secs(), self.subsec_nanos()), (Some(0), Some(0)))
+    }
+
+    /// Returns the number of _whole_ seconds contained by this `Duration`.
+    ///
+    /// The returned value does not include the fractional (nanosecond) part of the
+    /// duration, which can be obtained using [`subsec_nanos`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::new(5, 730_023_852);
+    /// assert_eq!(duration.as_secs(), Some(5));
+    /// ```
+    ///
+    /// [`subsec_nanos`]: Self::subsec_nanos
+    #[inline]
+    pub const fn as_secs(&self) -> Option<u64> {
+        match &self.0 {
+            Some(d) => Some(d.as_secs()),
+            None => None,
         }
     }
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns the number of _whole_ seconds contained by this `Duration`.
-        ///
-        /// The returned value does not include the fractional (nanosecond) part of the
-        /// duration, which can be obtained using [`subsec_nanos`].
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let duration = Duration::new(5, 730_023_852);
-        /// assert_eq!(duration.as_secs(), Some(5));
-        /// ```
-        ///
-        /// [`subsec_nanos`]: Self::subsec_nanos
-        #[inline]
-        pub const fn as_secs(&self) -> Option<u64> {
-            match &self.0 {
-                Some(d) => Some(d.as_secs()),
-                None => None,
-            }
+    /// Returns the fractional part of this `Duration`, in whole milliseconds.
+    ///
+    /// This method does **not** return the length of the duration when
+    /// represented by milliseconds. The returned number always represents a
+    /// fractional portion of a second (i.e., it is less than one thousand).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_millis(5_432);
+    /// assert_eq!(duration.as_secs(), Some(5));
+    /// assert_eq!(duration.subsec_millis(), Some(432));
+    /// ```
+    #[inline]
+    pub const fn subsec_millis(&self) -> Option<u32> {
+        match &self.0 {
+            Some(d) => Some(d.subsec_millis()),
+            None => None,
         }
     }
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns the fractional part of this `Duration`, in whole milliseconds.
-        ///
-        /// This method does **not** return the length of the duration when
-        /// represented by milliseconds. The returned number always represents a
-        /// fractional portion of a second (i.e., it is less than one thousand).
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let duration = Duration::from_millis(5_432);
-        /// assert_eq!(duration.as_secs(), Some(5));
-        /// assert_eq!(duration.subsec_millis(), Some(432));
-        /// ```
-        #[inline]
-        pub const fn subsec_millis(&self) -> Option<u32> {
-            match &self.0 {
-                Some(d) => Some(d.subsec_millis()),
-                None => None,
-            }
+    /// Returns the fractional part of this `Duration`, in whole microseconds.
+    ///
+    /// This method does **not** return the length of the duration when
+    /// represented by microseconds. The returned number always represents a
+    /// fractional portion of a second (i.e., it is less than one million).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_micros(1_234_567);
+    /// assert_eq!(duration.as_secs(), Some(1));
+    /// assert_eq!(duration.subsec_micros(), Some(234_567));
+    /// ```
+    #[inline]
+    pub const fn subsec_micros(&self) -> Option<u32> {
+        match &self.0 {
+            Some(d) => Some(d.subsec_micros()),
+            None => None,
         }
     }
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns the fractional part of this `Duration`, in whole microseconds.
-        ///
-        /// This method does **not** return the length of the duration when
-        /// represented by microseconds. The returned number always represents a
-        /// fractional portion of a second (i.e., it is less than one million).
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let duration = Duration::from_micros(1_234_567);
-        /// assert_eq!(duration.as_secs(), Some(1));
-        /// assert_eq!(duration.subsec_micros(), Some(234_567));
-        /// ```
-        #[inline]
-        pub const fn subsec_micros(&self) -> Option<u32> {
-            match &self.0 {
-                Some(d) => Some(d.subsec_micros()),
-                None => None,
-            }
+    /// Returns the fractional part of this `Duration`, in nanoseconds.
+    ///
+    /// This method does **not** return the length of the duration when
+    /// represented by nanoseconds. The returned number always represents a
+    /// fractional portion of a second (i.e., it is less than one billion).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_millis(5_010);
+    /// assert_eq!(duration.as_secs(), Some(5));
+    /// assert_eq!(duration.subsec_nanos(), Some(10_000_000));
+    /// ```
+    #[inline]
+    pub const fn subsec_nanos(&self) -> Option<u32> {
+        match &self.0 {
+            Some(d) => Some(d.subsec_nanos()),
+            None => None,
         }
     }
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns the fractional part of this `Duration`, in nanoseconds.
-        ///
-        /// This method does **not** return the length of the duration when
-        /// represented by nanoseconds. The returned number always represents a
-        /// fractional portion of a second (i.e., it is less than one billion).
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let duration = Duration::from_millis(5_010);
-        /// assert_eq!(duration.as_secs(), Some(5));
-        /// assert_eq!(duration.subsec_nanos(), Some(10_000_000));
-        /// ```
-        #[inline]
-        pub const fn subsec_nanos(&self) -> Option<u32> {
-            match &self.0 {
-                Some(d) => Some(d.subsec_nanos()),
-                None => None,
-            }
+    /// Returns the total number of whole milliseconds contained by this `Duration`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::new(5, 730_023_852);
+    /// assert_eq!(duration.as_millis(), Some(5_730));
+    /// ```
+    #[inline]
+    pub const fn as_millis(&self) -> Option<u128> {
+        match &self.0 {
+            Some(d) => Some(d.as_millis()),
+            None => None,
         }
     }
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns the total number of whole milliseconds contained by this `Duration`.
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let duration = Duration::new(5, 730_023_852);
-        /// assert_eq!(duration.as_millis(), Some(5_730));
-        /// ```
-        #[inline]
-        pub const fn as_millis(&self) -> Option<u128> {
-            match &self.0 {
-                Some(d) => Some(d.as_millis()),
-                None => None,
-            }
+    /// Returns the total number of whole microseconds contained by this `Duration`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::new(5, 730_023_852);
+    /// assert_eq!(duration.as_micros(), Some(5_730_023));
+    /// ```
+    #[inline]
+    pub const fn as_micros(&self) -> Option<u128> {
+        match &self.0 {
+            Some(d) => Some(d.as_micros()),
+            None => None,
         }
     }
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns the total number of whole microseconds contained by this `Duration`.
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let duration = Duration::new(5, 730_023_852);
-        /// assert_eq!(duration.as_micros(), Some(5_730_023));
-        /// ```
-        #[inline]
-        pub const fn as_micros(&self) -> Option<u128> {
-            match &self.0 {
-                Some(d) => Some(d.as_micros()),
-                None => None,
-            }
-        }
-    }
-
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns the total number of nanoseconds contained by this `Duration`.
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let duration = Duration::new(5, 730_023_852);
-        /// assert_eq!(duration.as_nanos(), Some(5_730_023_852));
-        /// ```
-        #[inline]
-        pub const fn as_nanos(&self) -> Option<u128> {
-            match &self.0 {
-                Some(d) => Some(d.as_nanos()),
-                None => None,
-            }
+    /// Returns the total number of nanoseconds contained by this `Duration`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::new(5, 730_023_852);
+    /// assert_eq!(duration.as_nanos(), Some(5_730_023_852));
+    /// ```
+    #[inline]
+    pub const fn as_nanos(&self) -> Option<u128> {
+        match &self.0 {
+            Some(d) => Some(d.as_nanos()),
+            None => None,
         }
     }
 
@@ -398,10 +347,7 @@ impl Duration {
     /// ```
     #[inline]
     pub fn as_secs_f64(&self) -> Option<f64> {
-        // TODO: replace with `self.0.as_ref().map(time::Duration::as_secs_f64)` on Rust 1.38+.
-        self.0.map(|this| {
-            (this.as_secs() as f64) + (this.subsec_nanos() as f64) / (NANOS_PER_SEC as f64)
-        })
+        self.0.as_ref().map(time::Duration::as_secs_f64)
     }
 
     /// Returns the number of seconds contained by this `Duration` as `f32`.
@@ -418,10 +364,7 @@ impl Duration {
     /// ```
     #[inline]
     pub fn as_secs_f32(&self) -> Option<f32> {
-        // TODO: replace with `self.0.as_ref().map(time::Duration::as_secs_f32)` on Rust 1.38+.
-        self.0.map(|this| {
-            (this.as_secs() as f32) + (this.subsec_nanos() as f32) / (NANOS_PER_SEC as f32)
-        })
+        self.0.as_ref().map(time::Duration::as_secs_f32)
     }
 
     /// Creates a new `Duration` from the specified number of seconds represented
@@ -551,55 +494,42 @@ impl Duration {
     // =============================================================================
     // Option based method implementations
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns `true` if [`into_inner`] returns `Some`.
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let zero = Duration::new(0, 0);
-        /// let one_sec = Duration::new(1, 0);
-        /// assert!((one_sec - zero).is_some());
-        /// assert!(!(zero - one_sec).is_some());
-        /// ```
-        ///
-        /// [`into_inner`]: Self::into_inner
-        #[inline]
-        pub const fn is_some(&self) -> bool {
-            match &self.0 {
-                Some(_) => true,
-                None => false,
-            }
-        }
+    /// Returns `true` if [`into_inner`] returns `Some`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let zero = Duration::new(0, 0);
+    /// let one_sec = Duration::new(1, 0);
+    /// assert!((one_sec - zero).is_some());
+    /// assert!(!(zero - one_sec).is_some());
+    /// ```
+    ///
+    /// [`into_inner`]: Self::into_inner
+    #[inline]
+    pub const fn is_some(&self) -> bool {
+        self.0.is_some()
     }
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns `true` if [`into_inner`] returns `None`.
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let zero = Duration::new(0, 0);
-        /// let one_sec = Duration::new(1, 0);
-        /// assert!(!(one_sec - zero).is_none());
-        /// assert!((zero - one_sec).is_none());
-        /// ```
-        ///
-        /// [`into_inner`]: Self::into_inner
-        #[inline]
-        pub const fn is_none(&self) -> bool {
-            !self.is_some()
-        }
+    /// Returns `true` if [`into_inner`] returns `None`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let zero = Duration::new(0, 0);
+    /// let one_sec = Duration::new(1, 0);
+    /// assert!(!(one_sec - zero).is_none());
+    /// assert!((zero - one_sec).is_none());
+    /// ```
+    ///
+    /// [`into_inner`]: Self::into_inner
+    #[inline]
+    pub const fn is_none(&self) -> bool {
+        !self.is_some()
     }
 
     /// Returns the contained [`std::time::Duration`] or `None`.
@@ -619,36 +549,31 @@ impl Duration {
         self.0
     }
 
-    const_fn! {
-        const_if: #[cfg(not(easytime_no_const_if_match))];
-        /// Returns the contained [`std::time::Duration`] or a default.
-        ///
-        /// `dur.unwrap_or(default)` is equivalent to `dur.into_inner().unwrap_or(default)`.
-        ///
-        /// This is `const fn` on Rust 1.46+.
-        ///
-        /// # Examples
-        ///
-        /// ```
-        /// use easytime::Duration;
-        ///
-        /// let zero = Duration::new(0, 0);
-        /// let one_sec = Duration::new(1, 0);
-        /// assert_eq!(
-        ///     (one_sec - zero).unwrap_or(std::time::Duration::from_secs(2)),
-        ///     std::time::Duration::from_secs(1)
-        /// );
-        /// assert_eq!(
-        ///     (zero - one_sec).unwrap_or(std::time::Duration::from_secs(2)),
-        ///     std::time::Duration::from_secs(2)
-        /// );
-        /// ```
-        #[inline]
-        pub const fn unwrap_or(self, default: time::Duration) -> time::Duration {
-            match self.0 {
-                Some(d) => d,
-                None => default,
-            }
+    /// Returns the contained [`std::time::Duration`] or a default.
+    ///
+    /// `dur.unwrap_or(default)` is equivalent to `dur.into_inner().unwrap_or(default)`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let zero = Duration::new(0, 0);
+    /// let one_sec = Duration::new(1, 0);
+    /// assert_eq!(
+    ///     (one_sec - zero).unwrap_or(std::time::Duration::from_secs(2)),
+    ///     std::time::Duration::from_secs(1)
+    /// );
+    /// assert_eq!(
+    ///     (zero - one_sec).unwrap_or(std::time::Duration::from_secs(2)),
+    ///     std::time::Duration::from_secs(2)
+    /// );
+    /// ```
+    #[inline]
+    pub const fn unwrap_or(self, default: time::Duration) -> time::Duration {
+        match self.0 {
+            Some(d) => d,
+            None => default,
         }
     }
 
