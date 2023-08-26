@@ -10,6 +10,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+## [0.2.6] - 2023-08-26
+
 - Increase the minimum supported Rust version from Rust 1.34 to Rust 1.58.
 
 ## [0.2.5] - 2023-07-27
@@ -74,7 +76,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 Initial release
 
-[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.5...HEAD
+[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.6...HEAD
+[0.2.6]: https://github.com/taiki-e/easytime/compare/v0.2.5...v0.2.6
 [0.2.5]: https://github.com/taiki-e/easytime/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/taiki-e/easytime/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/taiki-e/easytime/compare/v0.2.2...v0.2.3
