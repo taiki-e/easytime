@@ -1,7 +1,7 @@
 [package]
 name = "easytime"
 version = "0.2.5"
-edition = "2018"
+edition = "2021"
 rust-version = "1.58"
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/easytime"

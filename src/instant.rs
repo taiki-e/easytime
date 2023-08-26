@@ -1,6 +1,5 @@
 use core::{
     cmp::Ordering,
-    convert::TryFrom,
     ops::{Add, AddAssign, Sub, SubAssign},
 };
 use std::time;

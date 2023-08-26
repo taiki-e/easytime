@@ -74,8 +74,7 @@ fn gen_assert_impl() -> Result<()> {
                 if generics.const_params().count() != 0 {
                     panic!(
                         "gen_assert_impl doesn't support const generics yet; \
-                        skipped `{}`",
-                        path_string
+                        skipped `{path_string}`"
                     );
                 }
 
@@ -235,26 +234,24 @@ fn gen_assert_impl() -> Result<()> {
     }
 
     for &t in NOT_SEND {
-        assert!(visited_types.contains(t), "unknown type `{}` specified in NOT_SEND constant", t);
+        assert!(visited_types.contains(t), "unknown type `{t}` specified in NOT_SEND constant");
     }
     for &t in NOT_SYNC {
-        assert!(visited_types.contains(t), "unknown type `{}` specified in NOT_SYNC constant", t);
+        assert!(visited_types.contains(t), "unknown type `{t}` specified in NOT_SYNC constant");
     }
     for &t in NOT_UNPIN {
-        assert!(visited_types.contains(t), "unknown type `{}` specified in NOT_UNPIN constant", t);
+        assert!(visited_types.contains(t), "unknown type `{t}` specified in NOT_UNPIN constant");
     }
     for &t in NOT_UNWIND_SAFE {
         assert!(
             visited_types.contains(t),
-            "unknown type `{}` specified in NOT_UNWIND_SAFE constant",
-            t
+            "unknown type `{t}` specified in NOT_UNWIND_SAFE constant"
         );
     }
     for &t in NOT_REF_UNWIND_SAFE {
         assert!(
             visited_types.contains(t),
-            "unknown type `{}` specified in NOT_REF_UNWIND_SAFE constant",
-            t
+            "unknown type `{t}` specified in NOT_REF_UNWIND_SAFE constant"
         );
     }
 

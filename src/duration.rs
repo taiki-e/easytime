@@ -2,10 +2,9 @@
 
 use core::{
     cmp::Ordering,
-    convert::TryFrom,
     fmt,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
-    time, u64,
+    time,
 };
 
 use crate::{utils::pair_and_then, TryFromTimeError};
