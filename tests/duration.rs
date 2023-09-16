@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
 #![warn(rust_2018_idioms, single_use_lifetimes)]
 #![allow(clippy::zero_prefixed_literal, clippy::non_ascii_literal, clippy::assertions_on_constants)]
 

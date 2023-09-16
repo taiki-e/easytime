@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
 use core::fmt;
 
 /// The error type returned when a conversion from `easytime` types to `std::time` types fails.
