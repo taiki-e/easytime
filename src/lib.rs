@@ -71,19 +71,19 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 ))]
 #![forbid(unsafe_code)]
 #![warn(
-    missing_debug_implementations,
-    missing_docs,
     rust_2018_idioms,
     single_use_lifetimes,
-    unreachable_pub
-)]
-#![warn(
+    unreachable_pub,
     clippy::pedantic,
-    // lints for public library
+    // Lints that may help when writing public library.
+    missing_debug_implementations,
+    missing_docs,
     clippy::alloc_instead_of_core,
     clippy::exhaustive_enums,
     clippy::exhaustive_structs,
-    // clippy::std_instead_of_alloc, // alloc requires Rust 1.36
+    clippy::impl_trait_in_params,
+    // clippy::missing_inline_in_public_items,
+    // clippy::std_instead_of_alloc,
     clippy::std_instead_of_core,
 )]
 #![allow(
