@@ -109,8 +109,9 @@ pub mod std_tests {
         let now = Instant::now();
         let earlier = now - Duration::new(1, 0);
         let later = now + Duration::new(1, 0);
-        assert_eq!(earlier.duration_since(now).into_inner(), None);
+        // https://github.com/rust-lang/rust/commit/9d8ef1160747a4d033f21803770641f2deb32b25
+        assert_eq!(earlier.duration_since(now), Duration::ZERO);
         assert_eq!(later.duration_since(now), Duration::new(1, 0));
-        assert_eq!(now.duration_since(now), Duration::new(0, 0));
+        assert_eq!(now.duration_since(now), Duration::ZERO);
     }
 }

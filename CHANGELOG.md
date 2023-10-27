@@ -10,6 +10,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+- Make `Instant::{duration_since, elapsed, sub}` saturating to follow the [upstream change](https://github.com/rust-lang/rust/pull/89926).
+
 ## [0.2.6] - 2023-08-26
 
 - Increase the minimum supported Rust version from Rust 1.34 to Rust 1.58.

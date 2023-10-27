@@ -32,23 +32,10 @@ use crate::{utils::pair_and_then, Duration, TryFromTimeError};
 /// # OS-specific behaviors
 ///
 /// An `Instant` is a wrapper around system-specific types and it may behave
-/// differently depending on the underlying operating system. For example,
-/// the following snippet is fine on Linux but fails and returns `None` on macOS:
+/// differently depending on the underlying operating system.
 ///
-/// ```
-/// use easytime::{Duration, Instant};
-///
-/// let now = Instant::now();
-/// let max_nanoseconds = u64::MAX / 1_000_000_000;
-/// let duration = Duration::new(max_nanoseconds, 0);
-/// // Unlike `std::time::Instant`, it won't panic!
-/// let result = now + duration;
-/// println!("{result:?}");
-/// # #[cfg(any(target_os = "linux", all(target_arch = "aarch64", target_os = "macos")))]
-/// # assert!(result.is_some());
-/// # #[cfg(all(target_arch = "x86_64", target_os = "macos"))]
-/// # assert!(result.is_none());
-/// ```
+/// See the [standard library documentation](std::time::Instant#underlying-system-calls)
+/// for more.
 ///
 /// # Underlying System calls
 ///
@@ -75,7 +62,8 @@ impl Instant {
         Self(Some(time::Instant::now()))
     }
 
-    /// Returns the amount of time elapsed from another instant to this one.
+    /// Returns the amount of time elapsed from another instant to this one,
+    /// or zero duration if that instant is later than this one.
     ///
     /// # Examples
     ///
@@ -88,9 +76,14 @@ impl Instant {
     /// sleep(time::Duration::new(1, 0));
     /// let new_now = Instant::now();
     /// println!("{:?}", new_now.duration_since(now));
+    /// println!("{:?}", now.duration_since(new_now)); // Some(0ns)
     /// ```
     pub fn duration_since(&self, earlier: Self) -> Duration {
-        Duration(pair_and_then(self.0.as_ref(), earlier.0, time::Instant::checked_duration_since))
+        // https://github.com/rust-lang/rust/commit/9d8ef1160747a4d033f21803770641f2deb32b25
+        Duration(Some(
+            pair_and_then(self.0.as_ref(), earlier.0, time::Instant::checked_duration_since)
+                .unwrap_or_default(),
+        ))
     }
 
     /// Returns the amount of time elapsed since this instant was created.
