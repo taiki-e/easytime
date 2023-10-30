@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#![allow(deprecated_in_future)]
-
 use core::{
     cmp::Ordering,
     fmt,

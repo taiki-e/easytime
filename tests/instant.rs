@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 #![cfg(feature = "std")]
-#![warn(rust_2018_idioms, single_use_lifetimes)]
 #![allow(clippy::eq_op)]
 
 // https://github.com/rust-lang/rust/blob/1.63.0/library/std/src/time/tests.rs

@@ -71,10 +71,6 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 ))]
 #![forbid(unsafe_code)]
 #![warn(
-    rust_2018_idioms,
-    single_use_lifetimes,
-    unreachable_pub,
-    clippy::pedantic,
     // Lints that may help when writing public library.
     missing_debug_implementations,
     missing_docs,
@@ -91,10 +87,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
     clippy::cast_possible_truncation,
     clippy::cast_precision_loss,
     clippy::cast_sign_loss,
-    clippy::manual_map, // Option::map is not const
-    clippy::manual_range_contains,
-    clippy::module_name_repetitions,
-    clippy::must_use_candidate,
+    clippy::must_use_candidate
 )]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
@@ -112,7 +105,6 @@ mod assert_impl;
 mod utils;
 
 mod duration;
-#[allow(unreachable_pub)] // false positive: https://github.com/rust-lang/rust/issues/102352
 pub use crate::duration::Duration;
 
 #[cfg(feature = "std")]
@@ -121,5 +113,4 @@ mod instant;
 pub use crate::instant::Instant;
 
 mod error;
-#[allow(unreachable_pub)] // false positive: https://github.com/rust-lang/rust/issues/102352
 pub use crate::error::TryFromTimeError;
