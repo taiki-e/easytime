@@ -89,7 +89,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
     clippy::cast_sign_loss,
     clippy::must_use_candidate
 )]
-#![cfg_attr(docsrs, feature(doc_cfg))]
+#![cfg_attr(easytime_doc_cfg, feature(doc_cfg))]
 
 #[cfg(doc)]
 extern crate self as easytime;
