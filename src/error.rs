@@ -8,7 +8,7 @@ pub struct TryFromTimeError(pub(crate) ());
 
 impl fmt::Display for TryFromTimeError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "invalid arithmetic attempted on instants or durations")
+        f.write_str("invalid arithmetic attempted on instants or durations")
     }
 }
 
