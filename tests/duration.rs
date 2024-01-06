@@ -44,7 +44,7 @@ fn cmp() {
 }
 
 // https://github.com/rust-lang/rust/blob/1.63.0/library/core/tests/time.rs
-pub mod core_tests {
+mod core_tests {
     use core::time;
 
     use easytime::Duration;
