@@ -410,15 +410,15 @@ mod core_tests {
         assert_eq!(FROM_SECONDS, duration_second());
 
         // const SECONDS_F32: Option<f32> = duration_second().as_secs_f32();
-        // assert_eq!(SECONDS_F32, Some(1.0));
+        // assert_eq!(SECONDS_F32, Some(1.));
 
-        // const FROM_SECONDS_F32: Duration = Duration::from_secs_f32(1.0);
+        // const FROM_SECONDS_F32: Duration = Duration::from_secs_f32(1.);
         // assert_eq!(FROM_SECONDS_F32, duration_second);
 
         // const SECONDS_F64: f64 = duration_second().as_secs_f64();
-        // assert_eq!(SECONDS_F64, 1.0);
+        // assert_eq!(SECONDS_F64, 1.);
 
-        // const FROM_SECONDS_F64: Duration = Duration::from_secs_f64(1.0);
+        // const FROM_SECONDS_F64: Duration = Duration::from_secs_f64(1.);
         // assert_eq!(FROM_SECONDS_F64, duration_second());
 
         const MILLIS: Option<u128> = duration_second().as_millis();
@@ -451,25 +451,25 @@ mod core_tests {
         // const MUL: Duration = duration_second() * 1;
         // assert_eq!(MUL, duration_second());
 
-        // const MUL_F32: Duration = duration_second().mul_f32(1.0);
+        // const MUL_F32: Duration = duration_second().mul_f32(1.);
         // assert_eq!(MUL_F32, duration_second());
 
-        // const MUL_F64: Duration = duration_second().mul_f64(1.0);
+        // const MUL_F64: Duration = duration_second().mul_f64(1.);
         // assert_eq!(MUL_F64, duration_second());
 
         // const DIV: Duration = duration_second() / 1;
         // assert_eq!(DIV, duration_second());
 
-        // const DIV_F32: Duration = duration_second().div_f32(1.0);
+        // const DIV_F32: Duration = duration_second().div_f32(1.);
         // assert_eq!(DIV_F32, duration_second());
 
-        // const DIV_F64: Duration = duration_second().div_f64(1.0);
+        // const DIV_F64: Duration = duration_second().div_f64(1.);
         // assert_eq!(DIV_F64, duration_second());
 
         // const DIV_DURATION_F32: f32 = duration_second().div_duration_f32(duration_second());
-        // assert_eq!(DIV_DURATION_F32, 1.0);
+        // assert_eq!(DIV_DURATION_F32, 1.);
 
         // const DIV_DURATION_F64: f64 = duration_second().div_duration_f64(duration_second());
-        // assert_eq!(DIV_DURATION_F64, 1.0);
+        // assert_eq!(DIV_DURATION_F64, 1.);
     }
 }

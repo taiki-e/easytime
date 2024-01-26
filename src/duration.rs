@@ -389,7 +389,7 @@ impl Duration {
         // TODO: update implementation based on https://github.com/rust-lang/rust/commit/e0bcf771d6e670988a3d4fdc785ecd5857916f10
         const MAX_NANOS_F64: f64 = ((u64::MAX as u128 + 1) * (NANOS_PER_SEC as u128)) as f64;
         let nanos = secs * (NANOS_PER_SEC as f64);
-        if !nanos.is_finite() || nanos >= MAX_NANOS_F64 || nanos < 0.0 {
+        if !nanos.is_finite() || nanos >= MAX_NANOS_F64 || nanos < 0. {
             return Self(None);
         }
         let nanos = nanos as u128;
@@ -415,7 +415,7 @@ impl Duration {
         // TODO: update implementation based on https://github.com/rust-lang/rust/commit/e0bcf771d6e670988a3d4fdc785ecd5857916f10
         const MAX_NANOS_F32: f32 = ((u64::MAX as u128 + 1) * (NANOS_PER_SEC as u128)) as f32;
         let nanos = secs * (NANOS_PER_SEC as f32);
-        if !nanos.is_finite() || nanos >= MAX_NANOS_F32 || nanos < 0.0 {
+        if !nanos.is_finite() || nanos >= MAX_NANOS_F32 || nanos < 0. {
             return Self(None);
         }
         let nanos = nanos as u128;
