@@ -5,7 +5,10 @@
 #[macro_use]
 mod file;
 
-use std::{collections::BTreeSet, path::Path};
+use std::{
+    collections::{BTreeSet, HashSet},
+    path::Path,
+};
 
 use anyhow::Result;
 use fs_err as fs;
@@ -42,7 +45,7 @@ fn gen_assert_impl() -> Result<()> {
         .collect();
 
     let mut tokens = quote! {};
-    let mut visited_types = BTreeSet::new();
+    let mut visited_types = HashSet::new();
     let mut use_macros = false;
     let mut use_generics_helpers = false;
     for f in &files {
