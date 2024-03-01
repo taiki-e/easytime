@@ -48,9 +48,11 @@ const NANOS_PER_SEC: u32 = 1_000_000_000;
 pub struct Duration(pub(crate) Option<time::Duration>);
 
 impl Duration {
-    // TODO: duration_constants https://github.com/rust-lang/rust/issues/57391
-    // TODO: div_duration https://github.com/rust-lang/rust/issues/63139
-    // TODO: duration_checked_float https://github.com/rust-lang/rust/pull/102271
+    // TODO: add the followings once stabilized:
+    // - duration_constants https://github.com/rust-lang/rust/issues/57391
+    // - div_duration https://github.com/rust-lang/rust/issues/63139
+    // - duration_abs_diff https://github.com/rust-lang/rust/issues/117618
+    // - duration_constructors https://github.com/rust-lang/rust/issues/120301
 
     /// Returns a "none" value
     pub const NONE: Self = Self(None);
@@ -97,6 +99,7 @@ impl Duration {
     ///
     /// let five_seconds = Duration::new(5, 0);
     /// ```
+    #[must_use]
     #[inline]
     pub const fn new(secs: u64, nanos: u32) -> Self {
         let secs = time::Duration::from_secs(secs);
@@ -116,6 +119,7 @@ impl Duration {
     /// assert_eq!(Some(5), duration.as_secs());
     /// assert_eq!(Some(0), duration.subsec_nanos());
     /// ```
+    #[must_use]
     #[inline]
     pub const fn from_secs(secs: u64) -> Self {
         Self(Some(time::Duration::from_secs(secs)))
@@ -133,6 +137,7 @@ impl Duration {
     /// assert_eq!(Some(2), duration.as_secs());
     /// assert_eq!(Some(569_000_000), duration.subsec_nanos());
     /// ```
+    #[must_use]
     #[inline]
     pub const fn from_millis(millis: u64) -> Self {
         Self(Some(time::Duration::from_millis(millis)))
@@ -150,6 +155,7 @@ impl Duration {
     /// assert_eq!(Some(1), duration.as_secs());
     /// assert_eq!(Some(2000), duration.subsec_nanos());
     /// ```
+    #[must_use]
     #[inline]
     pub const fn from_micros(micros: u64) -> Self {
         Self(Some(time::Duration::from_micros(micros)))
@@ -167,6 +173,7 @@ impl Duration {
     /// assert_eq!(Some(1), duration.as_secs());
     /// assert_eq!(Some(123), duration.subsec_nanos());
     /// ```
+    #[must_use]
     #[inline]
     pub const fn from_nanos(nanos: u64) -> Self {
         Self(Some(time::Duration::from_nanos(nanos)))
@@ -188,6 +195,7 @@ impl Duration {
     /// assert!(!Duration::from_nanos(1).is_zero());
     /// assert!(!Duration::from_secs(1).is_zero());
     /// ```
+    #[must_use]
     #[inline]
     pub const fn is_zero(&self) -> bool {
         matches!((self.as_secs(), self.subsec_nanos()), (Some(0), Some(0)))
@@ -208,6 +216,7 @@ impl Duration {
     /// ```
     ///
     /// [`subsec_nanos`]: Self::subsec_nanos
+    #[must_use]
     #[inline]
     pub const fn as_secs(&self) -> Option<u64> {
         match &self.0 {
@@ -231,6 +240,7 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(5));
     /// assert_eq!(duration.subsec_millis(), Some(432));
     /// ```
+    #[must_use]
     #[inline]
     pub const fn subsec_millis(&self) -> Option<u32> {
         match &self.0 {
@@ -254,6 +264,7 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(1));
     /// assert_eq!(duration.subsec_micros(), Some(234_567));
     /// ```
+    #[must_use]
     #[inline]
     pub const fn subsec_micros(&self) -> Option<u32> {
         match &self.0 {
@@ -277,6 +288,7 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(5));
     /// assert_eq!(duration.subsec_nanos(), Some(10_000_000));
     /// ```
+    #[must_use]
     #[inline]
     pub const fn subsec_nanos(&self) -> Option<u32> {
         match &self.0 {
@@ -295,6 +307,7 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_millis(), Some(5_730));
     /// ```
+    #[must_use]
     #[inline]
     pub const fn as_millis(&self) -> Option<u128> {
         match &self.0 {
@@ -313,6 +326,7 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_micros(), Some(5_730_023));
     /// ```
+    #[must_use]
     #[inline]
     pub const fn as_micros(&self) -> Option<u128> {
         match &self.0 {
@@ -331,6 +345,7 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_nanos(), Some(5_730_023_852));
     /// ```
+    #[must_use]
     #[inline]
     pub const fn as_nanos(&self) -> Option<u128> {
         match &self.0 {
@@ -351,6 +366,7 @@ impl Duration {
     /// let dur = Duration::new(2, 700_000_000);
     /// assert_eq!(dur.as_secs_f64(), Some(2.7));
     /// ```
+    #[must_use]
     #[inline]
     pub fn as_secs_f64(&self) -> Option<f64> {
         self.0.as_ref().map(time::Duration::as_secs_f64)
@@ -368,6 +384,7 @@ impl Duration {
     /// let dur = Duration::new(2, 700_000_000);
     /// assert_eq!(dur.as_secs_f32(), Some(2.7));
     /// ```
+    #[must_use]
     #[inline]
     pub fn as_secs_f32(&self) -> Option<f32> {
         self.0.as_ref().map(time::Duration::as_secs_f32)
@@ -384,6 +401,7 @@ impl Duration {
     /// let dur = Duration::from_secs_f64(2.7);
     /// assert_eq!(dur, Duration::new(2, 700_000_000));
     /// ```
+    #[must_use]
     #[inline]
     pub fn from_secs_f64(secs: f64) -> Self {
         // TODO: update implementation based on https://github.com/rust-lang/rust/commit/e0bcf771d6e670988a3d4fdc785ecd5857916f10
@@ -410,6 +428,7 @@ impl Duration {
     /// let dur = Duration::from_secs_f32(2.7);
     /// assert_eq!(dur, Duration::new(2, 700_000_000));
     /// ```
+    #[must_use]
     #[inline]
     pub fn from_secs_f32(secs: f32) -> Duration {
         // TODO: update implementation based on https://github.com/rust-lang/rust/commit/e0bcf771d6e670988a3d4fdc785ecd5857916f10
@@ -514,6 +533,7 @@ impl Duration {
     /// ```
     ///
     /// [`into_inner`]: Self::into_inner
+    #[must_use]
     #[inline]
     pub const fn is_some(&self) -> bool {
         self.0.is_some()
@@ -533,6 +553,7 @@ impl Duration {
     /// ```
     ///
     /// [`into_inner`]: Self::into_inner
+    #[must_use]
     #[inline]
     pub const fn is_none(&self) -> bool {
         !self.is_some()
@@ -550,6 +571,7 @@ impl Duration {
     /// assert_eq!((one_sec - zero).into_inner(), Some(std::time::Duration::from_secs(1)));
     /// assert_eq!((zero - one_sec).into_inner(), None);
     /// ```
+    #[must_use]
     #[inline]
     pub const fn into_inner(self) -> Option<time::Duration> {
         self.0
@@ -575,6 +597,7 @@ impl Duration {
     ///     std::time::Duration::from_secs(2)
     /// );
     /// ```
+    #[must_use]
     #[inline]
     pub const fn unwrap_or(self, default: time::Duration) -> time::Duration {
         match self.0 {

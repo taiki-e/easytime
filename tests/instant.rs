@@ -63,7 +63,7 @@ mod std_tests {
     #[test]
     fn instant_elapsed() {
         let a = Instant::now();
-        a.elapsed();
+        let _ = a.elapsed();
     }
 
     #[test]

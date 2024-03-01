@@ -58,6 +58,7 @@ impl Instant {
     ///
     /// let now = Instant::now();
     /// ```
+    #[must_use]
     pub fn now() -> Self {
         Self(Some(time::Instant::now()))
     }
@@ -78,6 +79,7 @@ impl Instant {
     /// println!("{:?}", new_now.duration_since(now));
     /// println!("{:?}", now.duration_since(new_now)); // Some(0ns)
     /// ```
+    #[must_use]
     pub fn duration_since(&self, earlier: Self) -> Duration {
         // https://github.com/rust-lang/rust/commit/9d8ef1160747a4d033f21803770641f2deb32b25
         Duration(Some(
@@ -100,6 +102,7 @@ impl Instant {
     /// sleep(three_secs);
     /// assert!(instant.elapsed() >= three_secs);
     /// ```
+    #[must_use]
     pub fn elapsed(&self) -> Duration {
         Self::now() - *self
     }
@@ -108,18 +111,21 @@ impl Instant {
     // Option based method implementations
 
     /// Returns `true` if [`into_inner`](Self::into_inner) returns `Some`.
+    #[must_use]
     #[inline]
     pub const fn is_some(&self) -> bool {
         self.0.is_some()
     }
 
     /// Returns `true` if [`into_inner`](Self::into_inner) returns `None`.
+    #[must_use]
     #[inline]
     pub const fn is_none(&self) -> bool {
         !self.is_some()
     }
 
     /// Returns the contained [`std::time::Instant`] or `None`.
+    #[must_use]
     #[inline]
     pub const fn into_inner(self) -> Option<time::Instant> {
         self.0
@@ -128,6 +134,7 @@ impl Instant {
     /// Returns the contained [`std::time::Instant`] or a default.
     ///
     /// `instant.unwrap_or(default)` is equivalent to `instant.into_inner().unwrap_or(default)`.
+    #[must_use]
     #[inline]
     pub const fn unwrap_or(self, default: time::Instant) -> time::Instant {
         match self.0 {
