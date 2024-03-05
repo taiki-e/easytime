@@ -10,6 +10,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+## [0.2.7] - 2024-03-05
+
 - Make `Instant::{duration_since, elapsed, sub}` saturating to follow the [upstream change](https://github.com/rust-lang/rust/pull/89926).
 
 - Add `#[must_use]` to follow upstream changes.
@@ -80,7 +82,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 Initial release
 
-[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.6...HEAD
+[Unreleased]: https://github.com/taiki-e/easytime/compare/v0.2.7...HEAD
+[0.2.7]: https://github.com/taiki-e/easytime/compare/v0.2.6...v0.2.7
 [0.2.6]: https://github.com/taiki-e/easytime/compare/v0.2.5...v0.2.6
 [0.2.5]: https://github.com/taiki-e/easytime/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/taiki-e/easytime/compare/v0.2.3...v0.2.4
