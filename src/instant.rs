@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use core::{
-    cmp::Ordering,
+    cmp,
     ops::{Add, AddAssign, Sub, SubAssign},
 };
 use std::time;
@@ -171,13 +171,13 @@ impl PartialEq<Instant> for time::Instant {
 }
 
 impl PartialOrd<time::Instant> for Instant {
-    fn partial_cmp(&self, other: &time::Instant) -> Option<Ordering> {
+    fn partial_cmp(&self, other: &time::Instant) -> Option<cmp::Ordering> {
         self.0.as_ref().and_then(|this| this.partial_cmp(other))
     }
 }
 
 impl PartialOrd<Instant> for time::Instant {
-    fn partial_cmp(&self, other: &Instant) -> Option<Ordering> {
+    fn partial_cmp(&self, other: &Instant) -> Option<cmp::Ordering> {
         other.0.as_ref().and_then(|other| self.partial_cmp(other))
     }
 }

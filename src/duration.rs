@@ -8,8 +8,7 @@
 )]
 
 use core::{
-    cmp::Ordering,
-    fmt,
+    cmp, fmt,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
     time,
 };
@@ -651,13 +650,13 @@ impl PartialEq<Duration> for time::Duration {
 }
 
 impl PartialOrd<time::Duration> for Duration {
-    fn partial_cmp(&self, other: &time::Duration) -> Option<Ordering> {
+    fn partial_cmp(&self, other: &time::Duration) -> Option<cmp::Ordering> {
         self.0.as_ref().and_then(|this| this.partial_cmp(other))
     }
 }
 
 impl PartialOrd<Duration> for time::Duration {
-    fn partial_cmp(&self, other: &Duration) -> Option<Ordering> {
+    fn partial_cmp(&self, other: &Duration) -> Option<cmp::Ordering> {
         other.0.as_ref().and_then(|other| self.partial_cmp(other))
     }
 }
