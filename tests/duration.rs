@@ -1,11 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#![allow(
-    clippy::assertions_on_constants,
-    clippy::items_after_statements,
-    clippy::zero_prefixed_literal
-)]
-
 use core::time;
 
 use easytime::Duration;
@@ -45,6 +39,12 @@ fn cmp() {
 
 // https://github.com/rust-lang/rust/blob/1.63.0/library/core/tests/time.rs
 mod core_tests {
+    #![allow(
+        clippy::assertions_on_constants,
+        clippy::items_after_statements,
+        clippy::zero_prefixed_literal
+    )]
+
     use core::time;
 
     use easytime::Duration;

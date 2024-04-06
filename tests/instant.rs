@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 #![cfg(feature = "std")]
-#![allow(clippy::eq_op)]
 
 // https://github.com/rust-lang/rust/blob/1.63.0/library/std/src/time/tests.rs
 mod std_tests {
+    #![allow(clippy::eq_op)]
+
     use easytime::{Duration, Instant};
 
     macro_rules! assert_almost_eq {
