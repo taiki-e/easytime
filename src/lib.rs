@@ -20,8 +20,6 @@ Add this to your `Cargo.toml`:
 easytime = "0.2"
 ```
 
-*Compiler support: requires rustc 1.58+*
-
 ## Examples
 
 ```rust
