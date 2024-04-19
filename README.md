@@ -63,8 +63,8 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 
 <!-- tidy:crate-doc:end -->
 
-[`easytime::Instant`]: https://docs.rs/easytime/0.2/easytime/struct.Instant.html
-[`easytime::Duration`]: https://docs.rs/easytime/0.2/easytime/struct.Duration.html
+[`easytime::Instant`]: https://docs.rs/easytime/latest/easytime/struct.Instant.html
+[`easytime::Duration`]: https://docs.rs/easytime/latest/easytime/struct.Duration.html
 [`std::time`]: https://doc.rust-lang.org/std/time/index.html
 [`std::time::Instant`]: https://doc.rust-lang.org/std/time/struct.Instant.html
 [`std::time::Duration`]: https://doc.rust-lang.org/std/time/struct.Duration.html
