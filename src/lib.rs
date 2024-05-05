@@ -80,8 +80,8 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
     // clippy::std_instead_of_alloc,
     clippy::std_instead_of_core,
 )]
-// docs.rs only (cfg is enabled via [package.metadata.docs.rs] in Cargo.toml, not build script)
-#![cfg_attr(easytime_doc_cfg, feature(doc_cfg))]
+// docs.rs only (cfg is enabled by docs.rs, not build script)
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(doc)]
 extern crate self as easytime;

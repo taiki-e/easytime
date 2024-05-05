@@ -42,7 +42,7 @@ use crate::{utils::pair_and_then, Duration, TryFromTimeError};
 /// See the [standard library documentation](std::time::Instant#underlying-system-calls)
 /// for the system calls used to get the current time using `now()`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-#[cfg_attr(easytime_doc_cfg, doc(cfg(feature = "std")))]
+#[cfg_attr(docsrs, doc(cfg(feature = "std")))]
 pub struct Instant(Option<time::Instant>);
 
 impl Instant {
