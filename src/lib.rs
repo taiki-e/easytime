@@ -82,6 +82,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 )]
 // docs.rs only (cfg is enabled by docs.rs, not build script)
 #![cfg_attr(docsrs, feature(doc_cfg))]
+#![cfg_attr(test, allow(unexpected_cfgs))] // https://github.com/rust-lang/rust/issues/124735
 
 #[cfg(doc)]
 extern crate self as easytime;
