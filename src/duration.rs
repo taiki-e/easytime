@@ -178,7 +178,7 @@ impl Duration {
         Self(Some(time::Duration::from_nanos(nanos)))
     }
 
-    /// Returns true if this `Duration` spans no time.
+    /// Returns `true` if this `Duration` spans no time.
     ///
     /// # Examples
     ///
@@ -515,7 +515,7 @@ impl Duration {
         self.as_secs_f32().map_or(Self::NONE, |secs| Duration::from_secs_f32(secs / rhs))
     }
 
-    // =============================================================================
+    // -------------------------------------------------------------------------
     // Option based method implementations
 
     /// Returns `true` if [`into_inner`] returns `Some`.
@@ -634,7 +634,7 @@ impl Duration {
     }
 }
 
-// =============================================================================
+// -----------------------------------------------------------------------------
 // Trait implementations
 
 impl PartialEq<time::Duration> for Duration {
