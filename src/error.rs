@@ -12,7 +12,6 @@ impl fmt::Display for TryFromTimeError {
     }
 }
 
-#[allow(clippy::std_instead_of_core)] // TODO: core::error requires Rust 1.81
 #[cfg(feature = "std")]
 #[cfg_attr(docsrs, doc(cfg(feature = "std")))]
 impl std::error::Error for TryFromTimeError {}
