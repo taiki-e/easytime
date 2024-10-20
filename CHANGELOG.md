@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org).
 
+Releases may yanked if there is a security bug, a soundness bug, or a regression.
+
 <!--
 Note: In this file, do not use the hard wrap in the middle of a sentence for compatibility with GitHub comment style markdown rendering.
 -->
@@ -39,7 +41,7 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 ## [0.2.2] - 2021-07-24
 
 - Add `Duration::{ZERO, MAX}` constants and `Duration::is_zero` method. ([#25](https://github.com/taiki-e/easytime/pull/25))
-  They are based on the same methods in the standard library that stabilized on Rust 1.53.
+  They are based on the same methods in the standard library that stabilized in Rust 1.53.
 
 ## [0.2.1] - 2021-04-06
 
@@ -48,7 +50,7 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 ## [0.2.0] - 2021-01-03
 
 - Add `Duration::{as_secs_f64, as_secs_f32, from_secs_f64, from_secs_f32, mul_f64, mul_f32, div_f64, div_f32}` methods. ([#21](https://github.com/taiki-e/easytime/pull/21))
-  They are based on [`duration_float`](https://github.com/rust-lang/rust/issues/54361) feature of the standard library that stabilized on Rust 1.38.
+  They are based on [`duration_float`](https://github.com/rust-lang/rust/issues/54361) feature of the standard library that stabilized in Rust 1.38.
 
 - Make `Duration::{as_secs, subsec_millis, subsec_micros, subsec_nanos, as_millis, as_micros, as_nanos, is_some, is_none, unwrap_or}` const function on rustc 1.46+. ([#19](https://github.com/taiki-e/easytime/pull/19))
 
