@@ -160,7 +160,7 @@ impl Instant {
 
 impl PartialEq<time::Instant> for Instant {
     fn eq(&self, other: &time::Instant) -> bool {
-        self.0.map_or(false, |this| this == *other)
+        self.0 == Some(*other)
     }
 }
 

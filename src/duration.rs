@@ -634,7 +634,7 @@ impl Duration {
 
 impl PartialEq<time::Duration> for Duration {
     fn eq(&self, other: &time::Duration) -> bool {
-        self.0.map_or(false, |this| this == *other)
+        self.0 == Some(*other)
     }
 }
 
