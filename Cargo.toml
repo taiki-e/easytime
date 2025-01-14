@@ -2,7 +2,7 @@
 name = "easytime"
 version = "0.2.7" #publish:version
 edition = "2021"
-rust-version = "1.58"
+rust-version = "1.58" # For const Duration::checked_add
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/easytime"
 keywords = ["date", "time", "duration", "instant"]
