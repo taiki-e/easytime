@@ -44,9 +44,8 @@ pub struct Duration(pub(crate) Option<time::Duration>);
 impl Duration {
     // TODO: add the followings once stabilized:
     // - duration_constants https://github.com/rust-lang/rust/issues/57391
-    // - div_duration https://github.com/rust-lang/rust/issues/63139
-    // - duration_abs_diff https://github.com/rust-lang/rust/issues/117618
     // - duration_constructors https://github.com/rust-lang/rust/issues/120301
+    // - duration_millis_float https://github.com/rust-lang/rust/issues/122451
 
     /// Returns a "none" value
     pub const NONE: Self = Self(None);
@@ -348,6 +347,31 @@ impl Duration {
         }
     }
 
+    // TODO: duration_abs_diff https://github.com/rust-lang/rust/issues/117618 / stabilized in 1.81 https://github.com/rust-lang/rust/pull/127128
+    // /// Computes the absolute difference between `self` and `other`.
+    // ///
+    // /// # Examples
+    // ///
+    // /// ```
+    // /// use easytime::Duration;
+    // ///
+    // /// assert_eq!(Duration::new(100, 0).abs_diff(Duration::new(80, 0)), Duration::new(20, 0));
+    // /// assert_eq!(
+    // ///     Duration::new(100, 400_000_000).abs_diff(Duration::new(110, 0)),
+    // ///     Duration::new(9, 600_000_000)
+    // /// );
+    // /// ```
+    // #[must_use]
+    // #[inline]
+    // pub const fn abs_diff(self, other: Duration) -> Duration {
+    //     if let Some(res) = self.checked_sub(other) {
+    //         res
+    //     } else {
+    //         other.checked_sub(self).unwrap()
+    //     }
+    // }
+
+    // TODO: duration_consts_float stabilized in 1.83 https://github.com/rust-lang/rust/pull/131289
     /// Returns the number of seconds contained by this `Duration` as `f64`.
     ///
     /// The returned value does include the fractional (nanosecond) part of the duration.
@@ -366,6 +390,7 @@ impl Duration {
         self.0.as_ref().map(time::Duration::as_secs_f64)
     }
 
+    // TODO: duration_consts_float stabilized in 1.83 https://github.com/rust-lang/rust/pull/131289
     /// Returns the number of seconds contained by this `Duration` as `f32`.
     ///
     /// The returned value does include the fractional (nanosecond) part of the duration.
@@ -509,6 +534,50 @@ impl Duration {
     pub fn div_f32(self, rhs: f32) -> Duration {
         self.as_secs_f32().map_or(Self::NONE, |secs| Duration::from_secs_f32(secs / rhs))
     }
+
+    // TODO: div_duration https://github.com/rust-lang/rust/issues/63139 / stabilized in 1.80 https://github.com/rust-lang/rust/pull/124667
+    // TODO: duration_consts_float stabilized in 1.83 https://github.com/rust-lang/rust/pull/131289
+    // /// Divides `Duration` by `Duration` and returns `f64`.
+    // ///
+    // /// # Examples
+    // ///
+    // /// ```
+    // /// use easytime::Duration;
+    // ///
+    // /// let dur1 = Duration::new(2, 700_000_000);
+    // /// let dur2 = Duration::new(5, 400_000_000);
+    // /// assert_eq!(dur1.div_duration_f64(dur2), 0.5);
+    // /// ```
+    // #[must_use]
+    // #[inline]
+    // pub fn div_duration_f64(self, rhs: Duration) -> f64 {
+    //     let self_nanos =
+    //         (self.secs as f64) * (NANOS_PER_SEC as f64) + (self.nanos.as_inner() as f64);
+    //     let rhs_nanos = (rhs.secs as f64) * (NANOS_PER_SEC as f64) + (rhs.nanos.as_inner() as f64);
+    //     self_nanos / rhs_nanos
+    // }
+
+    // TODO: div_duration https://github.com/rust-lang/rust/issues/63139 / stabilized in 1.80 https://github.com/rust-lang/rust/pull/124667
+    // TODO: duration_consts_float stabilized in 1.83 https://github.com/rust-lang/rust/pull/131289
+    // /// Divides `Duration` by `Duration` and returns `f32`.
+    // ///
+    // /// # Examples
+    // ///
+    // /// ```
+    // /// use easytime::Duration;
+    // ///
+    // /// let dur1 = Duration::new(2, 700_000_000);
+    // /// let dur2 = Duration::new(5, 400_000_000);
+    // /// assert_eq!(dur1.div_duration_f32(dur2), 0.5);
+    // /// ```
+    // #[must_use]
+    // #[inline]
+    // pub fn div_duration_f32(self, rhs: Duration) -> f32 {
+    //     let self_nanos =
+    //         (self.secs as f32) * (NANOS_PER_SEC as f32) + (self.nanos.as_inner() as f32);
+    //     let rhs_nanos = (rhs.secs as f32) * (NANOS_PER_SEC as f32) + (rhs.nanos.as_inner() as f32);
+    //     self_nanos / rhs_nanos
+    // }
 
     // -------------------------------------------------------------------------
     // Option based method implementations
