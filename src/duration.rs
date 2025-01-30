@@ -92,8 +92,8 @@ impl Duration {
     ///
     /// let five_seconds = Duration::new(5, 0);
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn new(secs: u64, nanos: u32) -> Self {
         let secs = time::Duration::from_secs(secs);
         let nanos = time::Duration::from_nanos(nanos as u64);
@@ -112,8 +112,8 @@ impl Duration {
     /// assert_eq!(Some(5), duration.as_secs());
     /// assert_eq!(Some(0), duration.subsec_nanos());
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn from_secs(secs: u64) -> Self {
         Self(Some(time::Duration::from_secs(secs)))
     }
@@ -130,8 +130,8 @@ impl Duration {
     /// assert_eq!(Some(2), duration.as_secs());
     /// assert_eq!(Some(569_000_000), duration.subsec_nanos());
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn from_millis(millis: u64) -> Self {
         Self(Some(time::Duration::from_millis(millis)))
     }
@@ -148,8 +148,8 @@ impl Duration {
     /// assert_eq!(Some(1), duration.as_secs());
     /// assert_eq!(Some(2000), duration.subsec_nanos());
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn from_micros(micros: u64) -> Self {
         Self(Some(time::Duration::from_micros(micros)))
     }
@@ -166,8 +166,8 @@ impl Duration {
     /// assert_eq!(Some(1), duration.as_secs());
     /// assert_eq!(Some(123), duration.subsec_nanos());
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn from_nanos(nanos: u64) -> Self {
         Self(Some(time::Duration::from_nanos(nanos)))
     }
@@ -188,8 +188,8 @@ impl Duration {
     /// assert!(!Duration::from_nanos(1).is_zero());
     /// assert!(!Duration::from_secs(1).is_zero());
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn is_zero(&self) -> bool {
         matches!((self.as_secs(), self.subsec_nanos()), (Some(0), Some(0)))
     }
@@ -209,8 +209,8 @@ impl Duration {
     /// ```
     ///
     /// [`subsec_nanos`]: Self::subsec_nanos
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn as_secs(&self) -> Option<u64> {
         match &self.0 {
             Some(d) => Some(d.as_secs()),
@@ -233,8 +233,8 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(5));
     /// assert_eq!(duration.subsec_millis(), Some(432));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn subsec_millis(&self) -> Option<u32> {
         match &self.0 {
             Some(d) => Some(d.subsec_millis()),
@@ -257,8 +257,8 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(1));
     /// assert_eq!(duration.subsec_micros(), Some(234_567));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn subsec_micros(&self) -> Option<u32> {
         match &self.0 {
             Some(d) => Some(d.subsec_micros()),
@@ -281,8 +281,8 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(5));
     /// assert_eq!(duration.subsec_nanos(), Some(10_000_000));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn subsec_nanos(&self) -> Option<u32> {
         match &self.0 {
             Some(d) => Some(d.subsec_nanos()),
@@ -300,8 +300,8 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_millis(), Some(5_730));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn as_millis(&self) -> Option<u128> {
         match &self.0 {
             Some(d) => Some(d.as_millis()),
@@ -319,8 +319,8 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_micros(), Some(5_730_023));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn as_micros(&self) -> Option<u128> {
         match &self.0 {
             Some(d) => Some(d.as_micros()),
@@ -338,8 +338,8 @@ impl Duration {
     /// let duration = Duration::new(5, 730_023_852);
     /// assert_eq!(duration.as_nanos(), Some(5_730_023_852));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn as_nanos(&self) -> Option<u128> {
         match &self.0 {
             Some(d) => Some(d.as_nanos()),
@@ -361,8 +361,8 @@ impl Duration {
     // ///     Duration::new(9, 600_000_000)
     // /// );
     // /// ```
-    // #[must_use]
     // #[inline]
+    // #[must_use]
     // pub const fn abs_diff(self, other: Duration) -> Duration {
     //     if let Some(res) = self.checked_sub(other) {
     //         res
@@ -384,8 +384,8 @@ impl Duration {
     /// let dur = Duration::new(2, 700_000_000);
     /// assert_eq!(dur.as_secs_f64(), Some(2.7));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub fn as_secs_f64(&self) -> Option<f64> {
         self.0.as_ref().map(time::Duration::as_secs_f64)
     }
@@ -403,8 +403,8 @@ impl Duration {
     /// let dur = Duration::new(2, 700_000_000);
     /// assert_eq!(dur.as_secs_f32(), Some(2.7));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub fn as_secs_f32(&self) -> Option<f32> {
         self.0.as_ref().map(time::Duration::as_secs_f32)
     }
@@ -420,8 +420,8 @@ impl Duration {
     /// let dur = Duration::from_secs_f64(2.7);
     /// assert_eq!(dur, Duration::new(2, 700_000_000));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub fn from_secs_f64(secs: f64) -> Self {
         // TODO: update implementation based on https://github.com/rust-lang/rust/commit/e0bcf771d6e670988a3d4fdc785ecd5857916f10
         const MAX_NANOS_F64: f64 = ((u64::MAX as u128 + 1) * (NANOS_PER_SEC as u128)) as f64;
@@ -447,8 +447,8 @@ impl Duration {
     /// let dur = Duration::from_secs_f32(2.7);
     /// assert_eq!(dur, Duration::new(2, 700_000_000));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub fn from_secs_f32(secs: f32) -> Duration {
         // TODO: update implementation based on https://github.com/rust-lang/rust/commit/e0bcf771d6e670988a3d4fdc785ecd5857916f10
         const MAX_NANOS_F32: f32 = ((u64::MAX as u128 + 1) * (NANOS_PER_SEC as u128)) as f32;
@@ -474,8 +474,8 @@ impl Duration {
     /// assert_eq!(dur.mul_f64(3.14), Duration::new(8, 478_000_000));
     /// assert_eq!(dur.mul_f64(3.14e5), Duration::new(847_800, 0));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub fn mul_f64(self, rhs: f64) -> Duration {
         self.as_secs_f64().map_or(Self::NONE, |secs| Duration::from_secs_f64(rhs * secs))
     }
@@ -493,8 +493,8 @@ impl Duration {
     /// assert_eq!(dur.mul_f32(3.14), Duration::new(8, 478_000_640));
     /// assert_eq!(dur.mul_f32(3.14e5), Duration::new(847799, 969_120_256));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub fn mul_f32(self, rhs: f32) -> Duration {
         self.as_secs_f32().map_or(Self::NONE, |secs| Duration::from_secs_f32(rhs * secs))
     }
@@ -511,8 +511,8 @@ impl Duration {
     /// // note that truncation is used, not rounding
     /// assert_eq!(dur.div_f64(3.14e5), Duration::new(0, 8_598));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub fn div_f64(self, rhs: f64) -> Duration {
         self.as_secs_f64().map_or(Self::NONE, |secs| Duration::from_secs_f64(secs / rhs))
     }
@@ -529,8 +529,8 @@ impl Duration {
     /// // note that truncation is used, not rounding
     /// assert_eq!(dur.div_f64(3.14e5), Duration::new(0, 8_598));
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub fn div_f32(self, rhs: f32) -> Duration {
         self.as_secs_f32().map_or(Self::NONE, |secs| Duration::from_secs_f32(secs / rhs))
     }
@@ -548,8 +548,8 @@ impl Duration {
     // /// let dur2 = Duration::new(5, 400_000_000);
     // /// assert_eq!(dur1.div_duration_f64(dur2), 0.5);
     // /// ```
-    // #[must_use]
     // #[inline]
+    // #[must_use]
     // pub fn div_duration_f64(self, rhs: Duration) -> f64 {
     //     let self_nanos =
     //         (self.secs as f64) * (NANOS_PER_SEC as f64) + (self.nanos.as_inner() as f64);
@@ -570,8 +570,8 @@ impl Duration {
     // /// let dur2 = Duration::new(5, 400_000_000);
     // /// assert_eq!(dur1.div_duration_f32(dur2), 0.5);
     // /// ```
-    // #[must_use]
     // #[inline]
+    // #[must_use]
     // pub fn div_duration_f32(self, rhs: Duration) -> f32 {
     //     let self_nanos =
     //         (self.secs as f32) * (NANOS_PER_SEC as f32) + (self.nanos.as_inner() as f32);
@@ -596,8 +596,8 @@ impl Duration {
     /// ```
     ///
     /// [`into_inner`]: Self::into_inner
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn is_some(&self) -> bool {
         self.0.is_some()
     }
@@ -616,8 +616,8 @@ impl Duration {
     /// ```
     ///
     /// [`into_inner`]: Self::into_inner
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn is_none(&self) -> bool {
         !self.is_some()
     }
@@ -634,8 +634,8 @@ impl Duration {
     /// assert_eq!((one_sec - zero).into_inner(), Some(std::time::Duration::from_secs(1)));
     /// assert_eq!((zero - one_sec).into_inner(), None);
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn into_inner(self) -> Option<time::Duration> {
         self.0
     }
@@ -660,8 +660,8 @@ impl Duration {
     ///     std::time::Duration::from_secs(2)
     /// );
     /// ```
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn unwrap_or(self, default: time::Duration) -> time::Duration {
         match self.0 {
             Some(d) => d,

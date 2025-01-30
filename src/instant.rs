@@ -111,22 +111,22 @@ impl Instant {
     // Option based method implementations
 
     /// Returns `true` if [`into_inner`](Self::into_inner) returns `Some`.
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn is_some(&self) -> bool {
         self.0.is_some()
     }
 
     /// Returns `true` if [`into_inner`](Self::into_inner) returns `None`.
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn is_none(&self) -> bool {
         !self.is_some()
     }
 
     /// Returns the contained [`std::time::Instant`] or `None`.
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn into_inner(self) -> Option<time::Instant> {
         self.0
     }
@@ -134,8 +134,8 @@ impl Instant {
     /// Returns the contained [`std::time::Instant`] or a default.
     ///
     /// `instant.unwrap_or(default)` is equivalent to `instant.into_inner().unwrap_or(default)`.
-    #[must_use]
     #[inline]
+    #[must_use]
     pub const fn unwrap_or(self, default: time::Instant) -> time::Instant {
         match self.0 {
             Some(d) => d,
