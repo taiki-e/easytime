@@ -90,7 +90,7 @@ extern crate std;
 
 #[cfg(feature = "std")]
 #[cfg(test)]
-#[path = "gen/assert_impl.rs"]
+#[path = "gen/tests/assert_impl.rs"]
 mod assert_impl;
 
 #[macro_use]
