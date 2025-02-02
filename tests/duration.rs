@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-use core::time;
+use std::time;
 
 use easytime::Duration;
 
@@ -45,7 +45,7 @@ mod core_tests {
         clippy::zero_prefixed_literal
     )]
 
-    use core::time;
+    use std::time;
 
     use easytime::Duration;
 
