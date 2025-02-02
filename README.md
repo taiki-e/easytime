@@ -6,7 +6,8 @@
 [![msrv](https://img.shields.io/badge/msrv-1.58-blue?style=flat-square&logo=rust)](https://www.rust-lang.org)
 [![github actions](https://img.shields.io/github/actions/workflow/status/taiki-e/easytime/ci.yml?branch=main&style=flat-square&logo=github)](https://github.com/taiki-e/easytime/actions)
 
-<!-- tidy:crate-doc:start -->
+<!-- tidy:sync-markdown-to-rustdoc:start:src/lib.rs -->
+
 Providing wrapper types for safely performing panic-free checked arithmetic
 on instants and durations.
 
@@ -61,7 +62,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
   - Enable to use [`easytime::Instant`].
   - If disabled this feature, `easytime` can be used in `no_std` environments.
 
-<!-- tidy:crate-doc:end -->
+<!-- tidy:sync-markdown-to-rustdoc:end -->
 
 [`easytime::Instant`]: https://docs.rs/easytime/latest/easytime/struct.Instant.html
 [`easytime::Duration`]: https://docs.rs/easytime/latest/easytime/struct.Duration.html

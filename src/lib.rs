@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 /*!
-<!-- tidy:crate-doc:start -->
+<!-- Note: Document from sync-markdown-to-rustdoc:start through sync-markdown-to-rustdoc:end
+     is synchronized from README.md. Any changes to that range are not preserved. -->
+<!-- tidy:sync-markdown-to-rustdoc:start -->
+
 Providing wrapper types for safely performing panic-free checked arithmetic
 on instants and durations.
 
@@ -22,7 +25,7 @@ easytime = "0.2"
 
 ## Examples
 
-```rust
+```
 use easytime::{Duration, Instant};
 use std::time::Duration as StdDuration;
 
@@ -36,7 +39,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<StdDuration> {
 
 If you use [`std::time`] directly, you need to write as follows:
 
-```rust
+```
 use std::time::{Duration, Instant};
 
 fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
@@ -56,7 +59,7 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
   - Enable to use [`easytime::Instant`].
   - If disabled this feature, `easytime` can be used in `no_std` environments.
 
-<!-- tidy:crate-doc:end -->
+<!-- tidy:sync-markdown-to-rustdoc:end -->
 */
 
 #![no_std]
