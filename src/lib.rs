@@ -95,6 +95,9 @@ extern crate std;
 #[cfg(test)]
 #[path = "gen/tests/assert_impl.rs"]
 mod assert_impl;
+#[cfg(test)]
+#[path = "gen/tests/track_size.rs"]
+mod track_size;
 
 #[macro_use]
 mod utils;
