@@ -2,7 +2,7 @@
 #![warn(rust_2018_idioms, single_use_lifetimes)]
 #![allow(clippy::eq_op)]
 
-// https://github.com/rust-lang/rust/blob/1.63.0/library/std/src/time/tests.rs
+// https://github.com/rust-lang/rust/blob/1.70.0/library/std/src/time/tests.rs
 pub mod std_tests {
     use easytime::{Duration, Instant};
 
@@ -100,6 +100,14 @@ pub mod std_tests {
         // Changing the order of instant math shouldn't change the results,
         // especially when the expression reduces to X + identity.
         assert_eq!((now + offset) - now, (now - now) + offset);
+
+        // On any platform, `Instant` should have the same resolution as `Duration` (e.g. 1 nanosecond)
+        // or better. Otherwise, math will be non-associative (see #91417).
+        let now = Instant::now();
+        let provided_offset = Duration::from_nanos(1);
+        let later = now + provided_offset;
+        let measured_offset = later - now;
+        assert_eq!(measured_offset, provided_offset);
     }
 
     #[test]

@@ -38,7 +38,7 @@ fn cmp() {
     assert!(time::Duration::from_secs(0) <= Duration::from_secs(1));
 }
 
-// https://github.com/rust-lang/rust/blob/1.63.0/library/core/tests/time.rs
+// https://github.com/rust-lang/rust/blob/1.70.0/library/core/tests/time.rs
 pub mod core_tests {
     use core::time;
 
@@ -194,6 +194,32 @@ pub mod core_tests {
         assert_eq!((Duration::new(2, 0) / 0).into_inner(), None);
     }
 
+    // #[test]
+    // fn div_duration_f32() {
+    //     assert_eq!(Duration::ZERO.div_duration_f32(Duration::MAX), 0.0);
+    //     assert_eq!(Duration::MAX.div_duration_f32(Duration::ZERO), f32::INFINITY);
+    //     assert_eq!((Duration::SECOND * 2).div_duration_f32(Duration::SECOND), 2.0);
+    //     assert!(Duration::ZERO.div_duration_f32(Duration::ZERO).is_nan());
+    //     // These tests demonstrate it doesn't panic with extreme values.
+    //     // Accuracy of the computed value is not a huge concern, we know floats don't work well
+    //     // at these extremes.
+    //     assert!((Duration::MAX).div_duration_f32(Duration::NANOSECOND) > 10.0f32.powf(28.0));
+    //     assert!((Duration::NANOSECOND).div_duration_f32(Duration::MAX) < 0.1);
+    // }
+
+    // #[test]
+    // fn div_duration_f64() {
+    //     assert_eq!(Duration::ZERO.div_duration_f64(Duration::MAX), 0.0);
+    //     assert_eq!(Duration::MAX.div_duration_f64(Duration::ZERO), f64::INFINITY);
+    //     assert_eq!((Duration::SECOND * 2).div_duration_f64(Duration::SECOND), 2.0);
+    //     assert!(Duration::ZERO.div_duration_f64(Duration::ZERO).is_nan());
+    //     // These tests demonstrate it doesn't panic with extreme values.
+    //     // Accuracy of the computed value is not a huge concern, we know floats don't work well
+    //     // at these extremes.
+    //     assert!((Duration::MAX).div_duration_f64(Duration::NANOSECOND) > 10.0f64.powf(28.0));
+    //     assert!((Duration::NANOSECOND).div_duration_f64(Duration::MAX) < 0.1);
+    // }
+
     /* TODO duration_sum
     #[test]
     fn correct_sum() {
@@ -215,9 +241,37 @@ pub mod core_tests {
     #[test]
     fn debug_formatting_extreme_values() {
         assert_eq!(
-            format!("{:?}", Duration::new(18_446_744_073_709_551_615, 123_456_789)),
+            format!("{:?}", Duration::new(u64::MAX, 123_456_789)),
             "Some(18446744073709551615.123456789s)"
         );
+        assert_eq!(format!("{:.0?}", Duration::MAX), "Some(18446744073709551616s)");
+        assert_eq!(
+            format!("{:.0?}", Duration::new(u64::MAX, 500_000_000)),
+            "Some(18446744073709551616s)"
+        );
+        assert_eq!(
+            format!("{:.0?}", Duration::new(u64::MAX, 499_999_999)),
+            "Some(18446744073709551615s)"
+        );
+        assert_eq!(
+            format!("{:.3?}", Duration::new(u64::MAX, 999_500_000)),
+            "Some(18446744073709551616.000s)"
+        );
+        assert_eq!(
+            format!("{:.3?}", Duration::new(u64::MAX, 999_499_999)),
+            "Some(18446744073709551615.999s)"
+        );
+        assert_eq!(
+            format!("{:.8?}", Duration::new(u64::MAX, 999_999_995)),
+            "Some(18446744073709551616.00000000s)"
+        );
+        assert_eq!(
+            format!("{:.8?}", Duration::new(u64::MAX, 999_999_994)),
+            "Some(18446744073709551615.99999999s)"
+        );
+        assert_eq!(format!("{:21.0?}", Duration::MAX), "Some(18446744073709551616s)");
+        assert_eq!(format!("{:22.0?}", Duration::MAX), "Some(18446744073709551616s )");
+        assert_eq!(format!("{:24.0?}", Duration::MAX), "Some(18446744073709551616s   )");
     }
 
     #[test]
@@ -466,5 +520,22 @@ pub mod core_tests {
 
         // const DIV_DURATION_F64: f64 = duration_second().div_duration_f64(duration_second());
         // assert_eq!(DIV_DURATION_F64, 1.0);
+
+        // const SATURATING_ADD: Duration = MAX.saturating_add(Duration::SECOND);
+        // assert_eq!(SATURATING_ADD, MAX);
+
+        // const SATURATING_SUB: Duration = Duration::ZERO.saturating_sub(Duration::SECOND);
+        // assert_eq!(SATURATING_SUB, Duration::ZERO);
+
+        // const SATURATING_MUL: Duration = MAX.saturating_mul(2);
+        // assert_eq!(SATURATING_MUL, MAX);
+    }
+
+    #[test]
+    fn from_neg_zero() {
+        //     assert_eq!(Duration::try_from_secs_f32(-0.0), Ok(Duration::ZERO));
+        //     assert_eq!(Duration::try_from_secs_f64(-0.0), Ok(Duration::ZERO));
+        assert_eq!(Duration::from_secs_f32(-0.0), Duration::ZERO);
+        assert_eq!(Duration::from_secs_f64(-0.0), Duration::ZERO);
     }
 }
