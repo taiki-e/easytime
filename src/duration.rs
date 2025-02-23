@@ -8,7 +8,7 @@ use core::{
     time,
 };
 
-use crate::{utils::pair_and_then, TryFromTimeError};
+use crate::{TryFromTimeError, utils::pair_and_then};
 
 const NANOS_PER_SEC: u32 = 1_000_000_000;
 

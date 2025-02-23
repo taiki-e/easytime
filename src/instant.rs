@@ -6,7 +6,7 @@ use core::{
 };
 use std::time;
 
-use crate::{utils::pair_and_then, Duration, TryFromTimeError};
+use crate::{Duration, TryFromTimeError, utils::pair_and_then};
 
 /// A measurement of a monotonically nondecreasing clock.
 /// Opaque and useful only with `Duration`.
