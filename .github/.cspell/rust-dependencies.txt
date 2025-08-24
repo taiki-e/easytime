@@ -3,3 +3,4 @@
 
 globset
 prettyplease
+rustversion

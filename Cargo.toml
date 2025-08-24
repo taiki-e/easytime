@@ -29,7 +29,8 @@ default = ["std"]
 std = []
 
 [dev-dependencies]
-test-helper = { features = ["git"], git = "https://github.com/taiki-e/test-helper.git", rev = "d2272e8" }
+rustversion = "1"
+test-helper = { features = ["git"], git = "https://github.com/taiki-e/test-helper.git", rev = "c5eac31" }
 
 [lints]
 workspace = true
