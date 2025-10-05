@@ -103,12 +103,12 @@ mod track_size;
 mod utils;
 
 mod duration;
-pub use crate::duration::Duration;
+pub use self::duration::Duration;
 
 #[cfg(feature = "std")]
 mod instant;
 #[cfg(feature = "std")]
-pub use crate::instant::Instant;
+pub use self::instant::Instant;
 
 mod error;
-pub use crate::error::TryFromTimeError;
+pub use self::error::TryFromTimeError;
