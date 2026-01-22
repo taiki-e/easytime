@@ -13,6 +13,8 @@ use core::{
 use crate::{TryFromTimeError, utils::pair_and_then};
 
 const NANOS_PER_SEC: u32 = 1_000_000_000;
+const SECS_PER_MINUTE: u64 = 60;
+const MINS_PER_HOUR: u64 = 60;
 
 /// A `Duration` type to represent a span of time, typically used for system
 /// timeouts.
@@ -172,6 +174,80 @@ impl Duration {
     #[must_use]
     pub const fn from_nanos(nanos: u64) -> Self {
         Self(Some(time::Duration::from_nanos(nanos)))
+    }
+
+    /// Creates a new `Duration` from the specified number of nanoseconds.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let nanos = 10_u128.pow(24) + 321;
+    /// let duration = Duration::from_nanos_u128(nanos);
+    ///
+    /// assert_eq!(Some(10_u64.pow(15)), duration.as_secs());
+    /// assert_eq!(Some(321), duration.subsec_nanos());
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn from_nanos_u128(nanos: u128) -> Self {
+        #[inline]
+        const fn u64_try_from(v: u128) -> Result<u64, ()> {
+            if v > (u64::MAX as u128) { Err(()) } else { Ok(v as u64) }
+        }
+        const NANOS_PER_SEC: u128 = self::NANOS_PER_SEC as u128;
+        let secs = match u64_try_from(nanos / NANOS_PER_SEC) {
+            Ok(secs) => secs,
+            _ => return Self::NONE,
+        };
+        let subsec_nanos = (nanos % NANOS_PER_SEC) as u32;
+
+        Self::new(secs, subsec_nanos)
+    }
+
+    /// Creates a new `Duration` from the specified number of hours.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_hours(6);
+    ///
+    /// assert_eq!(Some(6 * 60 * 60), duration.as_secs());
+    /// assert_eq!(Some(0), duration.subsec_nanos());
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn from_hours(hours: u64) -> Self {
+        if hours > u64::MAX / (SECS_PER_MINUTE * MINS_PER_HOUR) {
+            return Self::NONE;
+        }
+
+        Self::from_secs(hours * MINS_PER_HOUR * SECS_PER_MINUTE)
+    }
+
+    /// Creates a new `Duration` from the specified number of minutes.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use easytime::Duration;
+    ///
+    /// let duration = Duration::from_mins(10);
+    ///
+    /// assert_eq!(Some(10 * 60), duration.as_secs());
+    /// assert_eq!(Some(0), duration.subsec_nanos());
+    /// ```
+    #[inline]
+    #[must_use]
+    pub const fn from_mins(mins: u64) -> Self {
+        if mins > u64::MAX / SECS_PER_MINUTE {
+            return Self::NONE;
+        }
+
+        Self::from_secs(mins * SECS_PER_MINUTE)
     }
 
     /// Returns true if this `Duration` spans no time.
