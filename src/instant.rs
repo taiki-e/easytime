@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-// Refs: https://github.com/rust-lang/rust/blob/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/time.rs
+// Refs: https://github.com/rust-lang/rust/blob/1.93.0/library/std/src/time.rs
 
 use core::{
     cmp, fmt,
