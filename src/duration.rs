@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+// Refs: https://github.com/rust-lang/rust/blob/254b59607d4417e9dffbc307138ae5c86280fe4c/library/core/src/time.rs
+
 #![allow(clippy::cast_possible_truncation, clippy::cast_precision_loss, clippy::cast_sign_loss)]
 
 use core::{
@@ -16,12 +18,14 @@ const NANOS_PER_SEC: u32 = 1_000_000_000;
 /// timeouts.
 ///
 /// Each `Duration` is composed of a whole number of seconds and a fractional part
-/// represented in nanoseconds.  If the underlying system does not support
+/// represented in nanoseconds. If the underlying system does not support
 /// nanosecond-level precision, APIs binding a system timeout will typically round up
 /// the number of nanoseconds.
 ///
-/// `Duration`s implement many common traits, including [`Add`], [`Sub`], and other
-/// [`ops`] traits.
+/// [`Duration`]s implement many common traits, including [`Add`], [`Sub`], and other
+/// [`ops`] traits. It implements [`Default`] by returning a zero-length `Duration`.
+///
+/// [`ops`]: core::ops
 ///
 /// # Examples
 ///
@@ -36,17 +40,10 @@ const NANOS_PER_SEC: u32 = 1_000_000_000;
 ///
 /// let ten_millis = Duration::from_millis(10);
 /// ```
-///
-/// [`ops`]: std::ops
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Duration(pub(crate) Option<time::Duration>);
 
 impl Duration {
-    // TODO: add the followings once stabilized:
-    // - duration_constants https://github.com/rust-lang/rust/issues/57391
-    // - duration_constructors https://github.com/rust-lang/rust/issues/120301
-    // - duration_millis_float https://github.com/rust-lang/rust/issues/122451
-
     /// Returns a "none" value
     pub const NONE: Self = Self(None);
 
@@ -156,6 +153,11 @@ impl Duration {
 
     /// Creates a new `Duration` from the specified number of nanoseconds.
     ///
+    /// Note: Using this on the return value of `as_nanos()` might cause unexpected behavior:
+    /// `as_nanos()` returns a u128, and can return values that do not fit in u64, e.g. 585 years.
+    /// Instead, consider using the pattern `Duration::new(d.as_secs(), d.subsec_nanos())`
+    /// if you cannot copy/clone the Duration directly.
+    ///
     /// # Examples
     ///
     /// ```
@@ -172,7 +174,7 @@ impl Duration {
         Self(Some(time::Duration::from_nanos(nanos)))
     }
 
-    /// Returns `true` if this `Duration` spans no time.
+    /// Returns true if this `Duration` spans no time.
     ///
     /// # Examples
     ///
@@ -208,6 +210,11 @@ impl Duration {
     /// assert_eq!(duration.as_secs(), Some(5));
     /// ```
     ///
+    /// To determine the total number of seconds represented by the `Duration`
+    /// including the fractional part, use [`as_secs_f64`] or [`as_secs_f32`]
+    ///
+    /// [`as_secs_f64`]: Self::as_secs_f64
+    /// [`as_secs_f32`]: Self::as_secs_f32
     /// [`subsec_nanos`]: Self::subsec_nanos
     #[inline]
     #[must_use]
@@ -364,17 +371,16 @@ impl Duration {
     // #[inline]
     // #[must_use]
     // pub const fn abs_diff(self, other: Duration) -> Duration {
-    //     if let Some(res) = self.checked_sub(other) {
-    //         res
-    //     } else {
-    //         other.checked_sub(self).unwrap()
-    //     }
+    //     if let Some(res) = self.checked_sub(other) { res } else { other.checked_sub(self).unwrap() }
     // }
 
+    // TODO: saturating_{add,sub,mul}?
+
     // TODO: duration_consts_float stabilized in 1.83 https://github.com/rust-lang/rust/pull/131289
+    #[allow(clippy::manual_map)]
     /// Returns the number of seconds contained by this `Duration` as `f64`.
     ///
-    /// The returned value does include the fractional (nanosecond) part of the duration.
+    /// The returned value includes the fractional (nanosecond) part of the duration.
     ///
     /// # Examples
     ///
@@ -387,13 +393,17 @@ impl Duration {
     #[inline]
     #[must_use]
     pub fn as_secs_f64(&self) -> Option<f64> {
-        self.0.as_ref().map(time::Duration::as_secs_f64)
+        match &self.0 {
+            Some(x) => Some(x.as_secs_f64()),
+            None => None,
+        }
     }
 
     // TODO: duration_consts_float stabilized in 1.83 https://github.com/rust-lang/rust/pull/131289
+    #[allow(clippy::manual_map)]
     /// Returns the number of seconds contained by this `Duration` as `f32`.
     ///
-    /// The returned value does include the fractional (nanosecond) part of the duration.
+    /// The returned value includes the fractional (nanosecond) part of the duration.
     ///
     /// # Examples
     ///
@@ -406,7 +416,10 @@ impl Duration {
     #[inline]
     #[must_use]
     pub fn as_secs_f32(&self) -> Option<f32> {
-        self.0.as_ref().map(time::Duration::as_secs_f32)
+        match &self.0 {
+            Some(x) => Some(x.as_secs_f32()),
+            None => None,
+        }
     }
 
     /// Creates a new `Duration` from the specified number of seconds represented
@@ -417,23 +430,27 @@ impl Duration {
     /// ```
     /// use easytime::Duration;
     ///
-    /// let dur = Duration::from_secs_f64(2.7);
-    /// assert_eq!(dur, Duration::new(2, 700_000_000));
+    /// let res = Duration::from_secs_f64(0.0);
+    /// assert_eq!(res, Duration::new(0, 0));
+    /// let res = Duration::from_secs_f64(1e-20);
+    /// assert_eq!(res, Duration::new(0, 0));
+    /// let res = Duration::from_secs_f64(4.2e-7);
+    /// assert_eq!(res, Duration::new(0, 420));
+    /// let res = Duration::from_secs_f64(2.7);
+    /// assert_eq!(res, Duration::new(2, 700_000_000));
+    /// let res = Duration::from_secs_f64(3e10);
+    /// assert_eq!(res, Duration::new(30_000_000_000, 0));
+    /// // subnormal float
+    /// let res = Duration::from_secs_f64(f64::from_bits(1));
+    /// assert_eq!(res, Duration::new(0, 0));
+    /// // conversion uses rounding
+    /// let res = Duration::from_secs_f64(0.999e-9);
+    /// assert_eq!(res, Duration::new(0, 1));
     /// ```
     #[inline]
     #[must_use]
     pub fn from_secs_f64(secs: f64) -> Self {
-        // TODO: update implementation based on https://github.com/rust-lang/rust/commit/e0bcf771d6e670988a3d4fdc785ecd5857916f10
-        const MAX_NANOS_F64: f64 = ((u64::MAX as u128 + 1) * (NANOS_PER_SEC as u128)) as f64;
-        let nanos = secs * (NANOS_PER_SEC as f64);
-        if !nanos.is_finite() || nanos >= MAX_NANOS_F64 || nanos < 0. {
-            return Self(None);
-        }
-        let nanos = nanos as u128;
-        Self::new(
-            (nanos / (NANOS_PER_SEC as u128)) as u64,
-            (nanos % (NANOS_PER_SEC as u128)) as u32,
-        )
+        Self(Self::try_from_secs_f64(secs))
     }
 
     /// Creates a new `Duration` from the specified number of seconds represented
@@ -444,23 +461,27 @@ impl Duration {
     /// ```
     /// use easytime::Duration;
     ///
-    /// let dur = Duration::from_secs_f32(2.7);
-    /// assert_eq!(dur, Duration::new(2, 700_000_000));
+    /// let res = Duration::from_secs_f32(0.0);
+    /// assert_eq!(res, Duration::new(0, 0));
+    /// let res = Duration::from_secs_f32(1e-20);
+    /// assert_eq!(res, Duration::new(0, 0));
+    /// let res = Duration::from_secs_f32(4.2e-7);
+    /// assert_eq!(res, Duration::new(0, 420));
+    /// let res = Duration::from_secs_f32(2.7);
+    /// assert_eq!(res, Duration::new(2, 700_000_048));
+    /// let res = Duration::from_secs_f32(3e10);
+    /// assert_eq!(res, Duration::new(30_000_001_024, 0));
+    /// // subnormal float
+    /// let res = Duration::from_secs_f32(f32::from_bits(1));
+    /// assert_eq!(res, Duration::new(0, 0));
+    /// // conversion uses rounding
+    /// let res = Duration::from_secs_f32(0.999e-9);
+    /// assert_eq!(res, Duration::new(0, 1));
     /// ```
     #[inline]
     #[must_use]
-    pub fn from_secs_f32(secs: f32) -> Duration {
-        // TODO: update implementation based on https://github.com/rust-lang/rust/commit/e0bcf771d6e670988a3d4fdc785ecd5857916f10
-        const MAX_NANOS_F32: f32 = ((u64::MAX as u128 + 1) * (NANOS_PER_SEC as u128)) as f32;
-        let nanos = secs * (NANOS_PER_SEC as f32);
-        if !nanos.is_finite() || nanos >= MAX_NANOS_F32 || nanos < 0. {
-            return Self(None);
-        }
-        let nanos = nanos as u128;
-        Self::new(
-            (nanos / (NANOS_PER_SEC as u128)) as u64,
-            (nanos % (NANOS_PER_SEC as u128)) as u32,
-        )
+    pub fn from_secs_f32(secs: f32) -> Self {
+        Self(Self::try_from_secs_f32(secs))
     }
 
     /// Multiplies `Duration` by `f64`.
@@ -476,8 +497,8 @@ impl Duration {
     /// ```
     #[inline]
     #[must_use]
-    pub fn mul_f64(self, rhs: f64) -> Duration {
-        self.as_secs_f64().map_or(Self::NONE, |secs| Duration::from_secs_f64(rhs * secs))
+    pub fn mul_f64(self, rhs: f64) -> Self {
+        self.as_secs_f64().map_or(Self::NONE, |secs| Self::from_secs_f64(rhs * secs))
     }
 
     /// Multiplies `Duration` by `f32`.
@@ -488,18 +509,16 @@ impl Duration {
     /// use easytime::Duration;
     ///
     /// let dur = Duration::new(2, 700_000_000);
-    /// // note that due to rounding errors result is slightly different
-    /// // from 8.478 and 847800.0
-    /// assert_eq!(dur.mul_f32(3.14), Duration::new(8, 478_000_640));
-    /// assert_eq!(dur.mul_f32(3.14e5), Duration::new(847799, 969_120_256));
+    /// assert_eq!(dur.mul_f32(3.14), Duration::new(8, 478_000_641));
+    /// assert_eq!(dur.mul_f32(3.14e5), Duration::new(847_800, 0));
     /// ```
     #[inline]
     #[must_use]
-    pub fn mul_f32(self, rhs: f32) -> Duration {
-        self.as_secs_f32().map_or(Self::NONE, |secs| Duration::from_secs_f32(rhs * secs))
+    pub fn mul_f32(self, rhs: f32) -> Self {
+        self.as_secs_f32().map_or(Self::NONE, |secs| Self::from_secs_f32(rhs * secs))
     }
 
-    /// Divide `Duration` by `f64`.
+    /// Divides `Duration` by `f64`.
     ///
     /// # Examples
     ///
@@ -508,16 +527,15 @@ impl Duration {
     ///
     /// let dur = Duration::new(2, 700_000_000);
     /// assert_eq!(dur.div_f64(3.14), Duration::new(0, 859_872_611));
-    /// // note that truncation is used, not rounding
-    /// assert_eq!(dur.div_f64(3.14e5), Duration::new(0, 8_598));
+    /// assert_eq!(dur.div_f64(3.14e5), Duration::new(0, 8_599));
     /// ```
     #[inline]
     #[must_use]
-    pub fn div_f64(self, rhs: f64) -> Duration {
-        self.as_secs_f64().map_or(Self::NONE, |secs| Duration::from_secs_f64(secs / rhs))
+    pub fn div_f64(self, rhs: f64) -> Self {
+        self.as_secs_f64().map_or(Self::NONE, |secs| Self::from_secs_f64(secs / rhs))
     }
 
-    /// Divide `Duration` by `f32`.
+    /// Divides `Duration` by `f32`.
     ///
     /// # Examples
     ///
@@ -525,14 +543,15 @@ impl Duration {
     /// use easytime::Duration;
     ///
     /// let dur = Duration::new(2, 700_000_000);
-    /// assert_eq!(dur.div_f64(3.14), Duration::new(0, 859_872_611));
-    /// // note that truncation is used, not rounding
-    /// assert_eq!(dur.div_f64(3.14e5), Duration::new(0, 8_598));
+    /// // note that due to rounding errors result is slightly
+    /// // different from 0.859_872_611
+    /// assert_eq!(dur.div_f32(3.14), Duration::new(0, 859_872_580));
+    /// assert_eq!(dur.div_f32(3.14e5), Duration::new(0, 8_599));
     /// ```
     #[inline]
     #[must_use]
-    pub fn div_f32(self, rhs: f32) -> Duration {
-        self.as_secs_f32().map_or(Self::NONE, |secs| Duration::from_secs_f32(secs / rhs))
+    pub fn div_f32(self, rhs: f32) -> Self {
+        self.as_secs_f32().map_or(Self::NONE, |secs| Self::from_secs_f32(secs / rhs))
     }
 
     // TODO: div_duration https://github.com/rust-lang/rust/issues/63139 / stabilized in 1.80 https://github.com/rust-lang/rust/pull/124667
@@ -550,7 +569,7 @@ impl Duration {
     // /// ```
     // #[inline]
     // #[must_use]
-    // pub fn div_duration_f64(self, rhs: Duration) -> f64 {
+    // pub fn div_duration_f64(self, rhs: Self) -> f64 {
     //     let self_nanos =
     //         (self.secs as f64) * (NANOS_PER_SEC as f64) + (self.nanos.as_inner() as f64);
     //     let rhs_nanos = (rhs.secs as f64) * (NANOS_PER_SEC as f64) + (rhs.nanos.as_inner() as f64);
@@ -572,7 +591,7 @@ impl Duration {
     // /// ```
     // #[inline]
     // #[must_use]
-    // pub fn div_duration_f32(self, rhs: Duration) -> f32 {
+    // pub fn div_duration_f32(self, rhs: Self) -> f32 {
     //     let self_nanos =
     //         (self.secs as f32) * (NANOS_PER_SEC as f32) + (self.nanos.as_inner() as f32);
     //     let rhs_nanos = (rhs.secs as f32) * (NANOS_PER_SEC as f32) + (rhs.nanos.as_inner() as f32);
@@ -725,38 +744,6 @@ impl PartialOrd<Duration> for time::Duration {
     }
 }
 
-impl fmt::Debug for Duration {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt::Debug::fmt(&self.0, f)
-    }
-}
-
-impl Default for Duration {
-    fn default() -> Self {
-        Self(Some(time::Duration::default()))
-    }
-}
-
-impl From<time::Duration> for Duration {
-    fn from(dur: time::Duration) -> Self {
-        Self(Some(dur))
-    }
-}
-
-impl From<Option<time::Duration>> for Duration {
-    fn from(dur: Option<time::Duration>) -> Self {
-        Self(dur)
-    }
-}
-
-impl TryFrom<Duration> for time::Duration {
-    type Error = TryFromTimeError;
-
-    fn try_from(dur: Duration) -> Result<Self, Self::Error> {
-        dur.into_inner().ok_or(TryFromTimeError(()))
-    }
-}
-
 impl Add for Duration {
     type Output = Self;
 
@@ -852,3 +839,141 @@ impl DivAssign<u32> for Duration {
 // TODO: duration_sum
 // impl Sum for Duration
 // impl<'a> Sum<&'a Duration> for Duration
+
+impl fmt::Debug for Duration {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fmt::Debug::fmt(&self.0, f)
+    }
+}
+
+impl Default for Duration {
+    fn default() -> Self {
+        Self(Some(time::Duration::default()))
+    }
+}
+
+impl From<time::Duration> for Duration {
+    fn from(dur: time::Duration) -> Self {
+        Self(Some(dur))
+    }
+}
+
+impl From<Option<time::Duration>> for Duration {
+    fn from(dur: Option<time::Duration>) -> Self {
+        Self(dur)
+    }
+}
+
+impl TryFrom<Duration> for time::Duration {
+    type Error = TryFromTimeError;
+
+    fn try_from(dur: Duration) -> Result<Self, Self::Error> {
+        dur.into_inner().ok_or(TryFromTimeError(()))
+    }
+}
+
+macro_rules! try_from_secs {
+    (
+        secs = $secs: expr,
+        mantissa_bits = $mant_bits: literal,
+        exponent_bits = $exp_bits: literal,
+        offset = $offset: literal,
+        bits_ty = $bits_ty:ty,
+        double_ty = $double_ty:ty,
+    ) => {{
+        const MIN_EXP: i16 = 1 - (1i16 << $exp_bits) / 2;
+        const MANT_MASK: $bits_ty = (1 << $mant_bits) - 1;
+        const EXP_MASK: $bits_ty = (1 << $exp_bits) - 1;
+
+        if $secs < 0.0 {
+            return None;
+        }
+
+        let bits = $secs.to_bits();
+        let mant = (bits & MANT_MASK) | (MANT_MASK + 1);
+        let exp = ((bits >> $mant_bits) & EXP_MASK) as i16 + MIN_EXP;
+
+        let (secs, nanos) = if exp < -31 {
+            // the input represents less than 1ns and can not be rounded to it
+            (0u64, 0u32)
+        } else if exp < 0 {
+            // the input is less than 1 second
+            let t = <$double_ty>::from(mant) << ($offset + exp);
+            let nanos_offset = $mant_bits + $offset;
+            let nanos_tmp = u128::from(NANOS_PER_SEC) * u128::from(t);
+            let nanos = (nanos_tmp >> nanos_offset) as u32;
+
+            let rem_mask = (1 << nanos_offset) - 1;
+            let rem_msb_mask = 1 << (nanos_offset - 1);
+            let rem = nanos_tmp & rem_mask;
+            let is_tie = rem == rem_msb_mask;
+            let is_even = (nanos & 1) == 0;
+            let rem_msb = nanos_tmp & rem_msb_mask == 0;
+            let add_ns = !(rem_msb || (is_even && is_tie));
+
+            // f32 does not have enough precision to trigger the second branch
+            // since it can not represent numbers between 0.999_999_940_395 and 1.0.
+            let nanos = nanos + add_ns as u32;
+            if ($mant_bits == 23) || (nanos != NANOS_PER_SEC) { (0, nanos) } else { (1, 0) }
+        } else if exp < $mant_bits {
+            let secs = u64::from(mant >> ($mant_bits - exp));
+            let t = <$double_ty>::from((mant << exp) & MANT_MASK);
+            let nanos_offset = $mant_bits;
+            let nanos_tmp = <$double_ty>::from(NANOS_PER_SEC) * t;
+            let nanos = (nanos_tmp >> nanos_offset) as u32;
+
+            let rem_mask = (1 << nanos_offset) - 1;
+            let rem_msb_mask = 1 << (nanos_offset - 1);
+            let rem = nanos_tmp & rem_mask;
+            let is_tie = rem == rem_msb_mask;
+            let is_even = (nanos & 1) == 0;
+            let rem_msb = nanos_tmp & rem_msb_mask == 0;
+            let add_ns = !(rem_msb || (is_even && is_tie));
+
+            // f32 does not have enough precision to trigger the second branch.
+            // For example, it can not represent numbers between 1.999_999_880...
+            // and 2.0. Bigger values result in even smaller precision of the
+            // fractional part.
+            let nanos = nanos + add_ns as u32;
+            if ($mant_bits == 23) || (nanos != NANOS_PER_SEC) {
+                (secs, nanos)
+            } else {
+                (secs + 1, 0)
+            }
+        } else if exp < 64 {
+            // the input has no fractional part
+            let secs = u64::from(mant) << (exp - $mant_bits);
+            (secs, 0)
+        } else {
+            return None;
+        };
+
+        Some(time::Duration::new(secs, nanos))
+    }};
+}
+
+impl Duration {
+    #[inline]
+    fn try_from_secs_f32(secs: f32) -> Option<time::Duration> {
+        try_from_secs!(
+            secs = secs,
+            mantissa_bits = 23,
+            exponent_bits = 8,
+            offset = 41,
+            bits_ty = u32,
+            double_ty = u64,
+        )
+    }
+
+    #[inline]
+    fn try_from_secs_f64(secs: f64) -> Option<time::Duration> {
+        try_from_secs!(
+            secs = secs,
+            mantissa_bits = 52,
+            exponent_bits = 11,
+            offset = 44,
+            bits_ty = u64,
+            double_ty = u128,
+        )
+    }
+}
