@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+// Refs: https://github.com/rust-lang/rust/blob/254b59607d4417e9dffbc307138ae5c86280fe4c/library/std/src/time.rs
+
 use core::{
-    cmp,
+    cmp, fmt,
     ops::{Add, AddAssign, Sub, SubAssign},
 };
 use std::time;
@@ -9,17 +11,19 @@ use std::time;
 use crate::{Duration, TryFromTimeError, utils::pair_and_then};
 
 /// A measurement of a monotonically nondecreasing clock.
-/// Opaque and useful only with `Duration`.
+/// Opaque and useful only with [`Duration`].
 ///
-/// Instants are always guaranteed to be no less than any previously measured
-/// instant when created, and are often useful for tasks such as measuring
+/// Instants are always guaranteed, barring [platform bugs], to be no less than any previously
+/// measured instant when created, and are often useful for tasks such as measuring
 /// benchmarks or timing how long an operation takes.
 ///
-/// Note, however, that instants are not guaranteed to be **steady**. In other
-/// words, each tick of the underlying clock may not be the same length (e.g.
+/// Note, however, that instants are **not** guaranteed to be **steady**. In other
+/// words, each tick of the underlying clock might not be the same length (e.g.
 /// some seconds may be longer than others). An instant may jump forwards or
 /// experience time dilation (slow down or speed up), but it will never go
 /// backwards.
+/// As part of this non-guarantee it is also not specified whether system suspends count as
+/// elapsed time or not. The behavior varies across platforms and Rust versions.
 ///
 /// Instants are opaque types that can only be compared to one another. There is
 /// no method to get "the number of seconds" from an instant. Instead, it only
@@ -28,6 +32,8 @@ use crate::{Duration, TryFromTimeError, utils::pair_and_then};
 ///
 /// The size of an `Instant` struct may vary depending on the target operating
 /// system.
+///
+/// [platform bugs]: std::time::Instant#monotonicity
 ///
 /// # OS-specific behaviors
 ///
@@ -41,7 +47,7 @@ use crate::{Duration, TryFromTimeError, utils::pair_and_then};
 ///
 /// See the [standard library documentation](std::time::Instant#underlying-system-calls)
 /// for the system calls used to get the current time using `now()`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Instant(Option<time::Instant>);
 
 impl Instant {
@@ -87,7 +93,7 @@ impl Instant {
         ))
     }
 
-    /// Returns the amount of time elapsed since this instant was created.
+    /// Returns the amount of time elapsed since this instant.
     ///
     /// # Examples
     ///
@@ -270,5 +276,11 @@ impl Sub<time::Instant> for Instant {
 
     fn sub(self, other: time::Instant) -> Self::Output {
         self.duration_since(Self::from(other))
+    }
+}
+
+impl fmt::Debug for Instant {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fmt::Debug::fmt(&self.0, f)
     }
 }
