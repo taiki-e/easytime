@@ -12,6 +12,16 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+- Add `Duration::{from_mins,from_hours}`.
+  They are based on the same methods in the standard library that stabilized in Rust 1.91.
+
+- Add `Duration::from_nanos_u128`.
+  They are based on the same methods in the standard library that stabilized in Rust 1.93.
+
+- Optimize `Duration::from_secs_{f32,f64}`.
+
+- Enable [release immutability](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/immutable-releases).
+
 ## [0.2.7] - 2024-03-05
 
 - Make `Instant::{duration_since, elapsed, sub}` saturating to follow the [upstream change](https://github.com/rust-lang/rust/pull/89926).
