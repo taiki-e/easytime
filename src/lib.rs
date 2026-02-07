@@ -65,10 +65,13 @@ fn foo(secs: u64, nanos: u32, instant: Instant) -> Option<Duration> {
 #![no_std]
 #![doc(test(
     no_crate_inject,
-    attr(
-        deny(warnings, rust_2018_idioms, single_use_lifetimes),
-        allow(dead_code, unused_variables)
-    )
+    attr(allow(
+        dead_code,
+        unused_variables,
+        clippy::undocumented_unsafe_blocks,
+        clippy::unused_trait_names,
+        clippy::approx_constant,
+    ))
 ))]
 #![forbid(unsafe_code)]
 #![warn(
