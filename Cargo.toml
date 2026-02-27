@@ -30,7 +30,7 @@ std = []
 
 [dev-dependencies]
 rustversion = "1"
-test-helper = { features = ["git"], git = "https://github.com/taiki-e/test-helper.git", rev = "c5eac31" }
+test-helper = { features = ["git"], git = "https://github.com/taiki-e/test-helper.git", rev = "c78a65c" }
 
 [lints]
 workspace = true
