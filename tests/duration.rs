@@ -11,17 +11,17 @@ fn none() {
 
 #[test]
 fn cmp() {
-    assert!(Duration::from_secs(1) == Duration::from_secs(1));
-    assert!(Duration::from_secs(1) != Duration::from_secs(0));
-    assert!(Duration::from_secs(1) == time::Duration::from_secs(1));
-    assert!(Duration::from_secs(1) != time::Duration::from_secs(0));
-    assert!(time::Duration::from_secs(1) == Duration::from_secs(1));
-    assert!(time::Duration::from_secs(1) != Duration::from_secs(0));
-    assert!(Duration::from(None) != Duration::from_secs(1));
-    assert!(Duration::from_secs(1) != Duration::from(None));
-    assert!(Duration::from(None) != time::Duration::from_secs(1));
-    assert!(time::Duration::from_secs(1) != Duration::from(None));
-    assert!(Duration::from(None) == Duration::from(None)); // TODO: Is this not good?
+    assert_eq!(Duration::from_secs(1), Duration::from_secs(1));
+    assert_ne!(Duration::from_secs(1), Duration::from_secs(0));
+    assert_eq!(Duration::from_secs(1), time::Duration::from_secs(1));
+    assert_ne!(Duration::from_secs(1), time::Duration::from_secs(0));
+    assert_eq!(time::Duration::from_secs(1), Duration::from_secs(1));
+    assert_ne!(time::Duration::from_secs(1), Duration::from_secs(0));
+    assert_ne!(Duration::from(None), Duration::from_secs(1));
+    assert_ne!(Duration::from_secs(1), Duration::from(None));
+    assert_ne!(Duration::from(None), time::Duration::from_secs(1));
+    assert_ne!(time::Duration::from_secs(1), Duration::from(None));
+    assert_eq!(Duration::from(None), Duration::from(None)); // TODO: Is this not good?
 
     assert!(Duration::from_secs(1) > Duration::from_secs(0));
     assert!(Duration::from_secs(0) < Duration::from_secs(1));
@@ -51,7 +51,7 @@ mod core_tests {
 
     #[test]
     fn creation() {
-        assert!(Duration::from_secs(1) != Duration::from_secs(0));
+        assert_ne!(Duration::from_secs(1), Duration::from_secs(0));
         assert_eq!(Duration::from_secs(1) + Duration::from_secs(2), Duration::from_secs(3));
         assert_eq!(
             Duration::from_millis(10) + Duration::from_secs(4),
