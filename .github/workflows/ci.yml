@@ -17,24 +17,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  miri:
-    uses: taiki-e/github-actions/.github/workflows/miri.yml@2474ed4664eb8903c151603a9d841512c069f7f6 # main
-    with:
-      # NB: sync with test job's --exclude option
-      args: --exclude easytime-internal-codegen
-  msrv:
-    uses: taiki-e/github-actions/.github/workflows/msrv.yml@2474ed4664eb8903c151603a9d841512c069f7f6 # main
+  tidy:
+    uses: taiki-e/github-actions/.github/workflows/tidy.yml@1bb80ca038216cd1fb7b6ca6d76240b3772963ab # main
+    permissions:
+      security-events: write # for github/codeql-action/*
   test:
-    uses: taiki-e/github-actions/.github/workflows/test.yml@2474ed4664eb8903c151603a9d841512c069f7f6 # main
+    needs: tidy
+    uses: taiki-e/github-actions/.github/workflows/rust-test.yml@1bb80ca038216cd1fb7b6ca6d76240b3772963ab # main
     with:
-      # NB: sync with miri job's --exclude option
       test-args: --exclude easytime-internal-codegen
       no-std-args: --exclude-features std,default
-  tidy:
-    uses: taiki-e/github-actions/.github/workflows/tidy.yml@2474ed4664eb8903c151603a9d841512c069f7f6 # main
-    permissions:
-      contents: write # for creating branch for pr
-      pull-requests: write # unused (used in `codegen-automerge: true` case)
-      security-events: write # for github/codeql-action/*
-    secrets:
-      PR_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PR_TOKEN_APP_PRIVATE_KEY }}
